@@ -29,7 +29,7 @@ en la carpeta; la presentación usa 10:
 | Archivo | Se usa en |
 |---|---|
 | `img/01-interstitial-copec.jpg` | 03b |
-| `img/02-home-primer-viewport.jpg` | 03a |
+| `img/02-home-primer-viewport.jpg` | Portada y 03a |
 | `img/03-home-scroll-club.jpg` | 03b |
 | `img/04-home-scroll-promos.jpg` | 03b |
 | `img/05-interstitial-fibra.jpg` | 04 |

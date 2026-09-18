@@ -465,12 +465,23 @@ figcaption{
 /* Portada: panel de color + banda inferior */
 .portada .wrap{display:flex;flex-direction:column;gap:clamp(20px,3vh,40px)}
 .portada__panel{
+  --pad:clamp(24px,3.4vw,48px);
   background:var(--azul);color:var(--blanco);
   border-radius:var(--radio);
-  padding:clamp(24px,3.4vw,48px);
+  padding:var(--pad);overflow:hidden;
+  display:grid;grid-template-columns:1fr auto;
+  gap:clamp(20px,3vw,48px);align-items:end;
+}
+/* La captura se apoya en el borde inferior del panel y este la recorta */
+.portada__figura{margin:0 0 calc(-1 * var(--pad));align-self:end}
+.portada__figura img{
+  display:block;width:auto;
+  height:clamp(180px,32vh,320px);
+  object-fit:cover;object-position:top center;
+  border-radius:var(--radio-sm) var(--radio-sm) 0 0;
 }
 .portada__panel .etiqueta{color:var(--azul-palido);border-bottom-color:rgba(255,255,255,.3)}
-.portada__panel h1{max-width:17ch;margin-top:var(--s4)}
+.portada__panel h1{max-width:15ch;margin-top:var(--s4)}
 .portada__pie{
   display:grid;grid-template-columns:0.62fr 1fr;
   gap:clamp(24px,3.4vw,56px);align-items:start;
@@ -493,6 +504,9 @@ figcaption{
   .slide:first-of-type{padding-top:calc(var(--nav-h) + 26px)}
   .portada__pie{grid-template-columns:1fr}
   .portada .wrap{gap:24px}
+  .portada__panel{grid-template-columns:1fr;gap:26px}
+  .portada__figura{justify-self:start}
+  .portada__figura img{height:200px}
   .arcos{display:none}
   .nav__lista,.nav__contador{display:none}
   .nav__boton{display:inline-block;margin-left:auto}
@@ -560,7 +574,9 @@ figcaption{
   .tabla td:first-child{font-size:inherit;margin:0}
   .tabla .c-sev{width:9ch}
   .portada .wrap{display:block}
-  .portada__panel{padding:var(--s3) var(--s4);border-radius:8px;margin-bottom:var(--s3)}
+  .portada__panel{--pad:var(--s3);padding:var(--s3) var(--s4);border-radius:8px;margin-bottom:var(--s3)}
+  .portada__figura{margin-bottom:calc(-1 * var(--s3))}
+  .portada__figura img{height:34mm}
   .portada__panel h1{margin-top:var(--s3)}
   .portada__pie{display:grid;grid-template-columns:0.62fr 1fr;gap:var(--s4)}
   .arcos{display:grid;grid-template-columns:repeat(4,1fr);height:auto}
@@ -619,8 +635,13 @@ figcaption{
 <section class="slide s-blanco portada" id="portada" data-titulo="Portada">
   <div class="wrap">
     <div class="portada__panel">
-      <p class="etiqueta">Desafío UX Research &amp; Strategy · Septiembre 2026</p>
-      <h1>Cuando la app no responde la pregunta que la gente vino a hacer</h1>
+      <div class="portada__texto">
+        <p class="etiqueta">Desafío UX Research &amp; Strategy · Septiembre 2026</p>
+        <h1>Cuando la app no responde la pregunta que la gente vino a hacer</h1>
+      </div>
+      <figure class="portada__figura">
+        <img src="img/02-home-primer-viewport.jpg" alt="Home de la app Entel: el primer viewport lo ocupan un banner de fibra óptica y cinco accesos rápidos de contratación, sin ningún dato del plan.">
+      </figure>
     </div>
     <div class="portada__pie">
       <div>
