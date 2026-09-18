@@ -303,18 +303,19 @@ figcaption{
 }
 .s-negro figcaption,.s-azul figcaption{color:var(--gris-linea)}
 .s-naranja figcaption,.s-azulpalido figcaption{color:var(--negro)}
-/* Las capturas van sin marco. Sus bordes son casi blancos (L 0,86 a 0,94),
-   así que solo llevan línea sobre los fondos claros, donde se confundirían. */
+/* Sin marco: la caja se ajusta a la imagen en vez de ocupar la columna entera.
+   El contraste con el fondo lo da un filete de 1 px y una sombra muy corta,
+   no un recuadro. Sus bordes son casi blancos (luminancia 0,86 a 0,94). */
 .captura{
-  width:100%;height:auto;object-fit:contain;border-radius:var(--radio-sm);
-  border:0;background:transparent;
+  display:block;width:auto;max-width:100%;height:auto;
+  border:0;background:transparent;border-radius:var(--radio-sm);
+  margin:0 auto;
+  box-shadow:0 0 0 1px rgba(16,17,20,.07), 0 3px 12px rgba(16,17,20,.09);
 }
-.s-blanco .captura,.s-gris .captura,.s-azulpalido .captura,.s-naranja .captura{
-  border:1px solid var(--gris-linea);
-}
+.s-negro .captura,.s-azul .captura{box-shadow:0 0 0 1px rgba(255,255,255,.16)}
 .captura--alta{max-height:56vh;object-fit:contain}
 .tira{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,32px)}
-.tira .captura{max-height:31vh;margin:0 auto}
+.tira .captura{max-height:31vh;margin:0}
 
 /* Imagen faltante: estado explícito, no ícono roto */
 .falta{
@@ -475,7 +476,7 @@ figcaption{
 /* La captura se apoya en el borde inferior del panel y este la recorta */
 .portada__figura{margin:0 0 calc(-1 * var(--pad));align-self:end}
 .portada__figura img{
-  display:block;width:auto;
+  display:block;width:auto;box-shadow:0 0 0 1px rgba(255,255,255,.18);
   height:clamp(240px,52vh,500px);
   object-fit:cover;object-position:top center;
   border-radius:var(--radio-sm) var(--radio-sm) 0 0;
@@ -597,7 +598,7 @@ figcaption{
   }
   .tabla{font-size:8pt}
   .tabla th,.tabla td{padding:5px 10px 5px 0}
-  .captura,.captura--alta{max-height:52mm;width:auto;margin:0}
+  .captura,.captura--alta{max-height:52mm;width:auto;margin:0;box-shadow:0 0 0 1px rgba(16,17,20,.14)}
   .tira .captura{max-height:46mm}
   .marcos{max-width:none;gap:6mm}
   .marcos figure{max-width:24mm}

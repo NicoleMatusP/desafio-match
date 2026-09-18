@@ -94,10 +94,12 @@ compuestos (por ejemplo, "Hallazgo 01, evidencia" a "Evidencia") en el atributo
 archivos externos. Heredan el color del bloque con `currentColor` y están marcados
 `aria-hidden` porque acompañan a un título que ya dice lo mismo.
 
-**Capturas.** Van sin marco de dispositivo. Se midieron los bordes de las 12 imágenes:
-casi todas terminan en blanco o casi blanco (luminancia 0,86 a 0,94), así que llevan una
-línea de 1 px solo sobre los fondos claros, donde se confundirían con la tarjeta. Sobre
-el fondo negro y el azul van sin borde.
+**Capturas.** Van sin marco de dispositivo y sin recuadro: la caja del `img` se ajusta
+a la imagen en vez de ocupar la columna entera. Se midieron los bordes de las 12
+imágenes y casi todas terminan en blanco o casi blanco (luminancia 0,86 a 0,94), así
+que el contraste con el fondo lo da un filete de 1 px al 7 % y una sombra corta al 9 %,
+aplicados sobre la propia imagen. Sobre el negro y el azul, el filete es blanco al 16 %.
+Al imprimir queda solo el filete, sin desenfoque.
 
 ---
 
