@@ -92,6 +92,14 @@ centra sola. Si se prefiere verlos todos de una vez, hay que acortar los nombres
 compuestos (por ejemplo, "Hallazgo 01, evidencia" a "Evidencia") en el atributo
 `data-titulo` de cada sección.
 
+**Líneas.** Cada bloque se marca con un icono o con una marca corta de 32 px, nunca
+con una regla a todo el ancho. Solo quedan dos líneas largas por lámina: la del rótulo
+de sección y la de la nota al pie. La lámina 12 pasó de nueve reglas a dos.
+
+**Pendientes.** Los huecos `[  ]` usan relleno naranja pálido con filete naranja, y
+filete discontinuo cuando ocupan el lugar de una cifra grande. Antes eran naranja
+sólido y pesaban como botones.
+
 **Severidad.** Las insignias usan colores de estado según el número, tanto en los
 hallazgos como en la columna de la tabla de síntesis: verde para 0 a 2, el naranja de
 marca para 3 y rojo para 4. Sobre el fondo negro el rojo se funde con la sección, así

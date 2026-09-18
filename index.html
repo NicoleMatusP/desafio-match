@@ -229,10 +229,10 @@ h2 + .texto,h2 + .cita,h2 + .cita--caja,h2 + h3,h2 + .tira,h2 + .cols,h2 + .tabl
 .s-naranja .nota,.s-azulpalido .nota{color:var(--negro);border-top-color:rgba(16,17,20,.25)}
 
 .pendiente{
-  background:var(--naranja);color:var(--negro);
+  background:var(--naranja-palido);color:var(--negro);
   padding:1px 10px;font-weight:600;border-radius:var(--radio-xs);
   font-variant-numeric:tabular-nums;white-space:nowrap;
-  border:1px solid rgba(16,17,20,.35);
+  border:1px solid var(--naranja);
 }
 
 /* ============================================================
@@ -243,21 +243,26 @@ h2 + .texto,h2 + .cita,h2 + .cita--caja,h2 + h3,h2 + .tira,h2 + .cols,h2 + .tabl
 .cols-3{grid-template-columns:repeat(3,1fr)}
 .cols-4{grid-template-columns:repeat(4,1fr)}
 
-.col-linea{border-top:1px solid var(--gris-linea);padding-top:var(--s3)}
-.s-negro .col-linea,.s-azul .col-linea{border-top-color:rgba(255,255,255,.28)}
-.s-naranja .col-linea,.s-azulpalido .col-linea{border-top-color:rgba(16,17,20,.25)}
-.col-linea h3{margin-bottom:var(--s2)}
-.col-linea p{font-size:var(--f-body);color:var(--gris-texto);margin:0}
-.s-negro .col-linea p,.s-azul .col-linea p{color:var(--gris-linea)}
-.s-naranja .col-linea p,.s-azulpalido .col-linea p{color:var(--negro)}
+/* Cada bloque se marca con un icono o con una marca corta, nunca con una regla
+   a todo el ancho: así la lámina 12 baja de nueve líneas a dos. */
+.col{padding-top:0}
+.marca-corta::before{
+  content:"";display:block;width:32px;height:3px;
+  background:var(--azul);margin-bottom:var(--s3);
+}
+.s-naranja .marca-corta::before{background:var(--negro)}
+.s-negro .marca-corta::before,.s-azul .marca-corta::before{background:var(--blanco)}
+.col h3{margin-bottom:var(--s2)}
+.col p{font-size:var(--f-body);color:var(--gris-texto);margin:0}
+.s-negro .col p,.s-azul .col p{color:var(--gris-linea)}
+.s-naranja .col p,.s-azulpalido .col p{color:var(--negro)}
 
 .split{display:grid;grid-template-columns:1fr 0.82fr;gap:clamp(24px,3.4vw,56px);align-items:center}
 .split--izq{grid-template-columns:0.82fr 1fr}
 .split--izq .split__texto{order:2}
 .split--izq .split__media{order:1}
 
-.hito{border-top:2px solid var(--naranja);padding-top:var(--s2)}
-.s-azulpalido .hito{border-top-color:var(--azul)}
+.hito{padding-top:0}
 .numero{
   display:block;font-size:var(--f-num);font-weight:600;
   letter-spacing:-0.045em;line-height:.95;
@@ -392,14 +397,14 @@ figcaption{
 .tabla .c-sev{width:9ch;white-space:nowrap}
 
 /* KPIs */
-.kpi{border-top:1px solid rgba(16,17,20,.25);padding-top:var(--s3)}
-.kpi .pendiente{font-size:var(--f-num-sm);display:inline-block;line-height:1.1;padding:2px 16px}
+.kpi{padding-top:0}
+.kpi .pendiente{font-size:var(--f-num-sm);display:inline-block;line-height:1.1;padding:0 14px;border-style:dashed}
 .kpi h3{margin:var(--s2) 0 var(--s1)}
 .kpi p{font-size:var(--f-mini);color:var(--negro);margin:0;line-height:1.35}
 
 /* Línea de tiempo */
 .timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.6vw,26px);margin-top:var(--s3)}
-.paso{border-top:2px solid var(--negro);padding-top:var(--s2)}
+.paso{padding-top:0}
 .paso__cab{display:flex;align-items:center;gap:10px;margin-bottom:var(--s2)}
 .icono--sm{width:30px;height:30px;margin:0}
 .icono--sm svg{width:17px;height:17px}
@@ -407,7 +412,6 @@ figcaption{
   font-size:var(--f-mini);font-weight:600;color:var(--azul);
   font-variant-numeric:tabular-nums;
 }
-.s-negro .paso,.s-azul .paso{border-top-color:var(--blanco)}
 .s-negro .paso .n,.s-azul .paso .n{color:var(--naranja)}
 .paso h3{font-size:var(--f-body);margin-bottom:4px}
 .paso p{font-size:var(--f-mini);color:var(--gris-texto);margin:0;line-height:1.35}
@@ -440,8 +444,8 @@ figcaption{
 .s-azul .btn-proto{background:var(--blanco);color:var(--azul);border-color:var(--blanco)}
 .btn-proto:hover{background:var(--azul);color:var(--blanco);border-color:var(--azul)}
 .btn-proto.is-pendiente{
-  background:var(--naranja);color:var(--negro);border:1px dashed var(--negro);
-  cursor:not-allowed;
+  background:var(--naranja-palido);color:var(--negro);
+  border:1px dashed var(--naranja);cursor:not-allowed;
 }
 .proto__nota{font-size:var(--f-mini);color:var(--gris-texto);margin:0}
 .s-azul .proto__nota{color:var(--azul-palido)}
@@ -588,7 +592,7 @@ figcaption{
   .wrap{max-width:none}
   h2{max-width:42ch}
   .sub{margin:var(--s2) 0 var(--s3);max-width:80ch}
-  .tarjeta,figure,.kpi,.hito,.paso,.placeholder,.col-linea,.tabla,.tabla tr,.cita,.cita--caja{
+  .tarjeta,figure,.kpi,.hito,.paso,.placeholder,.col,.tabla,.tabla tr,.cita,.cita--caja{
     page-break-inside:avoid;break-inside:avoid;
   }
   .tabla{font-size:8pt}
@@ -666,17 +670,17 @@ figcaption{
     <h2>Qué evalué y cómo</h2>
     <p class="sub">La app de una telco tiene dos misiones al mismo tiempo: resolver la autoatención y vender. Este análisis mira qué pasa cuando lo segundo desplaza a lo primero.</p>
     <div class="cols cols-3">
-      <div class="col-linea">
+      <div class="col">
         <span class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M10.5 18.6h3"/></svg></span>
         <h3>Alcance</h3>
         <p>Flujo de consumo del plan y Club, en la app mobile. Dos tareas: consultar cuánto queda del plan y acceder a beneficios y puntos.</p>
       </div>
-      <div class="col-linea">
+      <div class="col">
         <span class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 7h11M9.5 12h11M9.5 17h11"/><path d="M3 6.6l1.4 1.4L6.8 5.3"/><path d="M3 11.6l1.4 1.4 2.4-2.7"/><path d="M3 16.6l1.4 1.4 2.4-2.7"/></svg></span>
         <h3>Método</h3>
         <p>Evaluación heurística con las 10 heurísticas de Nielsen y escala de severidad de 0 a 4, aplicada sobre recorridos grabados.</p>
       </div>
-      <div class="col-linea">
+      <div class="col">
         <span class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M10.3 8.8l5 3.2-5 3.2z"/></svg></span>
         <h3>Evidencia</h3>
         <p>3 sesiones de 59 s, 2 m 49 s y 39 s, con medición de tiempos y pasos, más reseñas públicas de App Store y Google Play.</p>
@@ -693,19 +697,19 @@ figcaption{
     <h2>¿Cuántos gigas me quedan?</h2>
     <p class="sub">Es la razón número uno por la que alguien abre la app de su compañía. No es una tarea de descubrimiento: es una consulta rápida, casi siempre de pie y apurada.</p>
     <div class="cols cols-4">
-      <div class="hito">
+      <div class="hito marca-corta">
         <span class="numero">4,6 s</span>
         <p>tarda la home en volverse usable</p>
       </div>
-      <div class="hito">
+      <div class="hito marca-corta">
         <span class="numero">36 s</span>
         <p>hasta ver el dato de consumo</p>
       </div>
-      <div class="hito">
+      <div class="hito marca-corta">
         <span class="numero">44 s</span>
         <p>hasta el detalle, que abre en la pestaña equivocada</p>
       </div>
-      <div class="hito">
+      <div class="hito marca-corta">
         <span class="numero">2:23</span>
         <p>buscando unos puntos que ya no existen</p>
       </div>
@@ -936,22 +940,22 @@ figcaption{
     <p class="etiqueta"><b>07b</b> · Impacto en el negocio</p>
     <h2>Lo que esto le cuesta a la compañía</h2>
     <div class="cols cols-4">
-      <div class="kpi">
+      <div class="kpi marca-corta">
         <span class="pendiente">[&nbsp;&nbsp;]</span>
         <h3>Autoatención digital</h3>
         <p>% de consultas de saldo resueltas sin contacto humano</p>
       </div>
-      <div class="kpi">
+      <div class="kpi marca-corta">
         <span class="pendiente">[&nbsp;&nbsp;]</span>
         <h3>Costo por contacto</h3>
         <p>cuántas veces más caro es el call center que la app</p>
       </div>
-      <div class="kpi">
+      <div class="kpi marca-corta">
         <span class="pendiente">[&nbsp;&nbsp;]</span>
         <h3>Uso de beneficios del Club</h3>
         <p>% sobre la base activa</p>
       </div>
-      <div class="kpi">
+      <div class="kpi marca-corta">
         <span class="pendiente">[&nbsp;&nbsp;]</span>
         <h3>Riesgo de fraude</h3>
         <p>reportes mensuales de SMS que usan puntos como carnada</p>
@@ -1139,27 +1143,27 @@ figcaption{
     <p class="etiqueta"><b>12</b> · Investigación evaluativa</p>
     <h2>Cómo sabré que la solución funciona</h2>
     <div class="cols cols-3">
-      <div class="col-linea">
+      <div class="col">
 <span class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.2" r="3.6"/><path d="M5.2 20c0-3.6 3-6.1 6.8-6.1s6.8 2.5 6.8 6.1"/></svg></span>
         <h3>Test de usabilidad moderado</h3>
         <p>6 participantes, tareas reales de consultar saldo y entender el estado de los beneficios. Métricas: tasa de éxito, tiempo hasta el dato, errores y SEQ.</p>
       </div>
-      <div class="col-linea">
+      <div class="col">
 <span class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3.2"/><path d="M9 8.6l6.6 3.1-2.8 1-1 2.9z"/></svg></span>
         <h3>Test no moderado</h3>
         <p>40 a 60 participantes en Maze. Mapa de calor, tasa de clic erróneo y abandono por pantalla.</p>
       </div>
-      <div class="col-linea">
+      <div class="col">
 <span class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.6" y="5" width="8.4" height="14" rx="2.2"/><rect x="13" y="5" width="8.4" height="14" rx="2.2"/><path d="M5.4 12h2.8M16 12h2.8"/></svg></span>
         <h3>Test A/B en producción</h3>
         <p>Métrica principal: consultas de saldo resueltas en la app. Secundarias: contactos a soporte, uso de beneficios y conversión de las ofertas contextuales.</p>
       </div>
     </div>
     <div class="cols cols-4" style="margin-top:var(--s4)">
-      <div class="hito"><span class="numero numero--sm">≥90%</span><p>de éxito en la tarea principal</p></div>
-      <div class="hito"><span class="numero numero--sm">&lt;10 s</span><p>hasta el dato desde abrir la app</p></div>
-      <div class="hito"><span class="numero numero--sm">SEQ ≥6</span><p>en escala de 1 a 7</p></div>
-      <div class="hito"><span class="numero numero--sm">=</span><p>guardarraíl: la conversión comercial no cae</p></div>
+      <div class="hito marca-corta"><span class="numero numero--sm">≥90%</span><p>de éxito en la tarea principal</p></div>
+      <div class="hito marca-corta"><span class="numero numero--sm">&lt;10 s</span><p>hasta el dato desde abrir la app</p></div>
+      <div class="hito marca-corta"><span class="numero numero--sm">SEQ ≥6</span><p>en escala de 1 a 7</p></div>
+      <div class="hito marca-corta"><span class="numero numero--sm">=</span><p>guardarraíl: la conversión comercial no cae</p></div>
     </div>
     <p class="nota">El guardarraíl es deliberado: la propuesta se defiende solo si mejora la autoatención sin castigar los ingresos del canal.</p>
   </div>
