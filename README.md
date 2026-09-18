@@ -66,7 +66,9 @@ Para cambiar uno, se edita solo ahí.
 | `--azul-palido` | `#DCEAEC` | Secciones de datos |
 | `--naranja` | `#F57917` | Reglas, insignias, chips de pendiente |
 | `--naranja-palido` | `#FDE7D5` | Fondo de la sección de tensión |
-| `--alerta` | `#C2410C` | Severidad alta |
+| `--alerta` | `#C2410C` | Filete de la cita antifraude |
+| `--exito` | `#15803D` | Severidad 0 a 2 |
+| `--peligro` | `#B91C1C` | Severidad 4 |
 
 **Sobre el naranja.** El sitio actual de Entel ya no usa naranja: su identidad vigente
 es azul (`#002EFF`). El naranja corresponde a la identidad anterior y el valor `#F57917`
@@ -90,7 +92,13 @@ centra sola. Si se prefiere verlos todos de una vez, hay que acortar los nombres
 compuestos (por ejemplo, "Hallazgo 01, evidencia" a "Evidencia") en el atributo
 `data-titulo` de cada sección.
 
-**Iconos.** Doce iconos de línea en SVG embebido (secciones 01, 08, 09 y 12), sin
+**Severidad.** Las insignias usan colores de estado según el número, tanto en los
+hallazgos como en la columna de la tabla de síntesis: verde para 0 a 2, el naranja de
+marca para 3 y rojo para 4. Sobre el fondo negro el rojo se funde con la sección, así
+que ahí la insignia lleva un filete blanco al 35 % que la delimita. En la evaluación
+solo aparecen severidades 3 y 4; el verde queda definido para completar la escala.
+
+**Iconos.** Veinte iconos de línea en SVG embebido (secciones 01, 08, 09, 11 y 12), sin
 archivos externos. Heredan el color del bloque con `currentColor` y están marcados
 `aria-hidden` porque acompañan a un título que ya dice lo mismo.
 
