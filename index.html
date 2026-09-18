@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cuando la app no responde la pregunta que la gente vino a hacer · Desafío UX Research &amp; Strategy</title>
+<meta name="description" content="Evaluación heurística del flujo de autoatención de la app Entel, plan de investigación y propuesta de mejora prototipada con IA. Nicole Matus, septiembre 2026.">
+<meta name="author" content="Nicole Matus">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --negro:#101114;
+  --gris-texto:#5F6470;
+  --gris-linea:#E2E4E9;
+  --gris-fondo:#F4F5F7;
+  --azul:#1226E8;
+  --azul-palido:#DCEAEC;
+  --naranja:#F57917;
+  --naranja-palido:#FDE7D5;
+  --alerta:#C2410C;
+  --blanco:#FFFFFF;
+
+  --nav-h:54px;
+  --max:1200px;
+  --gutter:8px;
+  --tope:calc(var(--nav-h) + 10px);
+  --radio:24px;
+  --radio-sm:16px;
+  --radio-xs:10px;
+
+  --s1:6px; --s2:12px; --s3:20px; --s4:32px; --s5:48px;
+
+  --f-etiqueta:11px;
+  --f-mini:12px;
+  --f-body:clamp(14px,1.02vw,16px);
+  --f-sub:clamp(15px,1.25vw,20px);
+  --f-h2:clamp(27px,3.2vw,48px);
+  --f-h1:clamp(34px,4.4vw,62px);
+  --f-h3:clamp(15px,1.15vw,18px);
+  --f-num:clamp(38px,4.4vw,66px);
+  --f-num-sm:clamp(30px,3.2vw,46px);
+
+  --fuente:"Helvetica Neue",Helvetica,Inter,Arial,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box}
+html{
+  scroll-snap-type:y proximity;
+  scroll-behavior:smooth;
+  scroll-padding-top:var(--tope);
+  -webkit-text-size-adjust:100%;
+}
+body{
+  margin:0;
+  font-family:var(--fuente);
+  font-size:var(--f-body);
+  line-height:1.5;
+  color:var(--negro);
+  background:var(--gris-linea);
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+p{margin:0 0 var(--s3)}
+h1,h2,h3{margin:0;font-weight:700;letter-spacing:-0.025em;line-height:1.03}
+h1{font-size:var(--f-h1);letter-spacing:-0.035em}
+h2{font-size:var(--f-h2);max-width:20ch;letter-spacing:-0.032em}
+h3{font-weight:600}
+h3{font-size:var(--f-h3);letter-spacing:-0.01em;line-height:1.25}
+ul{margin:0 0 var(--s3);padding-left:1.1em}
+li{margin-bottom:var(--s1)}
+strong{font-weight:600}
+
+:focus-visible{
+  outline:3px solid var(--azul);
+  outline-offset:2px;
+  border-radius:2px;
+}
+.s-negro :focus-visible,.s-azul :focus-visible{outline-color:var(--blanco)}
+
+.saltar{
+  position:absolute;left:var(--s2);top:-100px;z-index:60;
+  background:var(--negro);color:var(--blanco);
+  padding:var(--s2) var(--s3);text-decoration:none;font-size:var(--f-mini);
+}
+.saltar:focus{top:var(--s2)}
+
+/* ============================================================
+   BARRA SUPERIOR: progreso + índice + contador
+   ============================================================ */
+.progreso{
+  position:fixed;top:var(--nav-h);left:0;right:0;height:3px;z-index:50;
+  background:transparent;
+}
+.progreso__barra{
+  height:100%;width:0;background:var(--azul);
+  transform-origin:left center;
+  transition:width .12s linear;
+}
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:49;
+  height:var(--nav-h);
+  display:flex;align-items:center;gap:var(--s3);
+  padding:0 clamp(14px,1.8vw,24px);
+  background:rgba(255,255,255,0.96);
+  backdrop-filter:saturate(1.2) blur(6px);
+  border-bottom:1px solid var(--gris-linea);
+}
+.nav__marca{
+  font-size:var(--f-etiqueta);text-transform:uppercase;letter-spacing:.11em;
+  color:var(--gris-texto);white-space:nowrap;flex:0 0 auto;
+}
+.nav__lista{
+  display:flex;align-items:center;gap:2px;
+  list-style:none;margin:0;padding:0;
+  overflow-x:auto;scrollbar-width:none;flex:1 1 auto;
+}
+.nav__lista::-webkit-scrollbar{display:none}
+.nav__lista li{margin:0}
+.nav__enlace{
+  display:inline-block;padding:6px 10px;border-radius:999px;
+  font-size:var(--f-mini);
+  color:var(--gris-texto);text-decoration:none;white-space:nowrap;
+}
+.nav__enlace:hover{color:var(--negro)}
+.nav__enlace[aria-current="true"]{color:var(--blanco);background:var(--azul);font-weight:600}
+.nav__contador{
+  flex:0 0 auto;font-size:var(--f-mini);color:var(--gris-texto);
+  font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+.nav__boton{
+  display:none;flex:0 0 auto;border-radius:999px;
+  font-family:inherit;font-size:var(--f-mini);
+  text-transform:uppercase;letter-spacing:.08em;
+  background:var(--negro);color:var(--blanco);
+  border:0;padding:9px 14px;cursor:pointer;
+}
+
+/* Índice móvil desplegable */
+.indice{
+  position:fixed;inset:0;z-index:55;
+  background:var(--blanco);
+  padding:var(--s5) var(--s3) var(--s3);
+  overflow-y:auto;
+  display:none;
+}
+.indice[data-abierto="true"]{display:block}
+.indice__cerrar{
+  position:absolute;top:var(--s3);right:var(--s3);
+  font-family:inherit;font-size:var(--f-mini);
+  text-transform:uppercase;letter-spacing:.08em;
+  background:none;border:1px solid var(--gris-linea);
+  padding:8px 12px;cursor:pointer;color:var(--negro);
+}
+.indice__titulo{
+  font-size:var(--f-etiqueta);text-transform:uppercase;letter-spacing:.11em;
+  color:var(--gris-texto);margin-bottom:var(--s3);
+}
+.indice ol{list-style:none;margin:0;padding:0}
+.indice li{margin:0;border-top:1px solid var(--gris-linea)}
+.indice a{
+  display:flex;gap:var(--s3);align-items:baseline;
+  padding:14px 2px;text-decoration:none;color:var(--negro);
+}
+.indice a[aria-current="true"]{color:var(--azul)}
+.indice .n{
+  font-size:var(--f-mini);color:var(--gris-texto);
+  font-variant-numeric:tabular-nums;min-width:34px;
+}
+.indice a[aria-current="true"] .n{color:var(--azul)}
+
+/* ============================================================
+   SECCIONES
+   ============================================================ */
+.slide{
+  min-height:calc(100vh - var(--tope) - var(--gutter));
+  scroll-snap-align:start;
+  display:flex;align-items:center;
+  margin:var(--gutter);
+  border-radius:var(--radio);
+  padding:clamp(22px,2.6vw,34px) clamp(20px,3vw,42px);
+}
+@supports (min-height:100svh){.slide{min-height:calc(100svh - var(--tope) - var(--gutter))}}
+.slide:first-of-type{padding-top:calc(var(--nav-h) + 26px)}
+.wrap{width:100%;max-width:var(--max);margin:0 auto}
+
+.s-blanco{background:var(--blanco);color:var(--negro)}
+.s-gris{background:var(--gris-fondo);color:var(--negro)}
+.s-azulpalido{background:var(--azul-palido);color:var(--negro)}
+.s-naranja{background:var(--naranja-palido);color:var(--negro)}
+.s-negro{background:var(--negro);color:var(--blanco)}
+.s-azul{background:var(--azul);color:var(--blanco)}
+
+.etiqueta{
+  font-size:var(--f-etiqueta);text-transform:uppercase;letter-spacing:.13em;
+  color:var(--gris-texto);margin:0 0 var(--s3);
+  padding-bottom:var(--s2);border-bottom:1px solid var(--gris-linea);
+}
+.etiqueta b{color:var(--azul);font-weight:700;letter-spacing:.08em}
+.s-negro .etiqueta b,.s-azul .etiqueta b{color:var(--blanco)}
+.s-naranja .etiqueta b{color:var(--negro)}
+.s-negro .etiqueta,.s-azul .etiqueta{color:var(--gris-linea);border-bottom-color:rgba(255,255,255,.28)}
+.s-naranja .etiqueta,.s-azulpalido .etiqueta{color:var(--negro);border-bottom-color:rgba(16,17,20,.2)}
+
+.sub{
+  font-size:var(--f-sub);line-height:1.35;color:var(--gris-texto);
+  max-width:64ch;margin:var(--s3) 0 var(--s4);letter-spacing:-0.01em;
+}
+.s-negro .sub,.s-azul .sub{color:var(--gris-linea)}
+.s-naranja .sub,.s-azulpalido .sub{color:var(--negro)}
+
+.texto{max-width:60ch}
+h2 + .texto,h2 + .cita,h2 + .cita--caja,h2 + h3,h2 + .tira,h2 + .cols,h2 + .tabla,h2 + .timeline,h2 + .marcos,h2 + .proto{margin-top:var(--s4)}
+.texto p:last-child{margin-bottom:0}
+
+.nota{
+  font-size:var(--f-mini);line-height:1.45;color:var(--gris-texto);
+  border-top:1px solid var(--gris-linea);
+  padding-top:var(--s2);margin:var(--s4) 0 0;max-width:86ch;
+}
+.s-negro .nota,.s-azul .nota{color:var(--gris-linea);border-top-color:rgba(255,255,255,.28)}
+.s-naranja .nota,.s-azulpalido .nota{color:var(--negro);border-top-color:rgba(16,17,20,.25)}
+
+.pendiente{
+  background:var(--naranja);color:var(--negro);
+  padding:1px 10px;font-weight:600;border-radius:var(--radio-xs);
+  font-variant-numeric:tabular-nums;white-space:nowrap;
+  border:1px solid rgba(16,17,20,.35);
+}
+
+/* ============================================================
+   COMPONENTES
+   ============================================================ */
+.cols{display:grid;gap:clamp(20px,2.4vw,40px)}
+.cols-2{grid-template-columns:repeat(2,1fr)}
+.cols-3{grid-template-columns:repeat(3,1fr)}
+.cols-4{grid-template-columns:repeat(4,1fr)}
+
+.col-linea{border-top:1px solid var(--gris-linea);padding-top:var(--s3)}
+.s-negro .col-linea,.s-azul .col-linea{border-top-color:rgba(255,255,255,.28)}
+.s-naranja .col-linea,.s-azulpalido .col-linea{border-top-color:rgba(16,17,20,.25)}
+.col-linea h3{margin-bottom:var(--s2)}
+.col-linea p{font-size:var(--f-body);color:var(--gris-texto);margin:0}
+.s-negro .col-linea p,.s-azul .col-linea p{color:var(--gris-linea)}
+.s-naranja .col-linea p,.s-azulpalido .col-linea p{color:var(--negro)}
+
+.split{display:grid;grid-template-columns:1fr 0.82fr;gap:clamp(24px,3.4vw,56px);align-items:center}
+.split--izq{grid-template-columns:0.82fr 1fr}
+.split--izq .split__texto{order:2}
+.split--izq .split__media{order:1}
+
+.hito{border-top:2px solid var(--naranja);padding-top:var(--s2)}
+.s-azulpalido .hito{border-top-color:var(--azul)}
+.numero{
+  display:block;font-size:var(--f-num);font-weight:600;
+  letter-spacing:-0.045em;line-height:.95;
+  font-variant-numeric:tabular-nums;margin-bottom:var(--s1);
+}
+.numero--sm{font-size:var(--f-num-sm)}
+.hito p{font-size:var(--f-mini);line-height:1.35;margin:0;max-width:24ch}
+
+.sev{
+  display:inline-block;font-size:var(--f-mini);font-weight:600;
+  text-transform:uppercase;letter-spacing:.07em;border-radius:var(--radio-xs);
+  padding:4px 10px;margin-right:var(--s2);
+}
+.sev-3{background:var(--naranja);color:var(--negro)}
+.sev-4{background:var(--alerta);color:var(--blanco)}
+.heur{
+  font-size:var(--f-mini);color:var(--gris-texto);
+  display:block;margin-top:var(--s2);max-width:56ch;line-height:1.4;
+}
+.s-negro .heur,.s-azul .heur{color:var(--gris-linea)}
+.s-naranja .heur,.s-azulpalido .heur{color:var(--negro)}
+.meta{margin-top:var(--s3);border-top:1px solid var(--gris-linea);padding-top:var(--s3)}
+.s-negro .meta{border-top-color:rgba(255,255,255,.28)}
+.s-gris .meta,.s-azulpalido .meta{border-top-color:rgba(16,17,20,.2)}
+
+/* Iconos de línea, uno por bloque */
+.icono{
+  display:flex;align-items:center;justify-content:center;
+  width:38px;height:38px;flex:0 0 auto;
+  border-radius:var(--radio-xs);
+  background:var(--gris-fondo);color:var(--azul);
+  margin:0 0 var(--s3);
+}
+.icono svg{width:21px;height:21px;display:block}
+.s-azulpalido .icono{background:var(--blanco)}
+.tarjeta--azul .icono{background:rgba(255,255,255,.2);color:var(--blanco)}
+.tarjeta--negra .icono{background:rgba(255,255,255,.16);color:var(--blanco)}
+.tarjeta--naranja .icono{background:var(--blanco);color:var(--negro)}
+
+/* Figuras e imágenes */
+figure{margin:0}
+figcaption{
+  font-size:var(--f-mini);color:var(--gris-texto);
+  margin-top:var(--s2);line-height:1.35;
+}
+.s-negro figcaption,.s-azul figcaption{color:var(--gris-linea)}
+.s-naranja figcaption,.s-azulpalido figcaption{color:var(--negro)}
+/* Las capturas van sin marco. Sus bordes son casi blancos (L 0,86 a 0,94),
+   así que solo llevan línea sobre los fondos claros, donde se confundirían. */
+.captura{
+  width:100%;height:auto;object-fit:contain;border-radius:var(--radio-sm);
+  border:0;background:transparent;
+}
+.s-blanco .captura,.s-gris .captura,.s-azulpalido .captura,.s-naranja .captura{
+  border:1px solid var(--gris-linea);
+}
+.captura--alta{max-height:56vh;object-fit:contain}
+.tira{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,32px)}
+.tira .captura{max-height:31vh;margin:0 auto}
+
+/* Imagen faltante: estado explícito, no ícono roto */
+.falta{
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  min-height:180px;padding:var(--s3);border-radius:var(--radio-sm);
+  border:1px dashed var(--negro);background:var(--naranja);
+  font-size:var(--f-mini);color:var(--negro);line-height:1.4;
+}
+
+/* Grilla de 12 puntos */
+.puntos{display:flex;gap:8px;margin:var(--s3) 0 var(--s2);flex-wrap:wrap}
+.punto{width:16px;height:16px;border-radius:50%;background:var(--azul)}
+.punto--gris{background:var(--gris-linea);border:1px solid var(--gris-texto)}
+.puntos-leyenda{font-size:var(--f-mini);color:var(--gris-texto);margin:0}
+
+/* Citas */
+.cita{
+  font-size:clamp(20px,2.3vw,34px);line-height:1.2;letter-spacing:-0.025em;
+  font-weight:600;margin:0 0 var(--s3);max-width:22ch;
+}
+.cita--caja{
+  font-size:clamp(16px,1.55vw,22px);font-weight:600;line-height:1.28;
+  letter-spacing:-0.015em;max-width:34ch;
+  border-left:3px solid var(--negro);padding-left:var(--s3);margin:0 0 var(--s3);
+}
+.cita--alerta{border-left-color:var(--alerta)}
+
+/* Tarjetas */
+.tarjeta{
+  border:1px solid var(--gris-linea);padding:clamp(18px,2vw,28px);
+  background:var(--blanco);border-radius:var(--radio-sm);
+}
+.tarjeta h3{margin-bottom:var(--s2)}
+.tarjeta p,.tarjeta ul{font-size:var(--f-body);color:var(--gris-texto);margin-bottom:var(--s2)}
+.tarjeta p:last-child,.tarjeta ul:last-child{margin-bottom:0}
+.tarjeta--azul{background:var(--azul);color:var(--blanco);border-color:var(--azul)}
+.tarjeta--azul p,.tarjeta--azul ul{color:var(--azul-palido)}
+.tarjeta--azul .tarjeta__marca{color:var(--blanco)}
+.tarjeta--negra{background:var(--negro);color:var(--blanco);border-color:var(--negro)}
+.tarjeta--negra p,.tarjeta--negra ul{color:var(--gris-linea)}
+.tarjeta--naranja{background:var(--naranja-palido);color:var(--negro);border-color:var(--naranja)}
+.tarjeta--naranja p,.tarjeta--naranja ul{color:var(--negro)}
+.tarjeta--vacia{border-style:dashed;border-color:var(--naranja);background:var(--gris-fondo)}
+.tarjeta--vacia p{color:var(--negro)}
+.s-gris .tarjeta--vacia{background:var(--blanco)}
+.tarjeta__marca{
+  font-size:var(--f-etiqueta);text-transform:uppercase;letter-spacing:.11em;
+  color:var(--gris-texto);display:block;margin-bottom:var(--s2);
+}
+.tarjeta--negra .tarjeta__marca{color:var(--gris-linea)}
+.tarjeta--naranja .tarjeta__marca,.tarjeta--vacia .tarjeta__marca{color:var(--negro)}
+
+/* Tabla */
+.tabla{width:100%;border-collapse:collapse;font-size:var(--f-body)}
+.tabla caption{text-align:left;font-size:var(--f-mini);color:var(--gris-texto);padding-bottom:var(--s2)}
+.tabla th,.tabla td{
+  text-align:left;vertical-align:top;
+  padding:14px var(--s3) 14px 0;border-bottom:1px solid var(--gris-linea);
+}
+.tabla thead th{
+  font-size:var(--f-etiqueta);text-transform:uppercase;letter-spacing:.1em;
+  color:var(--gris-texto);font-weight:600;border-bottom:1px solid var(--negro);
+  padding-bottom:var(--s2);
+}
+.tabla td:first-child{font-weight:600;max-width:26ch}
+.tabla .c-sev{width:9ch;white-space:nowrap}
+
+/* KPIs */
+.kpi{border-top:1px solid rgba(16,17,20,.25);padding-top:var(--s3)}
+.kpi .pendiente{font-size:var(--f-num-sm);display:inline-block;line-height:1.1;padding:2px 16px}
+.kpi h3{margin:var(--s2) 0 var(--s1)}
+.kpi p{font-size:var(--f-mini);color:var(--negro);margin:0;line-height:1.35}
+
+/* Arcos sobre los bloques numerados */
+.arcos{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:clamp(14px,1.6vw,26px);align-items:end;margin-top:var(--s4);
+}
+.arcos span{
+  display:block;height:clamp(52px,7vh,90px);
+  border:1px solid var(--gris-linea);border-bottom:0;
+  border-radius:999px 999px 0 0;background:var(--blanco);
+}
+.s-gris .arcos span{background:var(--blanco)}
+.s-blanco .arcos span{background:var(--gris-fondo)}
+.arcos + .timeline{margin-top:0}
+
+/* Línea de tiempo */
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.6vw,26px);margin-top:var(--s3)}
+.paso{border-top:2px solid var(--negro);padding-top:var(--s2)}
+.paso .n{
+  font-size:var(--f-mini);font-weight:600;color:var(--azul);
+  font-variant-numeric:tabular-nums;display:block;margin-bottom:var(--s1);
+}
+.s-negro .paso,.s-azul .paso{border-top-color:var(--blanco)}
+.s-negro .paso .n,.s-azul .paso .n{color:var(--naranja)}
+.paso h3{font-size:var(--f-body);margin-bottom:4px}
+.paso p{font-size:var(--f-mini);color:var(--gris-texto);margin:0;line-height:1.35}
+.s-azulpalido .paso p,.s-naranja .paso p{color:var(--negro)}
+
+/* Comparación actual / propuesta, sin marco de dispositivo */
+.marcos{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(20px,2.6vw,44px);align-items:start;max-width:520px}
+.marcos figure{max-width:180px}
+.marcos .captura{width:100%;max-height:none}
+.placeholder{
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  aspect-ratio:700 / 1522;padding:var(--s3);
+  border:1px dashed var(--naranja);border-radius:var(--radio-sm);
+  background:var(--blanco);font-size:var(--f-mini);color:var(--negro);line-height:1.4;
+}
+.s-blanco .placeholder{background:var(--gris-fondo)}
+.marco-rotulo{
+  font-size:var(--f-etiqueta);text-transform:uppercase;letter-spacing:.11em;
+  color:var(--gris-texto);margin:0 0 var(--s2);
+}
+
+/* Botón prototipo */
+.proto{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s3);margin:var(--s3) 0 0}
+.btn-proto{
+  display:inline-block;font-size:var(--f-mini);font-weight:600;
+  text-transform:uppercase;letter-spacing:.08em;text-decoration:none;
+  background:var(--negro);color:var(--blanco);padding:13px 22px;
+  border:1px solid var(--negro);border-radius:999px;
+}
+.s-azul .btn-proto{background:var(--blanco);color:var(--azul);border-color:var(--blanco)}
+.btn-proto:hover{background:var(--azul);color:var(--blanco);border-color:var(--azul)}
+.btn-proto.is-pendiente{
+  background:var(--naranja);color:var(--negro);border:1px dashed var(--negro);
+  cursor:not-allowed;
+}
+.proto__nota{font-size:var(--f-mini);color:var(--gris-texto);margin:0}
+.s-azul .proto__nota{color:var(--azul-palido)}
+.proto__iframe{
+  border:1px dashed var(--naranja);background:var(--gris-fondo);border-radius:var(--radio-sm);
+  padding:var(--s3);font-size:var(--f-mini);color:var(--gris-texto);
+  margin-top:var(--s3);
+}
+.print-only{display:none}
+
+/* Portada y cierre */
+.portada__autoria{
+  border-top:1px solid var(--gris-linea);padding-top:var(--s3);
+  font-size:var(--f-body);margin:var(--s3) 0 0;color:var(--gris-texto);
+}
+.s-azul .portada__autoria{border-top-color:rgba(255,255,255,.4);color:var(--azul-palido)}
+.s-azul .portada__autoria a{color:var(--blanco)}
+
+/* Portada: panel de color + banda inferior */
+.portada .wrap{display:flex;flex-direction:column;gap:clamp(20px,3vh,40px)}
+.portada__panel{
+  background:var(--azul);color:var(--blanco);
+  border-radius:var(--radio);
+  padding:clamp(24px,3.4vw,48px);
+}
+.portada__panel .etiqueta{color:var(--azul-palido);border-bottom-color:rgba(255,255,255,.3)}
+.portada__panel h1{max-width:17ch;margin-top:var(--s4)}
+.portada__pie{
+  display:grid;grid-template-columns:0.62fr 1fr;
+  gap:clamp(24px,3.4vw,56px);align-items:start;
+}
+.portada__marca{
+  font-size:var(--f-sub);font-weight:600;letter-spacing:-0.02em;margin:0;
+}
+.portada__marca span{color:var(--azul)}
+.portada__pie .sub{margin:0 0 var(--s3);font-size:var(--f-body);color:var(--gris-texto)}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1100px){
+  .cols-4{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:760px){
+  html{scroll-snap-type:none;scroll-behavior:auto}
+  .slide{min-height:0;display:block;padding:32px 20px 40px;border-radius:18px}
+  .slide:first-of-type{padding-top:calc(var(--nav-h) + 26px)}
+  .portada__pie{grid-template-columns:1fr}
+  .portada .wrap{gap:24px}
+  .arcos{display:none}
+  .nav__lista,.nav__contador{display:none}
+  .nav__boton{display:inline-block;margin-left:auto}
+  .cols-2,.cols-3,.cols-4,.split,.split--izq,.tira,.timeline,.marcos{grid-template-columns:1fr;display:grid}
+  .split--izq .split__texto,.split--izq .split__media{order:initial}
+  h2{max-width:none}
+  .captura--alta,.tira .captura,.marco img{max-height:none}
+  .marco{max-width:100%;margin:0 auto}
+  .cita{max-width:none}
+  .tabla,.tabla tbody,.tabla tr,.tabla td{display:block;width:100%}
+  .tabla thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .tabla tr{border-bottom:1px solid var(--gris-linea);padding:var(--s3) 0}
+  .tabla td{border:0;padding:2px 0;max-width:none}
+  .tabla td::before{
+    content:attr(data-col);display:block;
+    font-size:var(--f-etiqueta);text-transform:uppercase;letter-spacing:.1em;
+    color:var(--gris-texto);margin-bottom:2px;
+  }
+  .tabla td:first-child::before{content:none}
+  .tabla td:first-child{font-size:var(--f-sub);margin-bottom:var(--s2)}
+  .tabla .c-sev{width:auto}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition:none!important;animation:none!important}
+}
+
+/* ============================================================
+   IMPRESIÓN / PDF — A4 horizontal, una sección por página
+   ============================================================ */
+@media print{
+  @page{size:A4 landscape;margin:12mm}
+  :root{
+    --f-etiqueta:7.5pt; --f-mini:7.5pt; --f-body:9pt; --f-sub:11pt;
+    --f-h2:19pt; --f-h1:26pt; --f-h3:10pt;
+    --f-num:26pt; --f-num-sm:19pt;
+    --s1:3px; --s2:7px; --s3:11px; --s4:16px; --s5:22px;
+    --nav-h:0px;
+  }
+  html,body{
+    background:var(--blanco);
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    scroll-snap-type:none;
+  }
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .nav,.progreso,.indice,.saltar,.nav__boton{display:none!important}
+  /* La maquetación de impresión no debe heredar las reglas de pantallas angostas */
+  .cols-2{grid-template-columns:repeat(2,1fr)}
+  .cols-3{grid-template-columns:repeat(3,1fr)}
+  .cols-4{grid-template-columns:repeat(4,1fr)}
+  .tira{grid-template-columns:repeat(3,1fr)}
+  .timeline{grid-template-columns:repeat(4,1fr)}
+  .marcos{display:grid;grid-template-columns:repeat(2,1fr);max-width:none}
+  .split{display:grid;grid-template-columns:1fr 0.82fr;align-items:center}
+  .split--izq{grid-template-columns:0.82fr 1fr}
+  .split--izq .split__texto{order:2}
+  .split--izq .split__media{order:1}
+  .tabla{display:table;width:100%}
+  .tabla thead{display:table-header-group;position:static;width:auto;height:auto;clip:auto;overflow:visible}
+  .tabla tbody{display:table-row-group}
+  .tabla tr{display:table-row;padding:0}
+  .tabla td,.tabla th{display:table-cell;max-width:none}
+  .tabla td::before{content:none}
+  .tabla td:first-child{font-size:inherit;margin:0}
+  .tabla .c-sev{width:9ch}
+  .portada .wrap{display:block}
+  .portada__panel{padding:var(--s3) var(--s4);border-radius:8px;margin-bottom:var(--s3)}
+  .portada__panel h1{margin-top:var(--s3)}
+  .portada__pie{display:grid;grid-template-columns:0.62fr 1fr;gap:var(--s4)}
+  .arcos{display:grid;grid-template-columns:repeat(4,1fr);height:auto}
+  .arcos span{height:14mm}
+  .slide:first-of-type{padding-top:0}
+  .slide{
+    min-height:0;height:180mm;max-height:180mm;overflow:hidden;
+    display:block;padding:0;margin:0;border-radius:0;
+    page-break-after:always;break-after:page;
+    page-break-inside:avoid;break-inside:avoid;
+  }
+  .slide:last-of-type{page-break-after:auto;break-after:auto}
+  .wrap{max-width:none}
+  h2{max-width:34ch}
+  .sub{margin:var(--s2) 0 var(--s3);max-width:80ch}
+  .tarjeta,figure,.kpi,.hito,.paso,.placeholder,.col-linea,.tabla,.tabla tr,.cita,.cita--caja{
+    page-break-inside:avoid;break-inside:avoid;
+  }
+  .tabla{font-size:8pt}
+  .tabla th,.tabla td{padding:5px 10px 5px 0}
+  .captura,.captura--alta{max-height:52mm;width:auto;margin:0}
+  .tira .captura{max-height:46mm}
+  .marcos{max-width:none;gap:6mm}
+  .marcos figure{max-width:24mm}
+  .placeholder{aspect-ratio:auto;height:50mm;padding:2mm;font-size:6.5pt}
+  .falta{min-height:28mm}
+  .print-only{display:block;font-size:8pt;margin-top:var(--s2)}
+  .proto__iframe{display:none}
+  .btn-proto{border:1px solid var(--negro);padding:5px 9px}
+  a[href^="http"]::after{content:""}
+}
+</style>
+</head>
+<body>
+
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<div class="progreso" role="presentation"><div class="progreso__barra" id="barra"></div></div>
+
+<nav class="nav" aria-label="Índice de la presentación">
+  <span class="nav__marca">Desafío MATCH · Entel</span>
+  <ul class="nav__lista" id="nav-lista"></ul>
+  <span class="nav__contador" id="contador" aria-live="polite" aria-atomic="true"></span>
+  <button class="nav__boton" id="abrir-indice" type="button" aria-expanded="false" aria-controls="indice">Índice</button>
+</nav>
+
+<div class="indice" id="indice" role="dialog" aria-modal="true" aria-label="Índice completo" data-abierto="false">
+  <button class="indice__cerrar" id="cerrar-indice" type="button">Cerrar</button>
+  <p class="indice__titulo">Índice</p>
+  <ol id="indice-lista"></ol>
+</div>
+
+<main id="contenido">
+
+<!-- ============================ PORTADA ============================ -->
+<section class="slide s-blanco portada" id="portada" data-titulo="Portada">
+  <div class="wrap">
+    <div class="portada__panel">
+      <p class="etiqueta">Desafío UX Research &amp; Strategy · Septiembre 2026</p>
+      <h1>Cuando la app no responde la pregunta que la gente vino a hacer</h1>
+    </div>
+    <div class="portada__pie">
+      <div>
+        <p class="portada__marca">Nicole Matus <span>/00</span></p>
+        <p class="portada__autoria">
+          Diseñadora UX, Chile<br>
+          <a href="mailto:nicole.matusp@gmail.com">nicole.matusp@gmail.com</a>
+        </p>
+      </div>
+      <div>
+        <p class="sub">Evaluación heurística del flujo de autoatención de la app Entel, plan de investigación y propuesta de mejora prototipada con IA.</p>
+        <div class="proto">
+          <a class="btn-proto" href="#" target="_blank" rel="noopener" data-prototipo>Abrir prototipo en una pestaña nueva</a>
+          <p class="proto__nota">URL del prototipo <span class="pendiente">[&nbsp;&nbsp;]</span> por completar antes de la entrega.</p>
+        </div>
+        <p class="print-only">URL del prototipo: ____________________________________________</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 01 MÉTODO ============================ -->
+<section class="slide s-blanco" id="s01" data-num="01" data-titulo="Método">
+  <div class="wrap">
+    <p class="etiqueta"><b>01</b> · Método</p>
+    <h2>Qué evalué y cómo</h2>
+    <p class="sub">La app de una telco tiene dos misiones al mismo tiempo: resolver la autoatención y vender. Este análisis mira qué pasa cuando lo segundo desplaza a lo primero.</p>
+    <div class="cols cols-3">
+      <div class="col-linea">
+        <span class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M10.5 18.6h3"/></svg></span>
+        <h3>Alcance</h3>
+        <p>Flujo de consumo del plan y Club, en la app mobile. Dos tareas: consultar cuánto queda del plan y acceder a beneficios y puntos.</p>
+      </div>
+      <div class="col-linea">
+        <span class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 7h11M9.5 12h11M9.5 17h11"/><path d="M3 6.6l1.4 1.4L6.8 5.3"/><path d="M3 11.6l1.4 1.4 2.4-2.7"/><path d="M3 16.6l1.4 1.4 2.4-2.7"/></svg></span>
+        <h3>Método</h3>
+        <p>Evaluación heurística con las 10 heurísticas de Nielsen y escala de severidad de 0 a 4, aplicada sobre recorridos grabados.</p>
+      </div>
+      <div class="col-linea">
+        <span class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M10.3 8.8l5 3.2-5 3.2z"/></svg></span>
+        <h3>Evidencia</h3>
+        <p>3 sesiones de 59 s, 2 m 49 s y 39 s, con medición de tiempos y pasos, más reseñas públicas de App Store y Google Play.</p>
+      </div>
+    </div>
+    <p class="nota">Nota metodológica: evidencia levantada el 18 de septiembre de 2026. Modelo de equipo <span class="pendiente">[&nbsp;&nbsp;]</span>, versión de iOS <span class="pendiente">[&nbsp;&nbsp;]</span>, versión de la app <span class="pendiente">[&nbsp;&nbsp;]</span>. Los datos personales visibles en las capturas fueron difuminados.</p>
+  </div>
+</section>
+
+<!-- ============================ 02 LA TAREA ============================ -->
+<section class="slide s-naranja" id="s02" data-num="02" data-titulo="La tarea">
+  <div class="wrap">
+    <p class="etiqueta"><b>02</b> · La tarea</p>
+    <h2>¿Cuántos gigas me quedan?</h2>
+    <p class="sub">Es la razón número uno por la que alguien abre la app de su compañía. No es una tarea de descubrimiento: es una consulta rápida, casi siempre de pie y apurada.</p>
+    <div class="cols cols-4">
+      <div class="hito">
+        <span class="numero">4,6 s</span>
+        <p>tarda la home en volverse usable</p>
+      </div>
+      <div class="hito">
+        <span class="numero">36 s</span>
+        <p>hasta ver el dato de consumo</p>
+      </div>
+      <div class="hito">
+        <span class="numero">44 s</span>
+        <p>hasta el detalle, que abre en la pestaña equivocada</p>
+      </div>
+      <div class="hito">
+        <span class="numero">2:23</span>
+        <p>buscando unos puntos que ya no existen</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 03a HALLAZGO 01 ============================ -->
+<section class="slide s-blanco" id="s03a" data-num="03a" data-titulo="Hallazgo 01">
+  <div class="wrap">
+    <p class="etiqueta"><b>03a</b> · Hallazgo 01</p>
+    <div class="split">
+      <div class="split__texto">
+        <h2>La home no dice nada sobre tu servicio</h2>
+        <div class="texto">
+          <p>En el primer viewport no hay ni un dato del plan contratado: solo un banner de fibra a $11.990 y cinco accesos rápidos que son, los cinco, de contratación.</p>
+          <p>En la home completa se cuentan diez módulos comerciales frente a dos de autoservicio, y ninguno muestra el consumo.</p>
+        </div>
+        <div class="puntos" role="img" aria-label="Doce módulos en la home: diez comerciales y dos de autoservicio">
+          <span class="punto"></span><span class="punto"></span><span class="punto"></span>
+          <span class="punto"></span><span class="punto"></span><span class="punto"></span>
+          <span class="punto"></span><span class="punto"></span><span class="punto"></span>
+          <span class="punto"></span>
+          <span class="punto punto--gris"></span><span class="punto punto--gris"></span>
+        </div>
+        <p class="puntos-leyenda">10 módulos comerciales · 2 módulos de autoservicio</p>
+        <div class="meta">
+          <span class="sev sev-3">Severidad 3</span>
+          <span class="heur">Heurísticas: #1 visibilidad del estado del sistema · #6 reconocer antes que recordar · #8 diseño estético y minimalista.</span>
+        </div>
+      </div>
+      <figure class="split__media">
+        <img class="captura captura--alta" src="img/02-home-primer-viewport.jpg" alt="Primer viewport de la home de la app: un banner de fibra óptica a 11.990 pesos y cinco accesos rápidos de contratación, sin ningún dato del plan contratado.">
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 03b EVIDENCIA ============================ -->
+<section class="slide s-gris" id="s03b" data-num="03b" data-titulo="Hallazgo 01, evidencia">
+  <div class="wrap">
+    <p class="etiqueta"><b>03b</b> · Hallazgo 01, evidencia</p>
+    <h2>Scroll completo de la home</h2>
+    <div class="tira">
+      <figure>
+        <img class="captura" src="img/03-home-scroll-club.jpg" alt="Sección intermedia de la home con el carrusel del Club y sus tarjetas de beneficios.">
+        <figcaption>Carrusel del Club</figcaption>
+      </figure>
+      <figure>
+        <img class="captura" src="img/04-home-scroll-promos.jpg" alt="Sección inferior de la home con módulos de sorteos y contenidos de entretención.">
+        <figcaption>Sorteos y entretención</figcaption>
+      </figure>
+      <figure>
+        <img class="captura" src="img/01-interstitial-copec.jpg" alt="Anuncio a pantalla completa que aparece al abrir la app, ocupando todo el viewport antes de mostrar la home.">
+        <figcaption>Anuncio a pantalla completa al abrir</figcaption>
+      </figure>
+    </div>
+    <p class="nota">La saturación comercial también tiene un costo comercial: cuando todo compite por atención, el usuario deja de mirar. Y eso afecta justamente a las ofertas que la home intenta empujar.</p>
+  </div>
+</section>
+
+<!-- ============================ 04 HALLAZGO 02 ============================ -->
+<section class="slide s-blanco" id="s04" data-num="04" data-titulo="Hallazgo 02">
+  <div class="wrap">
+    <p class="etiqueta"><b>04</b> · Hallazgo 02</p>
+    <div class="split split--izq">
+      <div class="split__texto">
+        <h2>Tres interrupciones antes de completar una consulta</h2>
+        <div class="texto">
+          <p>En las sesiones grabadas aparecen un anuncio a pantalla completa al abrir la app, un modal de oferta al volver a Inicio y un permiso de ubicación al entrar al Club.</p>
+          <p>Ninguno se relaciona con la tarea en curso y todos exigen una acción para continuar.</p>
+        </div>
+        <div class="meta">
+          <span class="sev sev-3">Severidad 3</span>
+          <span class="heur">Heurísticas: #3 control y libertad del usuario · #8 diseño estético y minimalista · #1 visibilidad del estado del sistema.</span>
+        </div>
+      </div>
+      <figure class="split__media">
+        <img class="captura captura--alta" src="img/05-interstitial-fibra.jpg" alt="Modal de oferta de fibra a pantalla completa que interrumpe el recorrido al volver a Inicio.">
+        <figcaption>Segundo 20 de la sesión</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 05a HALLAZGO 03 ============================ -->
+<section class="slide s-negro" id="s05a" data-num="05a" data-titulo="Hallazgo 03">
+  <div class="wrap">
+    <p class="etiqueta"><b>05a</b> · Hallazgo 03</p>
+    <div class="split">
+      <div class="split__texto">
+        <h2>El dato existe, pero está escrito al revés</h2>
+        <blockquote class="cita">“Llevas 1 GB de 400 GB · Llevas −360 Min.”</blockquote>
+        <div class="texto">
+          <p>Dos problemas en la misma tarjeta. El primero es de formulación: muestra lo consumido y no lo disponible, y obliga a una resta mental. Nadie abre la app preguntándose cuánto lleva.</p>
+          <p>El segundo es de confianza: un valor negativo no significa nada para el usuario y pone en duda todo lo demás que muestra la pantalla.</p>
+        </div>
+        <div class="meta">
+          <span class="sev sev-4">Severidad 4</span>
+          <span class="heur">Heurísticas: #1 visibilidad del estado del sistema · #2 lenguaje del usuario · #5 prevención de errores · #9 ayudar a reconocer y recuperarse de errores.</span>
+        </div>
+      </div>
+      <figure class="split__media">
+        <img class="captura captura--alta" src="img/06-consumo-tarjeta.jpg" alt="Tarjeta de consumo del plan que indica lo consumido en vez de lo disponible, con un valor negativo en los minutos.">
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 05b HALLAZGO 03 CONT. ============================ -->
+<section class="slide s-gris" id="s05b" data-num="05b" data-titulo="Hallazgo 03, continuación">
+  <div class="wrap">
+    <p class="etiqueta"><b>05b</b> · Hallazgo 03, continuación</p>
+    <div class="split split--izq">
+      <div class="split__texto">
+        <h2>Y el detalle abre en la pestaña que nadie pidió</h2>
+        <div class="texto">
+          <p>Tras 44 segundos de recorrido, la pantalla de detalle se abre en Llamadas y muestra un listado telefónico con duración y monto. Quien venía por sus datos móviles tiene que cambiar de pestaña.</p>
+          <p>El orden responde a cómo la empresa organiza su facturación, no a lo que la gente consulta.</p>
+        </div>
+        <div class="meta">
+          <span class="heur">Heurísticas: #2 correspondencia con el mundo real · #7 flexibilidad y eficiencia de uso.</span>
+        </div>
+      </div>
+      <figure class="split__media">
+        <img class="captura captura--alta" src="img/07-consumo-detalle-llamadas.jpg" alt="Pantalla de detalle de consumo abierta en la pestaña Llamadas, con un listado de números, duración y monto.">
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 06a HALLAZGO 04 ============================ -->
+<section class="slide s-blanco" id="s06a" data-num="06a" data-titulo="Hallazgo 04">
+  <div class="wrap">
+    <p class="etiqueta"><b>06a</b> · Hallazgo 04</p>
+    <h2>Dos minutos y veintitrés segundos buscando algo que ya no existe</h2>
+    <p class="sub">Segunda tarea: revisar los puntos acumulados. El recorrido pasa por el menú rápido, el Club, Beneficios, Eventos y Mis cupones, y en ninguna parte de la interfaz aparecen los puntos ni una explicación.</p>
+    <div class="tira">
+      <figure>
+        <img class="captura" src="img/08-menu-que-hacemos-hoy.jpg" alt="Menú rápido “¿Qué hacemos hoy?” con once accesos, ninguno de ellos a los puntos acumulados.">
+        <figcaption>1:03 · menú con 11 accesos</figcaption>
+      </figure>
+      <figure>
+        <img class="captura" src="img/09-club-mis-cupones-vacio.jpg" alt="Pantalla Mis cupones del Club, sin cupones ni referencia alguna a los puntos acumulados.">
+        <figcaption>1:37 · Mis cupones vacío</figcaption>
+      </figure>
+      <figure>
+        <img class="captura" src="img/11-ayuda-puntos-no-disponible.jpg" alt="Artículo del centro de ayuda que informa que el programa de Puntos no está disponible.">
+        <figcaption>2:23 · la respuesta en el centro de ayuda</figcaption>
+      </figure>
+    </div>
+    <div class="meta">
+      <span class="sev sev-4">Severidad 4</span>
+      <span class="heur">Afecta la confianza en la marca.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 06b EL CONTENIDO ============================ -->
+<section class="slide s-azulpalido" id="s06b" data-num="06b" data-titulo="Hallazgo 04, el contenido">
+  <div class="wrap">
+    <p class="etiqueta"><b>06b</b> · Hallazgo 04, el contenido</p>
+    <h2>El único lugar donde se explica, se contradice solo</h2>
+    <div class="cols cols-2">
+      <div>
+        <blockquote class="cita--caja">“Desde el 1 de mayo de 2025, el programa de Puntos Entel no está disponible.”</blockquote>
+        <p>Y a continuación el mismo artículo explica cómo canjear los puntos y cómo revisar los acumulados ingresando teléfono o RUT en el sitio web.</p>
+        <p class="heur">Heurísticas: #1 visibilidad del estado del sistema · #2 lenguaje del usuario · #4 consistencia y estándares · #10 ayuda y documentación.</p>
+      </div>
+      <div>
+        <blockquote class="cita--caja cita--alerta">“Mensajes SMS fraudulentos: actualmente no contamos con un programa de acumulación de puntos…”</blockquote>
+        <p>La propia compañía advierte sobre estafas que usan los puntos como carnada. El usuario que busca sus puntos en la app y no encuentra nada es exactamente el perfil que después recibe ese SMS sin poder contrastarlo.</p>
+      </div>
+    </div>
+    <p class="nota">Una decisión de contenido y visibilidad aquí no solo reduce contactos a soporte: reduce exposición a fraude.</p>
+  </div>
+</section>
+
+<!-- ============================ 07a SÍNTESIS ============================ -->
+<section class="slide s-blanco" id="s07a" data-num="07a" data-titulo="Síntesis">
+  <div class="wrap">
+    <p class="etiqueta"><b>07a</b> · Síntesis</p>
+    <h2>Cuatro hallazgos, un mismo patrón</h2>
+    <p class="sub">La app está organizada según lo que la compañía quiere vender, no según lo que el cliente viene a resolver.</p>
+    <table class="tabla">
+      <caption>Síntesis de la evaluación heurística</caption>
+      <thead>
+        <tr>
+          <th scope="col">Hallazgo</th>
+          <th scope="col">Heurística principal</th>
+          <th scope="col" class="c-sev">Severidad</th>
+          <th scope="col">Consecuencia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-col="Hallazgo">La home no muestra el estado del servicio</td>
+          <td data-col="Heurística principal">#1 Visibilidad</td>
+          <td class="c-sev" data-col="Severidad">3</td>
+          <td data-col="Consecuencia">Navega a ciegas y recurre a otros canales</td>
+        </tr>
+        <tr>
+          <td data-col="Hallazgo">Interrupciones publicitarias durante la tarea</td>
+          <td data-col="Heurística principal">#3 Control y libertad</td>
+          <td class="c-sev" data-col="Severidad">3</td>
+          <td data-col="Consecuencia">Pierde el hilo y acumula fricción</td>
+        </tr>
+        <tr>
+          <td data-col="Hallazgo">Consumo expresado al revés y con valor negativo</td>
+          <td data-col="Heurística principal">#2 y #5</td>
+          <td class="c-sev" data-col="Severidad">4</td>
+          <td data-col="Consecuencia">Desconfía del dato y lo verifica en otra parte</td>
+        </tr>
+        <tr>
+          <td data-col="Hallazgo">Puntos descontinuados sin señal en la interfaz</td>
+          <td data-col="Heurística principal">#10 y #4</td>
+          <td class="c-sev" data-col="Severidad">4</td>
+          <td data-col="Consecuencia">Busca, se frustra, contacta soporte o cree en un SMS falso</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================ 07b IMPACTO ============================ -->
+<section class="slide s-azulpalido" id="s07b" data-num="07b" data-titulo="Impacto en el negocio">
+  <div class="wrap">
+    <p class="etiqueta"><b>07b</b> · Impacto en el negocio</p>
+    <h2>Lo que esto le cuesta a la compañía</h2>
+    <div class="cols cols-4">
+      <div class="kpi">
+        <span class="pendiente">[&nbsp;&nbsp;]</span>
+        <h3>Autoatención digital</h3>
+        <p>% de consultas de saldo resueltas sin contacto humano</p>
+      </div>
+      <div class="kpi">
+        <span class="pendiente">[&nbsp;&nbsp;]</span>
+        <h3>Costo por contacto</h3>
+        <p>cuántas veces más caro es el call center que la app</p>
+      </div>
+      <div class="kpi">
+        <span class="pendiente">[&nbsp;&nbsp;]</span>
+        <h3>Uso de beneficios del Club</h3>
+        <p>% sobre la base activa</p>
+      </div>
+      <div class="kpi">
+        <span class="pendiente">[&nbsp;&nbsp;]</span>
+        <h3>Riesgo de fraude</h3>
+        <p>reportes mensuales de SMS que usan puntos como carnada</p>
+      </div>
+    </div>
+    <p class="nota">Cifras a completar con la data interna de la compañía. La hipótesis de negocio no depende de su magnitud exacta: cada consulta que la app no resuelve se desplaza al canal más caro, y cada beneficio que no se encuentra es inversión en fidelización que no genera retención.</p>
+  </div>
+</section>
+
+<!-- ============================ 08 PROBLEMA E HIPÓTESIS ============================ -->
+<section class="slide s-blanco" id="s08" data-num="08" data-titulo="Problema e hipótesis">
+  <div class="wrap">
+    <p class="etiqueta"><b>08</b> · Problema e hipótesis</p>
+    <h2>La interfaz prioriza la venta por sobre la tarea</h2>
+    <div class="cols cols-3">
+      <div class="tarjeta">
+        <span class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.6l8.7 15.3H3.3z"/><path d="M12 9.6v4.2"/><path d="M12 16.4v.4"/></svg></span>
+        <span class="tarjeta__marca">Problema</span>
+        <p>Quien abre la app para resolver una consulta simple sobre su servicio no encuentra la información en el primer contacto, la encuentra expresada al revés o descubre que la función que buscaba ya no existe. La interfaz prioriza la venta por sobre la tarea.</p>
+      </div>
+      <div class="tarjeta tarjeta--negra">
+        <span class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><circle cx="12" cy="12" r="3.4"/><path d="M12 3.4v2.6M12 18v2.6M3.4 12H6M18 12h2.6"/></svg></span>
+        <span class="tarjeta__marca">Hipótesis</span>
+        <p>Si la app muestra el estado del servicio en el primer contacto, expresa el consumo como saldo disponible y comunica con claridad el estado de los beneficios, aumentará la resolución en autoatención y disminuirán los contactos a soporte, sin sacrificar la conversión comercial.</p>
+      </div>
+      <div class="tarjeta tarjeta--naranja">
+        <span class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"/><path d="M6.5 8.6h11"/><path d="M4 16.2l2.8-6 2.8 6"/><path d="M14.4 16.2l2.8-6 2.8 6"/></svg></span>
+        <span class="tarjeta__marca">La tensión real</span>
+        <p>No es usuario contra negocio. Un cliente que ve que le quedan 2 GB es un cliente listo para comprar una bolsa. Mostrar primero el consumo no compite con la venta: la habilita en el momento correcto.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 09 INVESTIGACIÓN GENERATIVA ============================ -->
+<section class="slide s-gris" id="s09" data-num="09" data-titulo="Investigación generativa">
+  <div class="wrap">
+    <p class="etiqueta"><b>09</b> · Investigación generativa</p>
+    <h2>Entender el problema desde la voz del cliente</h2>
+    <div class="cols cols-3">
+      <div class="tarjeta">
+        <span class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="4" width="18.4" height="12" rx="3"/><path d="M8.4 16v4.4l4.8-4.4"/></svg></span>
+        <span class="tarjeta__marca">Cualitativo</span>
+        <ul>
+          <li>8 entrevistas en profundidad con distintos segmentos y edades.</li>
+          <li>5 indagaciones contextuales recorriendo la app en su propio equipo.</li>
+          <li>Análisis temático de reseñas públicas y tickets de soporte.</li>
+        </ul>
+      </div>
+      <div class="tarjeta">
+        <span class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.6 19.6h18.8"/><path d="M5.6 19.6v-6.4M10.4 19.6v-11M15.2 19.6v-7.6M20 19.6v-4"/></svg></span>
+        <span class="tarjeta__marca">Cuantitativo</span>
+        <ul>
+          <li>Análisis del embudo de autoatención para ubicar la caída.</li>
+          <li>Encuesta in-app posterior a la consulta, con CES de 1 a 7.</li>
+          <li>Cruce con motivos de contacto al call center.</li>
+        </ul>
+      </div>
+      <div class="tarjeta tarjeta--azul">
+        <span class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M9.7 9.5a2.4 2.4 0 1 1 3.1 2.6c-.6.3-.8.8-.8 1.4v.4"/><path d="M12 16.6v.4"/></svg></span>
+        <span class="tarjeta__marca">Preguntas guía</span>
+        <ul>
+          <li>Qué viene a hacer la gente cuando abre la app.</li>
+          <li>Dónde consulta su consumo cuando la app no se lo muestra.</li>
+          <li>Qué espera del Club y qué cree que sigue vigente.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="arcos" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    <div class="timeline">
+      <div class="paso"><span class="n">01</span><h3>Semana 1</h3><p>Data y reclutamiento.</p></div>
+      <div class="paso"><span class="n">02</span><h3>Semana 2</h3><p>Entrevistas e indagación contextual.</p></div>
+      <div class="paso"><span class="n">03</span><h3>Semana 3</h3><p>Encuesta y embudo.</p></div>
+      <div class="paso"><span class="n">04</span><h3>Semana 4</h3><p>Síntesis, journey map y oportunidades.</p></div>
+    </div>
+    <p class="nota">Herramientas: Amplitude o GA4 para el embudo, Dovetail para el análisis, Lookback para las sesiones remotas, encuesta in-app y Figma para la síntesis.</p>
+  </div>
+</section>
+
+<!-- ============================ 10a PROPUESTA 1 ============================ -->
+<section class="slide s-blanco" id="s10a" data-num="10a" data-titulo="Propuesta, pantalla 1">
+  <div class="wrap">
+    <p class="etiqueta"><b>10a</b> · Propuesta, pantalla 1</p>
+    <div class="split">
+      <div class="split__texto">
+        <h2>Tu servicio primero</h2>
+        <h3>Decisiones de diseño</h3>
+        <ul>
+          <li>Saldo disponible por sobre el consumo: “te quedan 399 GB”.</li>
+          <li>Días restantes del ciclo visibles sin abrir nada.</li>
+          <li>Oferta contextual solo cuando el saldo baja, en vez de permanente.</li>
+          <li>Validación y manejo de errores cuando el dato no está disponible.</li>
+        </ul>
+      </div>
+      <div class="split__media">
+        <div class="marcos">
+          <figure>
+            <p class="marco-rotulo">Actual</p>
+            <img class="captura" src="img/06-consumo-tarjeta.jpg" alt="Estado actual: tarjeta de consumo que muestra lo consumido del plan y un valor negativo en minutos.">
+          </figure>
+          <figure>
+            <p class="marco-rotulo">Propuesta</p>
+            <div class="placeholder">Pendiente: salida del prototipo generado con IA</div>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 10b PROPUESTA 2 ============================ -->
+<section class="slide s-gris" id="s10b" data-num="10b" data-titulo="Propuesta, pantalla 2">
+  <div class="wrap">
+    <p class="etiqueta"><b>10b</b> · Propuesta, pantalla 2</p>
+    <div class="split">
+      <div class="split__texto">
+        <h2>Un Club sin fantasmas</h2>
+        <h3>Decisiones de diseño</h3>
+        <ul>
+          <li>Estado explícito del programa de puntos en la interfaz, no en la ayuda.</li>
+          <li>Qué reemplaza a los puntos y cómo se usa.</li>
+          <li>Aviso antifraude en el mismo lugar donde nace la duda.</li>
+          <li>Beneficios vigentes, filtrables y con estado claro.</li>
+        </ul>
+        <p class="nota">La propuesta se limita deliberadamente a dos pantallas: las que concentran la mayor fricción detectada.</p>
+      </div>
+      <div class="split__media">
+        <div class="marcos">
+          <figure>
+            <p class="marco-rotulo">Actual</p>
+            <img class="captura" src="img/09-club-mis-cupones-vacio.jpg" alt="Estado actual: pantalla Mis cupones del Club vacía, sin referencia a los puntos.">
+          </figure>
+          <figure>
+            <p class="marco-rotulo">Propuesta</p>
+            <div class="placeholder">Pendiente: salida del prototipo generado con IA</div>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 11 PROCESO CON IA ============================ -->
+<section class="slide s-blanco" id="s11" data-num="11" data-titulo="Proceso con IA">
+  <div class="wrap">
+    <p class="etiqueta"><b>11</b> · Proceso con IA</p>
+    <h2>Cómo trabajé con la IA</h2>
+    <p class="sub">El prototipo no salió de un prompt afortunado, sino de un brief construido a partir de los hallazgos y de iteraciones dirigidas.</p>
+    <div class="arcos" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    <div class="timeline">
+      <div class="paso"><span class="n">01</span><h3>Brief</h3><p>Usuario, tarea, hallazgos priorizados y principios de diseño.</p></div>
+      <div class="paso"><span class="n">02</span><h3>Inputs</h3><p>Capturas del flujo actual, bocetos de referencia y sistema visual.</p></div>
+      <div class="paso"><span class="n">03</span><h3>Iteración</h3><p>Jerarquía, microcopy, estados de error y accesibilidad.</p></div>
+      <div class="paso"><span class="n">04</span><h3>Ajuste</h3><p>Revisión manual de contraste, espaciado y consistencia.</p></div>
+    </div>
+    <div class="cols cols-3" style="margin-top:var(--s4)">
+      <div class="tarjeta tarjeta--vacia">
+        <span class="tarjeta__marca">Prompt de contexto</span>
+        <p><span class="pendiente">[&nbsp;&nbsp;]</span> pegar aquí el prompt y anotar qué cambió respecto de la iteración anterior.</p>
+      </div>
+      <div class="tarjeta tarjeta--vacia">
+        <span class="tarjeta__marca">Prompt de generación</span>
+        <p><span class="pendiente">[&nbsp;&nbsp;]</span> pegar aquí el prompt y anotar qué cambió respecto de la iteración anterior.</p>
+      </div>
+      <div class="tarjeta tarjeta--vacia">
+        <span class="tarjeta__marca">Prompt de refinamiento</span>
+        <p><span class="pendiente">[&nbsp;&nbsp;]</span> pegar aquí el prompt y anotar qué cambió respecto de la iteración anterior.</p>
+      </div>
+    </div>
+    <div class="proto">
+      <a class="btn-proto" href="#" target="_blank" rel="noopener" data-prototipo>Abrir prototipo en una pestaña nueva</a>
+      <p class="proto__nota">Herramienta utilizada <span class="pendiente">[&nbsp;&nbsp;]</span> · iteraciones <span class="pendiente">[&nbsp;&nbsp;]</span>. Esta misma presentación se construyó con asistencia de IA.</p>
+    </div>
+    <p class="print-only">URL del prototipo: ____________________________________________</p>
+    <div class="proto__iframe">
+      Contenedor del prototipo: descomentar el iframe en el HTML y pegar la URL.
+      <!-- PROTOTIPO: reemplazar URL_DEL_PROTOTIPO y descomentar
+      <iframe src="URL_DEL_PROTOTIPO" title="Prototipo de la propuesta" width="100%" height="600" loading="lazy" style="border:1px solid var(--gris-linea)"></iframe>
+      -->
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 12 INVESTIGACIÓN EVALUATIVA ============================ -->
+<section class="slide s-azulpalido" id="s12" data-num="12" data-titulo="Investigación evaluativa">
+  <div class="wrap">
+    <p class="etiqueta"><b>12</b> · Investigación evaluativa</p>
+    <h2>Cómo sabré que la solución funciona</h2>
+    <div class="cols cols-3">
+      <div class="col-linea">
+<span class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.2" r="3.6"/><path d="M5.2 20c0-3.6 3-6.1 6.8-6.1s6.8 2.5 6.8 6.1"/></svg></span>
+        <h3>Test de usabilidad moderado</h3>
+        <p>6 participantes, tareas reales de consultar saldo y entender el estado de los beneficios. Métricas: tasa de éxito, tiempo hasta el dato, errores y SEQ.</p>
+      </div>
+      <div class="col-linea">
+<span class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3.2"/><path d="M9 8.6l6.6 3.1-2.8 1-1 2.9z"/></svg></span>
+        <h3>Test no moderado</h3>
+        <p>40 a 60 participantes en Maze. Mapa de calor, tasa de clic erróneo y abandono por pantalla.</p>
+      </div>
+      <div class="col-linea">
+<span class="icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.6" y="5" width="8.4" height="14" rx="2.2"/><rect x="13" y="5" width="8.4" height="14" rx="2.2"/><path d="M5.4 12h2.8M16 12h2.8"/></svg></span>
+        <h3>Test A/B en producción</h3>
+        <p>Métrica principal: consultas de saldo resueltas en la app. Secundarias: contactos a soporte, uso de beneficios y conversión de las ofertas contextuales.</p>
+      </div>
+    </div>
+    <div class="cols cols-4" style="margin-top:var(--s4)">
+      <div class="hito"><span class="numero numero--sm">≥90%</span><p>de éxito en la tarea principal</p></div>
+      <div class="hito"><span class="numero numero--sm">&lt;10 s</span><p>hasta el dato desde abrir la app</p></div>
+      <div class="hito"><span class="numero numero--sm">SEQ ≥6</span><p>en escala de 1 a 7</p></div>
+      <div class="hito"><span class="numero numero--sm">=</span><p>guardarraíl: la conversión comercial no cae</p></div>
+    </div>
+    <p class="nota">El guardarraíl es deliberado: la propuesta se defiende solo si mejora la autoatención sin castigar los ingresos del canal.</p>
+  </div>
+</section>
+
+<!-- ============================ 13 CIERRE ============================ -->
+<section class="slide s-azul" id="s13" data-num="13" data-titulo="Cierre">
+  <div class="wrap">
+    <p class="etiqueta"><b>13</b> · Cierre</p>
+    <h2>Una app que responde primero, vende mejor después</h2>
+    <p class="sub">Gracias por la lectura. Quedo disponible para revisar en detalle las decisiones de investigación y de diseño detrás de cada sección.</p>
+    <div class="proto">
+      <a class="btn-proto" href="#" target="_blank" rel="noopener" data-prototipo>Abrir prototipo en una pestaña nueva</a>
+    </div>
+    <p class="print-only">URL del prototipo: ____________________________________________</p>
+    <p class="portada__autoria">
+      Nicole Matus · Diseñadora UX, Chile<br>
+      <a href="mailto:nicole.matusp@gmail.com">nicole.matusp@gmail.com</a><br>
+      Desafío UX Research &amp; Strategy · MATCH · Septiembre 2026
+    </p>
+    <p class="nota">Nota metodológica: evidencia levantada el 18 de septiembre de 2026 sobre la versión entonces disponible de la aplicación. Los hallazgos describen ese estado del producto.</p>
+  </div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var secciones = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+  var navLista  = document.getElementById("nav-lista");
+  var indLista  = document.getElementById("indice-lista");
+  var contador  = document.getElementById("contador");
+  var barra     = document.getElementById("barra");
+  var indice    = document.getElementById("indice");
+  var btnAbrir  = document.getElementById("abrir-indice");
+  var btnCerrar = document.getElementById("cerrar-indice");
+  var total     = secciones.length;
+  var activa    = -1;
+
+  /* ---- Índice generado desde data-num y data-titulo ---- */
+  secciones.forEach(function(sec, i){
+    var num = sec.getAttribute("data-num") || "";
+    var tit = sec.getAttribute("data-titulo") || sec.id;
+    var etiqueta = num ? num + " · " + tit : tit;
+
+    var li = document.createElement("li");
+    var a  = document.createElement("a");
+    a.className = "nav__enlace";
+    a.href = "#" + sec.id;
+    a.textContent = tit;
+    a.title = etiqueta;
+    a.setAttribute("aria-label", etiqueta);
+    a.setAttribute("data-i", i);
+    li.appendChild(a);
+    navLista.appendChild(li);
+
+    var li2 = document.createElement("li");
+    var a2  = document.createElement("a");
+    a2.href = "#" + sec.id;
+    a2.setAttribute("data-i", i);
+    var sp2 = document.createElement("span");
+    sp2.textContent = tit;
+    a2.appendChild(sp2);
+    li2.appendChild(a2);
+    indLista.appendChild(li2);
+  });
+
+  var enlacesNav = Array.prototype.slice.call(navLista.querySelectorAll("a"));
+  var enlacesInd = Array.prototype.slice.call(indLista.querySelectorAll("a"));
+
+  function marcar(i){
+    if(i === activa) return;
+    activa = i;
+    [enlacesNav, enlacesInd].forEach(function(grupo){
+      grupo.forEach(function(a, j){
+        if(j === i){ a.setAttribute("aria-current","true"); }
+        else { a.removeAttribute("aria-current"); }
+      });
+    });
+    var num = secciones[i].getAttribute("data-num") || "00";
+    contador.textContent = num + " / " + (total - 1);
+    var act = enlacesNav[i];
+    if(act && navLista.scrollWidth > navLista.clientWidth){
+      var izq = act.offsetLeft - navLista.clientWidth / 2;
+      navLista.scrollTo({ left: izq, behavior: "auto" });
+    }
+  }
+
+  /* ---- Sección activa ---- */
+  if("IntersectionObserver" in window){
+    var visibles = {};
+    var obs = new IntersectionObserver(function(entradas){
+      entradas.forEach(function(e){
+        visibles[e.target.id] = e.isIntersecting ? e.intersectionRatio : 0;
+      });
+      var mejor = -1, ratio = 0;
+      secciones.forEach(function(sec, i){
+        var r = visibles[sec.id] || 0;
+        if(r > ratio){ ratio = r; mejor = i; }
+      });
+      if(mejor >= 0) marcar(mejor);
+    }, { threshold:[0, .15, .3, .5, .75, 1], rootMargin:"-54px 0px 0px 0px" });
+    secciones.forEach(function(s){ obs.observe(s); });
+  }
+
+  /* ---- Barra de progreso ---- */
+  var pendienteRaf = false;
+  function progreso(){
+    var alto = document.documentElement.scrollHeight - window.innerHeight;
+    var p = alto > 0 ? (window.scrollY / alto) * 100 : 0;
+    barra.style.width = Math.max(0, Math.min(100, p)).toFixed(2) + "%";
+    pendienteRaf = false;
+  }
+  window.addEventListener("scroll", function(){
+    if(!pendienteRaf){ pendienteRaf = true; window.requestAnimationFrame(progreso); }
+  }, { passive:true });
+  window.addEventListener("resize", progreso);
+
+  /* ---- Navegación por teclado ---- */
+  function irA(i){
+    i = Math.max(0, Math.min(total - 1, i));
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var y = secciones[i].getBoundingClientRect().top + window.scrollY - 1;
+    window.scrollTo({ top:y, behavior: reduce ? "auto" : "smooth" });
+    marcar(i);
+  }
+  function editable(el){
+    if(!el) return false;
+    var t = el.tagName;
+    return t === "INPUT" || t === "TEXTAREA" || t === "SELECT" || el.isContentEditable;
+  }
+  document.addEventListener("keydown", function(e){
+    if(e.metaKey || e.ctrlKey || e.altKey) return;
+    if(editable(document.activeElement)) return;
+    var abierto = indice.getAttribute("data-abierto") === "true";
+
+    if(e.key === "Escape"){
+      if(abierto){ cerrarIndice(); e.preventDefault(); }
+      return;
+    }
+    if(abierto) return;
+
+    switch(e.key){
+      case "ArrowDown": case "PageDown":
+        irA(activa + 1); e.preventDefault(); break;
+      case " ": case "Spacebar":
+        if(document.activeElement && document.activeElement.tagName === "A") return;
+        irA(activa + (e.shiftKey ? -1 : 1)); e.preventDefault(); break;
+      case "ArrowUp": case "PageUp":
+        irA(activa - 1); e.preventDefault(); break;
+      case "Home":
+        irA(0); e.preventDefault(); break;
+      case "End":
+        irA(total - 1); e.preventDefault(); break;
+    }
+  });
+
+  /* ---- Índice móvil ---- */
+  function abrirIndice(){
+    indice.setAttribute("data-abierto","true");
+    btnAbrir.setAttribute("aria-expanded","true");
+    btnCerrar.focus();
+  }
+  function cerrarIndice(){
+    indice.setAttribute("data-abierto","false");
+    btnAbrir.setAttribute("aria-expanded","false");
+    btnAbrir.focus();
+  }
+  btnAbrir.addEventListener("click", abrirIndice);
+  btnCerrar.addEventListener("click", cerrarIndice);
+  indLista.addEventListener("click", function(e){
+    if(e.target.closest("a")) cerrarIndice();
+  });
+
+  /* ---- Enlace al prototipo: estado pendiente mientras no haya URL ---- */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-prototipo]"), function(a){
+    var href = a.getAttribute("href");
+    if(!href || href === "#" || href.indexOf("URL_DEL_PROTOTIPO") > -1){
+      a.classList.add("is-pendiente");
+      a.setAttribute("aria-disabled","true");
+      a.removeAttribute("target");
+      a.textContent = "Prototipo: URL pendiente";
+      a.addEventListener("click", function(ev){ ev.preventDefault(); });
+    }
+  });
+
+  /* ---- Capturas faltantes: estado explícito en vez de ícono roto ---- */
+  function faltante(img){
+    if(img.dataset.faltante) return;
+    img.dataset.faltante = "1";
+    var aviso = document.createElement("div");
+    aviso.className = "falta";
+    aviso.textContent = "Captura pendiente: " + img.getAttribute("src");
+    img.parentNode.replaceChild(aviso, img);
+  }
+  Array.prototype.forEach.call(document.images, function(img){
+    img.addEventListener("error", function(){ faltante(img); });
+    if(img.complete && img.naturalWidth === 0) faltante(img);
+  });
+
+  marcar(0);
+  progreso();
+})();
+</script>
+</body>
+</html>
