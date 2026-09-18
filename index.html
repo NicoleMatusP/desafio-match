@@ -426,13 +426,11 @@ figcaption{
 /* Línea de tiempo */
 .timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.6vw,26px);margin-top:var(--s3)}
 .paso{padding-top:0}
-.paso__cab{display:flex;align-items:center;gap:10px;margin-bottom:var(--s2)}
-.icono--sm{width:30px;height:30px;margin:0}
+.icono--sm{width:30px;height:30px;margin:0 0 var(--s2)}
 .icono--sm svg{width:17px;height:17px}
-.paso .n{
-  font-size:var(--f-mini);font-weight:600;color:var(--azul);
-  font-variant-numeric:tabular-nums;
-}
+/* El número encabeza el título; junto al icono desordenaba la secuencia */
+.paso .n{color:var(--azul);margin-right:.2em;font-variant-numeric:tabular-nums}
+.s-negro .paso .n,.s-azul .paso .n{color:var(--blanco)}
 .s-negro .paso .n,.s-azul .paso .n{color:var(--naranja)}
 .paso h3{font-size:var(--f-body);margin-bottom:4px}
 .paso p{font-size:var(--f-mini);color:var(--gris-texto);margin:0;line-height:1.35}
@@ -1054,10 +1052,10 @@ figcaption{
       </div>
     </div>
     <div class="timeline">
-      <div class="paso"><div class="paso__cab"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.2 19.5c0-3.2 2.6-5.4 5.8-5.4s5.8 2.2 5.8 5.4"/><path d="M16.5 5.2a3.2 3.2 0 0 1 0 5.6"/><path d="M17.8 14.6c1.8.7 3 2.4 3 4.9"/></svg></span><span class="n">01</span></div><h3>Semana 1</h3><p>Data y reclutamiento.</p></div>
-      <div class="paso"><div class="paso__cab"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.6" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0"/><path d="M12 18v3.4"/></svg></span><span class="n">02</span></div><h3>Semana 2</h3><p>Entrevistas e indagación contextual.</p></div>
-      <div class="paso"><div class="paso__cab"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.2 4.4h17.6l-6.8 8v7.2l-4-2.4v-4.8z"/></svg></span><span class="n">03</span></div><h3>Semana 3</h3><p>Encuesta y embudo.</p></div>
-      <div class="paso"><div class="paso__cab"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 20.5c0-4 13-4.6 13-9a3.8 3.8 0 0 0-7.6 0c0 4.4 13 5 13 9"/><circle cx="5.5" cy="20.5" r="1.6"/></svg></span><span class="n">04</span></div><h3>Semana 4</h3><p>Síntesis, journey map y oportunidades.</p></div>
+      <div class="paso"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.2 19.5c0-3.2 2.6-5.4 5.8-5.4s5.8 2.2 5.8 5.4"/><path d="M16.5 5.2a3.2 3.2 0 0 1 0 5.6"/><path d="M17.8 14.6c1.8.7 3 2.4 3 4.9"/></svg></span><h3>Semana 1</h3><p>Data y reclutamiento.</p></div>
+      <div class="paso"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.6" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0"/><path d="M12 18v3.4"/></svg></span><h3>Semana 2</h3><p>Entrevistas e indagación contextual.</p></div>
+      <div class="paso"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.2 4.4h17.6l-6.8 8v7.2l-4-2.4v-4.8z"/></svg></span><h3>Semana 3</h3><p>Encuesta y embudo.</p></div>
+      <div class="paso"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 20.5c0-4 13-4.6 13-9a3.8 3.8 0 0 0-7.6 0c0 4.4 13 5 13 9"/><circle cx="5.5" cy="20.5" r="1.6"/></svg></span><h3>Semana 4</h3><p>Síntesis, journey map y oportunidades.</p></div>
     </div>
     <p class="nota">Herramientas: Amplitude o GA4 para el embudo, Dovetail para el análisis, Lookback para las sesiones remotas, encuesta in-app y Figma para la síntesis.</p>
   </div>
@@ -1133,10 +1131,10 @@ figcaption{
     <h2>Cómo trabajé con la IA</h2>
     <p class="sub">El prototipo no salió de un prompt afortunado, sino de un brief construido a partir de los hallazgos y de iteraciones dirigidas.</p>
     <div class="timeline">
-      <div class="paso"><div class="paso__cab"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.8h8l4.2 4.2v14.2H6z"/><path d="M14 2.8V7h4.2"/><path d="M9 12.5h6M9 16.5h6"/></svg></span><span class="n">01</span></div><h3>Brief</h3><p>Usuario, tarea, hallazgos priorizados y principios de diseño.</p></div>
-      <div class="paso"><div class="paso__cab"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15.5V3.4"/><path d="M8 7.4l4-4 4 4"/><path d="M3.6 14.5v4.4a1.8 1.8 0 0 0 1.8 1.8h13.2a1.8 1.8 0 0 0 1.8-1.8v-4.4"/></svg></span><span class="n">02</span></div><h3>Inputs</h3><p>Capturas del flujo actual, bocetos de referencia y sistema visual.</p></div>
-      <div class="paso"><div class="paso__cab"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.4 12a8.4 8.4 0 1 1-2.5-6"/><path d="M20.8 2.6v4.2h-4.2"/></svg></span><span class="n">03</span></div><h3>Iteración</h3><p>Jerarquía, microcopy, estados de error y accesibilidad.</p></div>
-      <div class="paso"><div class="paso__cab"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.4v6.2M5 14v6.6M12 3.4v3.2M12 11v9.6M19 3.4v9.2M19 17.6v3"/><circle cx="5" cy="11.8" r="2.2"/><circle cx="12" cy="8.8" r="2.2"/><circle cx="19" cy="15.4" r="2.2"/></svg></span><span class="n">04</span></div><h3>Ajuste</h3><p>Revisión manual de contraste, espaciado y consistencia.</p></div>
+      <div class="paso"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.8h8l4.2 4.2v14.2H6z"/><path d="M14 2.8V7h4.2"/><path d="M9 12.5h6M9 16.5h6"/></svg></span><h3><span class="n">01</span> Brief</h3><p>Usuario, tarea, hallazgos priorizados y principios de diseño.</p></div>
+      <div class="paso"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15.5V3.4"/><path d="M8 7.4l4-4 4 4"/><path d="M3.6 14.5v4.4a1.8 1.8 0 0 0 1.8 1.8h13.2a1.8 1.8 0 0 0 1.8-1.8v-4.4"/></svg></span><h3><span class="n">02</span> Inputs</h3><p>Capturas del flujo actual, bocetos de referencia y sistema visual.</p></div>
+      <div class="paso"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.4 12a8.4 8.4 0 1 1-2.5-6"/><path d="M20.8 2.6v4.2h-4.2"/></svg></span><h3><span class="n">03</span> Iteración</h3><p>Jerarquía, microcopy, estados de error y accesibilidad.</p></div>
+      <div class="paso"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.4v6.2M5 14v6.6M12 3.4v3.2M12 11v9.6M19 3.4v9.2M19 17.6v3"/><circle cx="5" cy="11.8" r="2.2"/><circle cx="12" cy="8.8" r="2.2"/><circle cx="19" cy="15.4" r="2.2"/></svg></span><h3><span class="n">04</span> Ajuste</h3><p>Revisión manual de contraste, espaciado y consistencia.</p></div>
     </div>
     <div class="cols cols-3" style="margin-top:var(--s4)">
       <div class="tarjeta tarjeta--vacia">
