@@ -311,6 +311,25 @@ h2 + .texto,h2 + .cita,h2 + .cita--caja,h2 + h3,h2 + .tira,h2 + .cols,h2 + .tabl
 .tarjeta--negra .icono{background:rgba(255,255,255,.16);color:var(--blanco)}
 .tarjeta--naranja .icono{background:var(--blanco);color:var(--negro)}
 
+/* Referencia a heurística con explicación al pasar el cursor o al enfocar */
+.h-ref{
+  font-weight:600;color:var(--azul);cursor:help;
+  border-bottom:1px dotted currentColor;
+  border-radius:2px;
+}
+.s-negro .h-ref,.s-azul .h-ref{color:var(--blanco)}
+.tooltip{
+  position:fixed;z-index:60;max-width:300px;
+  background:var(--negro);color:var(--blanco);
+  padding:12px 14px;border-radius:var(--radio-xs);
+  font-size:var(--f-mini);line-height:1.4;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .12s ease;
+}
+.tooltip[data-visible="true"]{opacity:1;visibility:visible}
+.tooltip b{display:block;margin-bottom:4px;color:var(--blanco);font-weight:600}
+.tooltip span{color:var(--gris-linea)}
+
 /* Figuras e imágenes */
 figure{margin:0}
 figcaption{
@@ -590,7 +609,8 @@ figcaption{
     scroll-snap-type:none;
   }
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .nav,.progreso,.indice,.saltar,.nav__boton{display:none!important}
+  .nav,.progreso,.indice,.saltar,.nav__boton,.tooltip{display:none!important}
+  .h-ref{border-bottom:0;color:inherit}
   /* La maquetación de impresión no debe heredar las reglas de pantallas angostas */
   .cols-2{grid-template-columns:repeat(2,1fr)}
   .cols-3{grid-template-columns:repeat(3,1fr)}
@@ -775,7 +795,7 @@ figcaption{
         <p class="puntos-leyenda">10 módulos comerciales · 2 módulos de autoservicio</p>
         <div class="meta">
           <span class="sev sev-3">Severidad 3</span>
-          <span class="heur">Heurísticas: #1 visibilidad del estado del sistema · #6 reconocer antes que recordar · #8 diseño estético y minimalista.</span>
+          <span class="heur">Heurísticas: <span class="h-ref" data-h="1" tabindex="0">#1</span> visibilidad del estado del sistema · <span class="h-ref" data-h="6" tabindex="0">#6</span> reconocer antes que recordar · <span class="h-ref" data-h="8" tabindex="0">#8</span> diseño estético y minimalista.</span>
         </div>
       </div>
       <figure class="split__media">
@@ -826,7 +846,7 @@ figcaption{
         </div>
         <div class="meta">
           <span class="sev sev-3">Severidad 3</span>
-          <span class="heur">Heurísticas: #3 control y libertad del usuario · #8 diseño estético y minimalista · #1 visibilidad del estado del sistema.</span>
+          <span class="heur">Heurísticas: <span class="h-ref" data-h="3" tabindex="0">#3</span> control y libertad del usuario · <span class="h-ref" data-h="8" tabindex="0">#8</span> diseño estético y minimalista · <span class="h-ref" data-h="1" tabindex="0">#1</span> visibilidad del estado del sistema.</span>
         </div>
       </div>
       <figure class="split__media">
@@ -851,7 +871,7 @@ figcaption{
         </div>
         <div class="meta">
           <span class="sev sev-4">Severidad 4</span>
-          <span class="heur">Heurísticas: #1 visibilidad del estado del sistema · #2 lenguaje del usuario · #5 prevención de errores · #9 ayudar a reconocer y recuperarse de errores.</span>
+          <span class="heur">Heurísticas: <span class="h-ref" data-h="1" tabindex="0">#1</span> visibilidad del estado del sistema · <span class="h-ref" data-h="2" tabindex="0">#2</span> lenguaje del usuario · <span class="h-ref" data-h="5" tabindex="0">#5</span> prevención de errores · <span class="h-ref" data-h="9" tabindex="0">#9</span> ayudar a reconocer y recuperarse de errores.</span>
         </div>
       </div>
       <figure class="split__media">
@@ -874,7 +894,7 @@ figcaption{
         </div>
         <div class="meta">
           <span class="sev sev-4">Severidad 4</span>
-          <span class="heur">Heurísticas: #2 correspondencia con el mundo real · #7 flexibilidad y eficiencia de uso.</span>
+          <span class="heur">Heurísticas: <span class="h-ref" data-h="2" tabindex="0">#2</span> correspondencia con el mundo real · <span class="h-ref" data-h="7" tabindex="0">#7</span> flexibilidad y eficiencia de uso.</span>
         </div>
       </div>
       <figure class="split__media">
@@ -924,7 +944,7 @@ figcaption{
         <p>Y a continuación el mismo artículo explica cómo canjear los puntos y cómo revisar los acumulados ingresando teléfono o RUT en el sitio web.</p>
         <div class="meta meta--sin-linea">
           <span class="sev sev-4">Severidad 4</span>
-          <span class="heur">Heurísticas: #1 visibilidad del estado del sistema · #2 lenguaje del usuario · #4 consistencia y estándares · #10 ayuda y documentación.</span>
+          <span class="heur">Heurísticas: <span class="h-ref" data-h="1" tabindex="0">#1</span> visibilidad del estado del sistema · <span class="h-ref" data-h="2" tabindex="0">#2</span> lenguaje del usuario · <span class="h-ref" data-h="4" tabindex="0">#4</span> consistencia y estándares · <span class="h-ref" data-h="10" tabindex="0">#10</span> ayuda y documentación.</span>
         </div>
       </div>
       <div>
@@ -955,25 +975,25 @@ figcaption{
       <tbody>
         <tr>
           <td data-col="Hallazgo">La home no muestra el estado del servicio</td>
-          <td data-col="Heurística principal">#1 Visibilidad</td>
+          <td data-col="Heurística principal"><span class="h-ref" data-h="1" tabindex="0">#1</span> Visibilidad</td>
           <td class="c-sev" data-col="Severidad"><span class="sev sev-3">3</span></td>
           <td data-col="Consecuencia">Navega a ciegas y recurre a otros canales</td>
         </tr>
         <tr>
           <td data-col="Hallazgo">Interrupciones publicitarias durante la tarea</td>
-          <td data-col="Heurística principal">#3 Control y libertad</td>
+          <td data-col="Heurística principal"><span class="h-ref" data-h="3" tabindex="0">#3</span> Control y libertad</td>
           <td class="c-sev" data-col="Severidad"><span class="sev sev-3">3</span></td>
           <td data-col="Consecuencia">Pierde el hilo y acumula fricción</td>
         </tr>
         <tr>
           <td data-col="Hallazgo">Consumo expresado al revés y con valor negativo</td>
-          <td data-col="Heurística principal">#2 y #5</td>
+          <td data-col="Heurística principal"><span class="h-ref" data-h="2" tabindex="0">#2</span> y <span class="h-ref" data-h="5" tabindex="0">#5</span></td>
           <td class="c-sev" data-col="Severidad"><span class="sev sev-4">4</span></td>
           <td data-col="Consecuencia">Desconfía del dato y lo verifica en otra parte</td>
         </tr>
         <tr>
           <td data-col="Hallazgo">Puntos descontinuados sin señal en la interfaz</td>
-          <td data-col="Heurística principal">#10 y #4</td>
+          <td data-col="Heurística principal"><span class="h-ref" data-h="10" tabindex="0">#10</span> y <span class="h-ref" data-h="4" tabindex="0">#4</span></td>
           <td class="c-sev" data-col="Severidad"><span class="sev sev-4">4</span></td>
           <td data-col="Consecuencia">Busca, se frustra, contacta soporte o cree en un SMS falso</td>
         </tr>
@@ -1377,6 +1397,7 @@ figcaption{
     var abierto = indice.getAttribute("data-abierto") === "true";
 
     if(e.key === "Escape"){
+      if(tooltip.getAttribute("data-visible") === "true"){ ocultarTip(); e.preventDefault(); return; }
       if(abierto){ cerrarIndice(); e.preventDefault(); }
       return;
     }
@@ -1413,6 +1434,64 @@ figcaption{
   indLista.addEventListener("click", function(e){
     if(e.target.closest("a")) cerrarIndice();
   });
+
+  /* ---- Explicación de cada heurística de Nielsen ---- */
+  var HEURISTICAS = {
+    "1":["Visibilidad del estado del sistema","El sistema mantiene informada a la persona sobre lo que está pasando, con retroalimentación oportuna."],
+    "2":["Correspondencia con el mundo real","Habla el idioma de quien lo usa, con palabras y conceptos familiares en vez de jerga interna."],
+    "3":["Control y libertad del usuario","Ofrece salidas claras —deshacer, cancelar, volver— para no quedar atrapado en un estado no buscado."],
+    "4":["Consistencia y estándares","Las mismas palabras y acciones significan lo mismo en todo el producto, siguiendo las convenciones de la plataforma."],
+    "5":["Prevención de errores","Evita que el error ocurra, con restricciones y confirmaciones, en vez de avisar cuando ya ocurrió."],
+    "6":["Reconocer antes que recordar","Deja las opciones a la vista para no obligar a memorizar información entre una pantalla y otra."],
+    "7":["Flexibilidad y eficiencia de uso","Atajos y personalización que aceleran a quien ya conoce el producto sin estorbar a quien recién llega."],
+    "8":["Diseño estético y minimalista","Cada elemento de más compite con lo relevante: se muestra solo lo que aporta a la tarea."],
+    "9":["Ayudar a reconocer y recuperarse de errores","Mensajes en lenguaje claro que explican qué pasó y ofrecen una salida concreta."],
+    "10":["Ayuda y documentación","Información fácil de encontrar, centrada en la tarea de la persona y con pasos concretos."]
+  };
+
+  var tooltip = document.createElement("div");
+  tooltip.className = "tooltip";
+  tooltip.id = "tooltip-heuristica";
+  tooltip.setAttribute("role", "tooltip");
+  tooltip.setAttribute("data-visible", "false");
+  document.body.appendChild(tooltip);
+  var refActiva = null;
+
+  function mostrarTip(ref){
+    var datos = HEURISTICAS[ref.getAttribute("data-h")];
+    if(!datos) return;
+    refActiva = ref;
+    tooltip.innerHTML = "";
+    var t = document.createElement("b");
+    t.textContent = ref.textContent + " " + datos[0];
+    var d = document.createElement("span");
+    d.textContent = datos[1];
+    tooltip.appendChild(t); tooltip.appendChild(d);
+    tooltip.setAttribute("data-visible","true");
+    ref.setAttribute("aria-describedby","tooltip-heuristica");
+
+    var r = ref.getBoundingClientRect();
+    var caja = tooltip.getBoundingClientRect();
+    var izq = Math.min(Math.max(12, r.left + r.width/2 - caja.width/2), window.innerWidth - caja.width - 12);
+    var arriba = r.top - caja.height - 10;
+    if(arriba < 12) arriba = r.bottom + 10;
+    tooltip.style.left = izq + "px";
+    tooltip.style.top = arriba + "px";
+  }
+  function ocultarTip(){
+    tooltip.setAttribute("data-visible","false");
+    if(refActiva){ refActiva.removeAttribute("aria-describedby"); refActiva = null; }
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".h-ref"), function(ref){
+    ref.addEventListener("mouseenter", function(){ mostrarTip(ref); });
+    ref.addEventListener("mouseleave", ocultarTip);
+    ref.addEventListener("focus", function(){ mostrarTip(ref); });
+    ref.addEventListener("blur", ocultarTip);
+    ref.addEventListener("click", function(){
+      if(refActiva === ref) ocultarTip(); else mostrarTip(ref);
+    });
+  });
+  window.addEventListener("scroll", ocultarTip, { passive:true });
 
   /* ---- Enlace al prototipo: estado pendiente mientras no haya URL ---- */
   Array.prototype.forEach.call(document.querySelectorAll("[data-prototipo]"), function(a){

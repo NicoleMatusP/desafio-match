@@ -108,6 +108,13 @@ de sección y la de la nota al pie. La lámina 12 pasó de nueve reglas a dos.
 filete discontinuo cuando ocupan el lugar de una cifra grande. Antes eran naranja
 sólido y pesaban como botones.
 
+**Heurísticas.** Cada referencia `#N` abre una explicación breve del criterio al pasar
+el cursor. Un tooltip solo de hover deja fuera a quien navega con teclado, así que
+también aparece al enfocar la referencia con Tab, se cierra con Esc y la referencia
+lleva `aria-describedby` mientras está abierta. Las definiciones viven en el objeto
+`HEURISTICAS` del script. Al imprimir, el tooltip no existe: el nombre del criterio ya
+está escrito junto al número.
+
 **Severidad.** Las insignias usan colores de estado según el número, tanto en los
 hallazgos como en la columna de la tabla de síntesis: verde para 0 a 2, naranja para 3
 y rojo para 4. El relleno es pastel y el color de estado va en el texto y el filete, lo
