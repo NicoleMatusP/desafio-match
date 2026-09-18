@@ -93,6 +93,12 @@ centra sola. Si se prefiere verlos todos de una vez, hay que acortar los nombres
 compuestos (por ejemplo, "Hallazgo 01, evidencia" a "Evidencia") en el atributo
 `data-titulo` de cada sección.
 
+**Impacto en el negocio (07b).** Los cuatro KPI usan cifras públicas y una medición
+propia, cada una con su fuente en 11 px bajo el bloque. La medición propia va con la
+cifra en `--azul` para distinguirla de las referencias externas. Cierra con el modelo de
+ahorro anual como fórmula en texto, no como imagen, para que se lea en el PDF y con
+lector de pantalla. Las fuentes van sin enlaces, a propósito, para que se impriman igual.
+
 **Líneas.** Cada bloque se marca con un icono o con una marca corta de 32 px, nunca
 con una regla a todo el ancho. Solo quedan dos líneas largas por lámina: la del rótulo
 de sección y la de la nota al pie. La lámina 12 pasó de nueve reglas a dos.
@@ -181,9 +187,6 @@ Todo lo que falta está marcado en la página con un recuadro naranja `[  ]`
 
 **Contenido**
 
-- [ ] **07b · Impacto en el negocio:** los cuatro KPIs (autoatención digital, costo por
-      contacto, uso de beneficios del Club y riesgo de fraude), con la data interna de
-      la compañía.
 - [ ] **10a y 10b:** reemplazar los dos marcos punteados por la salida del prototipo.
 - [ ] **11 · Proceso con IA:** pegar el prompt de contexto, el de generación y el de
       refinamiento, anotando qué cambió en cada iteración; indicar la herramienta

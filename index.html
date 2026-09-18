@@ -399,9 +399,29 @@ figcaption{
 
 /* KPIs */
 .kpi{padding-top:0}
-.kpi .pendiente{font-size:var(--f-num-sm);display:inline-block;line-height:1.1;padding:0 14px;border-style:dashed}
-.kpi h3{margin:var(--s2) 0 var(--s1)}
+.kpi h3{margin:0 0 var(--s2)}
 .kpi p{font-size:var(--f-mini);color:var(--negro);margin:0;line-height:1.35}
+.kpi .cifra{
+  display:block;font-size:clamp(24px,2.8vw,40px);font-weight:700;
+  letter-spacing:-0.04em;line-height:1;margin-bottom:var(--s2);
+  font-variant-numeric:tabular-nums;
+}
+.kpi--propio .cifra{color:var(--azul)}
+.kpi .fuente{
+  font-size:var(--f-etiqueta);line-height:1.35;
+  color:var(--gris-texto);margin:var(--s2) 0 0;
+}
+
+/* Modelo abierto que cierra la sección */
+.modelo{
+  margin-top:var(--s4);padding-top:var(--s4);
+  border-top:1px solid rgba(16,17,20,.2);
+}
+.modelo__formula{
+  font-size:clamp(16px,1.7vw,24px);font-weight:600;line-height:1.3;
+  letter-spacing:-0.02em;margin:0 0 var(--s3);max-width:62ch;
+}
+.modelo p:last-child{font-size:var(--f-body);color:var(--negro);margin:0;max-width:80ch}
 
 /* Línea de tiempo */
 .timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.6vw,26px);margin-top:var(--s3)}
@@ -940,29 +960,37 @@ figcaption{
   <div class="wrap">
     <p class="etiqueta"><b>07b</b> · Impacto en el negocio</p>
     <h2>Lo que esto le cuesta a la compañía</h2>
+    <p class="sub">No tengo acceso a la data interna de Entel. Lo que sigue son referencias públicas, una medición propia y un modelo abierto que se completa con los números de la compañía.</p>
     <div class="cols cols-4">
       <div class="kpi marca-corta">
-        <span class="pendiente">[&nbsp;&nbsp;]</span>
-        <h3>Autoatención digital</h3>
-        <p>% de consultas de saldo resueltas sin contacto humano</p>
-      </div>
-      <div class="kpi marca-corta">
-        <span class="pendiente">[&nbsp;&nbsp;]</span>
         <h3>Costo por contacto</h3>
-        <p>cuántas veces más caro es el call center que la app</p>
+        <span class="cifra">7×</span>
+        <p>Más caro resolver en call center que en autoservicio: US$13,50 frente a US$1,84 por contacto.</p>
+        <p class="fuente">Gartner, benchmarks de costo por contacto.</p>
       </div>
       <div class="kpi marca-corta">
-        <span class="pendiente">[&nbsp;&nbsp;]</span>
-        <h3>Uso de beneficios del Club</h3>
-        <p>% sobre la base activa</p>
+        <h3>Expectativa de autoatención</h3>
+        <span class="cifra">81%</span>
+        <p>De los clientes intenta resolver por su cuenta antes de contactar a la empresa. El problema no es de adopción, es que la interfaz no lo permite.</p>
+        <p class="fuente">Harvard Business Review. Zendesk mide un 67% que prefiere el autoservicio.</p>
+      </div>
+      <div class="kpi kpi--propio marca-corta">
+        <h3>Medición propia</h3>
+        <span class="cifra">0 de 11</span>
+        <p>Accesos del menú rápido llevan al estado del programa de puntos. Ninguna de las tres secciones del Club lo menciona.</p>
+        <p class="fuente">Recorrido grabado el 18 de septiembre de 2026, sesión de 2 min 49 s.</p>
       </div>
       <div class="kpi marca-corta">
-        <span class="pendiente">[&nbsp;&nbsp;]</span>
         <h3>Riesgo de fraude</h3>
-        <p>reportes mensuales de SMS que usan puntos como carnada</p>
+        <span class="cifra">1 de cada 4</span>
+        <p>Personas en Chile ha caído en una estafa por SMS. Entre las carnadas más usadas está “tus puntos están por caducar, canjéalos ahora”.</p>
+        <p class="fuente">ESET Latam. Modalidad documentada en reportes de smishing en Chile, 2025.</p>
       </div>
     </div>
-    <p class="nota">Cifras a completar con la data interna de la compañía. La hipótesis de negocio no depende de su magnitud exacta: cada consulta que la app no resuelve se desplaza al canal más caro, y cada beneficio que no se encuentra es inversión en fidelización que no genera retención.</p>
+    <div class="modelo">
+      <p class="modelo__formula">Ahorro anual = base de clientes × % que consulta su saldo al mes × % que no logra resolverlo en la app × (costo asistido − costo autoservicio) × 12</p>
+      <p>Con la data interna de la compañía, este modelo se completa en diez minutos. La estructura del argumento no depende de la magnitud del resultado.</p>
+    </div>
   </div>
 </section>
 
