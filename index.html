@@ -331,6 +331,16 @@ figcaption{
 .captura--alta{max-height:56vh;object-fit:contain}
 .tira{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,32px)}
 .tira .captura{max-height:31vh;margin:0}
+/* Evidencia: la tira manda y el remate va al costado, no al pie */
+.evidencia{
+  display:grid;grid-template-columns:1fr 0.34fr;
+  gap:clamp(24px,3vw,52px);align-items:start;
+}
+.tira--grande .captura{max-height:60vh}
+.destacado{
+  font-size:clamp(16px,1.45vw,21px);line-height:1.35;
+  letter-spacing:-0.015em;font-weight:500;margin:0;
+}
 
 /* Imagen faltante: estado explícito, no ícono roto */
 .falta{
@@ -532,7 +542,7 @@ figcaption{
   .portada__figura img{height:270px}
   .nav__lista,.nav__contador{display:none}
   .nav__boton{display:inline-block;margin-left:auto}
-  .cols-2,.cols-3,.cols-4,.split,.split--izq,.tira,.timeline,.marcos{grid-template-columns:1fr;display:grid}
+  .cols-2,.cols-3,.cols-4,.split,.split--izq,.tira,.timeline,.marcos,.evidencia{grid-template-columns:1fr;display:grid}
   .split--izq .split__texto,.split--izq .split__media{order:initial}
   h2{max-width:none}
   .captura--alta,.tira .captura,.marco img{max-height:none}
@@ -581,6 +591,8 @@ figcaption{
   .cols-3{grid-template-columns:repeat(3,1fr)}
   .cols-4{grid-template-columns:repeat(4,1fr)}
   .tira{grid-template-columns:repeat(3,1fr)}
+  .evidencia{display:grid;grid-template-columns:1fr 0.34fr;gap:6mm}
+  .tira--grande .captura{max-height:62mm}
   .timeline{grid-template-columns:repeat(4,1fr)}
   .marcos{display:grid;grid-template-columns:repeat(2,1fr);max-width:none}
   .split{display:grid;grid-template-columns:1fr 0.82fr;align-items:center}
@@ -773,21 +785,23 @@ figcaption{
   <div class="wrap">
     <p class="etiqueta"><b>03b</b> · Hallazgo 01, evidencia</p>
     <h2>Scroll completo de la home</h2>
-    <div class="tira">
-      <figure>
-        <img class="captura" src="img/03-home-scroll-club.jpg" alt="Sección intermedia de la home con el carrusel del Club y sus tarjetas de beneficios.">
-        <figcaption>Carrusel del Club</figcaption>
-      </figure>
-      <figure>
-        <img class="captura" src="img/04-home-scroll-promos.jpg" alt="Sección inferior de la home con módulos de sorteos y contenidos de entretención.">
-        <figcaption>Sorteos y entretención</figcaption>
-      </figure>
-      <figure>
-        <img class="captura" src="img/01-interstitial-copec.jpg" alt="Anuncio a pantalla completa que aparece al abrir la app, ocupando todo el viewport antes de mostrar la home.">
-        <figcaption>Anuncio a pantalla completa al abrir</figcaption>
-      </figure>
+    <div class="evidencia">
+      <div class="tira tira--grande">
+        <figure>
+          <img class="captura" src="img/03-home-scroll-club.jpg" alt="Sección intermedia de la home con el carrusel del Club y sus tarjetas de beneficios.">
+          <figcaption>Carrusel del Club</figcaption>
+        </figure>
+        <figure>
+          <img class="captura" src="img/04-home-scroll-promos.jpg" alt="Sección inferior de la home con módulos de sorteos y contenidos de entretención.">
+          <figcaption>Sorteos y entretención</figcaption>
+        </figure>
+        <figure>
+          <img class="captura" src="img/01-interstitial-copec.jpg" alt="Anuncio a pantalla completa que aparece al abrir la app, ocupando todo el viewport antes de mostrar la home.">
+          <figcaption>Anuncio a pantalla completa al abrir</figcaption>
+        </figure>
+      </div>
+      <p class="destacado marca-corta">La saturación comercial también tiene un costo comercial: cuando todo compite por atención, el usuario deja de mirar. Y eso afecta justamente a las ofertas que la home intenta empujar.</p>
     </div>
-    <p class="nota">La saturación comercial también tiene un costo comercial: cuando todo compite por atención, el usuario deja de mirar. Y eso afecta justamente a las ofertas que la home intenta empujar.</p>
   </div>
 </section>
 
