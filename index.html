@@ -175,8 +175,9 @@ strong{font-weight:600}
 .indice a[aria-current="true"]{color:var(--azul)}
 .indice .n{
   font-size:var(--f-mini);color:var(--gris-texto);
-  font-variant-numeric:tabular-nums;min-width:34px;
+  font-variant-numeric:tabular-nums;margin-left:auto;
 }
+.indice .n::after{content:" secciones"}
 .indice a[aria-current="true"] .n{color:var(--azul)}
 
 /* ============================================================
@@ -737,7 +738,7 @@ figcaption{
 </section>
 
 <!-- ============================ 03a HALLAZGO 01 ============================ -->
-<section class="slide s-blanco" id="s03a" data-num="03a" data-titulo="Hallazgo 01">
+<section class="slide s-blanco" id="s03a" data-num="03a" data-grupo="Hallazgos" data-titulo="Hallazgo 01">
   <div class="wrap">
     <p class="etiqueta"><b>03a</b> · Hallazgo 01</p>
     <div class="split">
@@ -768,7 +769,7 @@ figcaption{
 </section>
 
 <!-- ============================ 03b EVIDENCIA ============================ -->
-<section class="slide s-gris" id="s03b" data-num="03b" data-titulo="Hallazgo 01, evidencia">
+<section class="slide s-gris" id="s03b" data-num="03b" data-grupo="Hallazgos" data-titulo="Hallazgo 01, evidencia">
   <div class="wrap">
     <p class="etiqueta"><b>03b</b> · Hallazgo 01, evidencia</p>
     <h2>Scroll completo de la home</h2>
@@ -791,7 +792,7 @@ figcaption{
 </section>
 
 <!-- ============================ 04 HALLAZGO 02 ============================ -->
-<section class="slide s-blanco" id="s04" data-num="04" data-titulo="Hallazgo 02">
+<section class="slide s-blanco" id="s04" data-num="04" data-grupo="Hallazgos" data-titulo="Hallazgo 02">
   <div class="wrap">
     <p class="etiqueta"><b>04</b> · Hallazgo 02</p>
     <div class="split split--izq">
@@ -815,7 +816,7 @@ figcaption{
 </section>
 
 <!-- ============================ 05a HALLAZGO 03 ============================ -->
-<section class="slide s-negro" id="s05a" data-num="05a" data-titulo="Hallazgo 03">
+<section class="slide s-negro" id="s05a" data-num="05a" data-grupo="Hallazgos" data-titulo="Hallazgo 03">
   <div class="wrap">
     <p class="etiqueta"><b>05a</b> · Hallazgo 03</p>
     <div class="split">
@@ -839,7 +840,7 @@ figcaption{
 </section>
 
 <!-- ============================ 05b HALLAZGO 03 CONT. ============================ -->
-<section class="slide s-gris" id="s05b" data-num="05b" data-titulo="Hallazgo 03, continuación">
+<section class="slide s-gris" id="s05b" data-num="05b" data-grupo="Hallazgos" data-titulo="Hallazgo 03, continuación">
   <div class="wrap">
     <p class="etiqueta"><b>05b</b> · Hallazgo 03, continuación</p>
     <div class="split split--izq">
@@ -861,7 +862,7 @@ figcaption{
 </section>
 
 <!-- ============================ 06a HALLAZGO 04 ============================ -->
-<section class="slide s-blanco" id="s06a" data-num="06a" data-titulo="Hallazgo 04">
+<section class="slide s-blanco" id="s06a" data-num="06a" data-grupo="Hallazgos" data-titulo="Hallazgo 04">
   <div class="wrap">
     <p class="etiqueta"><b>06a</b> · Hallazgo 04</p>
     <h2>Dos minutos y veintitrés segundos buscando algo que ya no existe</h2>
@@ -888,7 +889,7 @@ figcaption{
 </section>
 
 <!-- ============================ 06b EL CONTENIDO ============================ -->
-<section class="slide s-azulpalido" id="s06b" data-num="06b" data-titulo="Hallazgo 04, el contenido">
+<section class="slide s-azulpalido" id="s06b" data-num="06b" data-grupo="Hallazgos" data-titulo="Hallazgo 04, el contenido">
   <div class="wrap">
     <p class="etiqueta"><b>06b</b> · Hallazgo 04, el contenido</p>
     <h2>El único lugar donde se explica, se contradice solo</h2>
@@ -908,7 +909,7 @@ figcaption{
 </section>
 
 <!-- ============================ 07a SÍNTESIS ============================ -->
-<section class="slide s-blanco" id="s07a" data-num="07a" data-titulo="Síntesis">
+<section class="slide s-blanco" id="s07a" data-num="07a" data-grupo="Síntesis" data-titulo="Síntesis">
   <div class="wrap">
     <p class="etiqueta"><b>07a</b> · Síntesis</p>
     <h2>Cuatro hallazgos, un mismo patrón</h2>
@@ -954,7 +955,7 @@ figcaption{
 </section>
 
 <!-- ============================ 07b IMPACTO ============================ -->
-<section class="slide s-azulpalido" id="s07b" data-num="07b" data-titulo="Impacto en el negocio">
+<section class="slide s-azulpalido" id="s07b" data-num="07b" data-grupo="Síntesis" data-titulo="Impacto en el negocio">
   <div class="wrap">
     <p class="etiqueta"><b>07b</b> · Impacto en el negocio</p>
     <h2>Lo que esto le cuesta a la compañía</h2>
@@ -993,7 +994,7 @@ figcaption{
 </section>
 
 <!-- ============================ 08 PROBLEMA E HIPÓTESIS ============================ -->
-<section class="slide s-blanco" id="s08" data-num="08" data-titulo="Problema e hipótesis">
+<section class="slide s-blanco" id="s08" data-num="08" data-grupo="Hipótesis" data-titulo="Problema e hipótesis">
   <div class="wrap">
     <p class="etiqueta"><b>08</b> · Problema e hipótesis</p>
     <h2>La interfaz prioriza la venta por sobre la tarea</h2>
@@ -1018,7 +1019,7 @@ figcaption{
 </section>
 
 <!-- ============================ 09 INVESTIGACIÓN GENERATIVA ============================ -->
-<section class="slide s-gris" id="s09" data-num="09" data-titulo="Investigación generativa">
+<section class="slide s-gris" id="s09" data-num="09" data-grupo="Investigación" data-titulo="Investigación generativa">
   <div class="wrap">
     <p class="etiqueta"><b>09</b> · Investigación generativa</p>
     <h2>Entender el problema desde la voz del cliente</h2>
@@ -1062,7 +1063,7 @@ figcaption{
 </section>
 
 <!-- ============================ 10a PROPUESTA 1 ============================ -->
-<section class="slide s-blanco" id="s10a" data-num="10a" data-titulo="Propuesta, pantalla 1">
+<section class="slide s-blanco" id="s10a" data-num="10a" data-grupo="Propuesta" data-titulo="Propuesta, pantalla 1">
   <div class="wrap">
     <p class="etiqueta"><b>10a</b> · Propuesta, pantalla 1</p>
     <div class="split">
@@ -1093,7 +1094,7 @@ figcaption{
 </section>
 
 <!-- ============================ 10b PROPUESTA 2 ============================ -->
-<section class="slide s-gris" id="s10b" data-num="10b" data-titulo="Propuesta, pantalla 2">
+<section class="slide s-gris" id="s10b" data-num="10b" data-grupo="Propuesta" data-titulo="Propuesta, pantalla 2">
   <div class="wrap">
     <p class="etiqueta"><b>10b</b> · Propuesta, pantalla 2</p>
     <div class="split">
@@ -1165,7 +1166,7 @@ figcaption{
 </section>
 
 <!-- ============================ 12 INVESTIGACIÓN EVALUATIVA ============================ -->
-<section class="slide s-azulpalido" id="s12" data-num="12" data-titulo="Investigación evaluativa">
+<section class="slide s-azulpalido" id="s12" data-num="12" data-grupo="Evaluación" data-titulo="Investigación evaluativa">
   <div class="wrap">
     <p class="etiqueta"><b>12</b> · Investigación evaluativa</p>
     <h2>Cómo sabré que la solución funciona</h2>
@@ -1232,30 +1233,47 @@ figcaption{
   var total     = secciones.length;
   var activa    = -1;
 
-  /* ---- Índice generado desde data-num y data-titulo ---- */
+  /* ---- Índice por grupos: una entrada puede cubrir varias secciones ---- */
+  var grupos = [];
+  var grupoDe = [];
   secciones.forEach(function(sec, i){
-    var num = sec.getAttribute("data-num") || "";
-    var tit = sec.getAttribute("data-titulo") || sec.id;
-    var etiqueta = num ? num + " · " + tit : tit;
+    var nombre = sec.getAttribute("data-grupo") || sec.getAttribute("data-titulo") || sec.id;
+    var ultimo = grupos[grupos.length - 1];
+    if(!ultimo || ultimo.nombre !== nombre){
+      ultimo = { nombre:nombre, inicio:i, cuantas:0 };
+      grupos.push(ultimo);
+    }
+    ultimo.cuantas++;
+    grupoDe[i] = grupos.length - 1;
+  });
+
+  grupos.forEach(function(g){
+    var etiqueta = g.cuantas > 1 ? g.nombre + ", " + g.cuantas + " secciones" : g.nombre;
+    var destino = "#" + secciones[g.inicio].id;
 
     var li = document.createElement("li");
     var a  = document.createElement("a");
     a.className = "nav__enlace";
-    a.href = "#" + sec.id;
-    a.textContent = tit;
+    a.href = destino;
+    a.textContent = g.nombre;
     a.title = etiqueta;
     a.setAttribute("aria-label", etiqueta);
-    a.setAttribute("data-i", i);
     li.appendChild(a);
     navLista.appendChild(li);
 
     var li2 = document.createElement("li");
     var a2  = document.createElement("a");
-    a2.href = "#" + sec.id;
-    a2.setAttribute("data-i", i);
+    a2.href = destino;
+    a2.setAttribute("aria-label", etiqueta);
     var sp2 = document.createElement("span");
-    sp2.textContent = tit;
+    sp2.textContent = g.nombre;
     a2.appendChild(sp2);
+    if(g.cuantas > 1){
+      var sp3 = document.createElement("span");
+      sp3.className = "n";
+      sp3.textContent = g.cuantas;
+      a2.appendChild(sp3);
+    }
     li2.appendChild(a2);
     indLista.appendChild(li2);
   });
@@ -1266,15 +1284,16 @@ figcaption{
   function marcar(i){
     if(i === activa) return;
     activa = i;
-    [enlacesNav, enlacesInd].forEach(function(grupo){
-      grupo.forEach(function(a, j){
-        if(j === i){ a.setAttribute("aria-current","true"); }
+    var g = grupoDe[i];
+    [enlacesNav, enlacesInd].forEach(function(lista){
+      lista.forEach(function(a, j){
+        if(j === g){ a.setAttribute("aria-current","true"); }
         else { a.removeAttribute("aria-current"); }
       });
     });
     var num = secciones[i].getAttribute("data-num") || "00";
     contador.textContent = num + " / " + (total - 1);
-    var act = enlacesNav[i];
+    var act = enlacesNav[g];
     if(act && navLista.scrollWidth > navLista.clientWidth){
       var izq = act.offsetLeft - navLista.clientWidth / 2;
       navLista.scrollTo({ left: izq, behavior: "auto" });

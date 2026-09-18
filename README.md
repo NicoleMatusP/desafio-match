@@ -86,12 +86,13 @@ el texto es corto, en negrita y en mayúsculas.
 gris. Los tokens `--gutter` y `--tope` controlan la separación entre tarjetas y el
 espacio que reserva la barra de índice.
 
-**Índice.** Barra fija a ras del borde superior, a todo el ancho, con los nombres de
-sección sin numerar, igual que en la presentación de la Ley 21.719. Los 19 nombres no
-caben en 1440 px, así que la lista se desplaza en horizontal y la sección activa se
-centra sola. Si se prefiere verlos todos de una vez, hay que acortar los nombres
-compuestos (por ejemplo, "Hallazgo 01, evidencia" a "Evidencia") en el atributo
-`data-titulo` de cada sección.
+**Índice.** Barra fija a ras del borde superior, a todo el ancho, con los nombres sin
+numerar, igual que en la presentación de la Ley 21.719. No lista las 19 secciones sino
+11 grupos: una entrada puede cubrir varias secciones y el enlace lleva a la primera.
+Los grupos se declaran con el atributo `data-grupo` en cada `<section>`; las secciones
+sin ese atributo forman grupo propio con su `data-titulo`. Así la barra cabe entera en
+1440 px sin desplazamiento horizontal, y el contador de la derecha sigue mostrando la
+sección exacta. Para mover una sección de grupo basta cambiar su `data-grupo`.
 
 **Impacto en el negocio (07b).** Los cuatro KPI usan cifras públicas y una medición
 propia, cada una con su fuente en 11 px bajo el bloque. La medición propia va con la
