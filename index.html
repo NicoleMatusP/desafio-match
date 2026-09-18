@@ -530,7 +530,17 @@ figcaption{
 }
 /* La captura se apoya en el borde inferior del panel y este la recorta */
 .portada__texto{align-self:center}
-.portada__figura{margin:0 0 calc(-1 * var(--pad));align-self:end}
+.portada__media{
+  display:flex;align-items:flex-end;
+  margin:0 0 calc(-1 * var(--pad));align-self:end;
+}
+.portada__figura{margin:0;position:relative;z-index:2}
+.portada__persona{
+  display:block;width:auto;flex:0 0 auto;
+  height:clamp(190px,42vh,420px);
+  margin-left:clamp(-40px,-2.4vw,-16px);
+  position:relative;z-index:1;
+}
 .portada__figura img{
   display:block;width:auto;box-shadow:0 0 0 1px rgba(255,255,255,.18);
   height:clamp(240px,52vh,500px);
@@ -549,6 +559,10 @@ figcaption{
 .portada__marca span{color:var(--azul)}
 .portada__pie .sub{margin:0 0 var(--s3);font-size:var(--f-body);color:var(--gris-texto)}
 
+/* Cierre: la misma persona, al costado del texto */
+.cierre{display:grid;grid-template-columns:1fr auto;gap:clamp(24px,3.4vw,56px);align-items:end}
+.cierre__persona{display:block;width:auto;align-self:end;height:clamp(200px,46vh,460px)}
+
 /* ============================================================
    RESPONSIVE
    ============================================================ */
@@ -564,6 +578,10 @@ figcaption{
   .portada__panel{grid-template-columns:1fr;gap:26px}
   .portada__figura{justify-self:start}
   .portada__figura img{height:270px}
+  .portada__media{justify-content:flex-start}
+  .portada__persona{height:230px;margin-left:-14px}
+  .cierre{grid-template-columns:1fr;gap:28px}
+  .cierre__persona{height:240px;justify-self:start}
   .nav__lista,.nav__contador{display:none}
   .nav__boton{display:inline-block;margin-left:auto}
   .cols-2,.cols-3,.cols-4,.split,.split--izq,.tira,.timeline,.marcos,.evidencia{grid-template-columns:1fr;display:grid}
@@ -634,8 +652,11 @@ figcaption{
   .tabla .c-sev{width:9ch}
   .portada .wrap{display:block}
   .portada__panel{--pad:var(--s3);padding:var(--s3) var(--s4);border-radius:8px;margin-bottom:var(--s3)}
-  .portada__figura{margin-bottom:calc(-1 * var(--s3))}
-  .portada__figura img{height:48mm}
+  .portada__media{margin-bottom:calc(-1 * var(--s3))}
+  .portada__figura img{height:46mm}
+  .portada__persona{height:42mm;margin-left:-6mm}
+  .cierre{display:grid;grid-template-columns:1fr auto;gap:8mm}
+  .cierre__persona{height:44mm}
   .portada__panel h1{margin-top:var(--s3)}
   .portada__pie{display:grid;grid-template-columns:0.62fr 1fr;gap:var(--s4)}
   .slide:first-of-type{padding-top:0}
@@ -696,9 +717,12 @@ figcaption{
         <p class="etiqueta">Desafío UX Research &amp; Strategy · Septiembre 2026</p>
         <h1>Cuando la app no responde la pregunta que la gente vino a hacer</h1>
       </div>
-      <figure class="portada__figura">
-        <img src="img/02-home-primer-viewport.jpg" alt="Home de la app Entel: el primer viewport lo ocupan un banner de fibra óptica y cinco accesos rápidos de contratación, sin ningún dato del plan.">
-      </figure>
+      <div class="portada__media">
+        <figure class="portada__figura">
+          <img src="img/02-home-primer-viewport.jpg" alt="Home de la app Entel: el primer viewport lo ocupan un banner de fibra óptica y cinco accesos rápidos de contratación, sin ningún dato del plan.">
+        </figure>
+        <img class="portada__persona" src="img/13-persona-usando-app.png" alt="">
+      </div>
     </div>
     <div class="portada__pie">
       <div>
@@ -1247,7 +1271,8 @@ figcaption{
 
 <!-- ============================ 13 CIERRE ============================ -->
 <section class="slide s-azul" id="s13" data-num="13" data-titulo="Cierre">
-  <div class="wrap">
+  <div class="wrap cierre">
+    <div>
     <p class="etiqueta"><b>13</b> · Cierre</p>
     <h2>Una app que responde primero, vende mejor después</h2>
     <p class="sub">Gracias por la lectura. Quedo disponible para revisar en detalle las decisiones de investigación y de diseño detrás de cada sección.</p>
@@ -1261,6 +1286,8 @@ figcaption{
       Desafío UX Research &amp; Strategy · MATCH · Septiembre 2026
     </p>
     <p class="nota">Nota metodológica: evidencia levantada el 18 de septiembre de 2026 sobre la versión entonces disponible de la aplicación. Los hallazgos describen ese estado del producto.</p>
+    </div>
+    <img class="cierre__persona" src="img/13-persona-usando-app.png" alt="">
   </div>
 </section>
 

@@ -14,7 +14,7 @@ Nicole Matus · nicole.matusp@gmail.com · Septiembre 2026
 desafio-match/
 ├── index.html      Presentación completa: HTML, CSS y JS embebidos. Sin dependencias.
 ├── README.md       Este archivo.
-└── img/            Capturas del flujo evaluado (12 archivos, 10 en uso).
+└── img/            Capturas del flujo evaluado y la foto de portada (13 archivos).
 ```
 
 `index.html` funciona abriendo el archivo directamente (doble clic) y servido desde
@@ -40,6 +40,7 @@ en la carpeta; la presentación usa 10:
 | `img/11-ayuda-puntos-no-disponible.jpg` | 06a |
 | `img/10-club-beneficios.jpg` | sin usar |
 | `img/12-ayuda-sms-fraudulentos.jpg` | sin usar |
+| `img/13-persona-usando-app.png` | Portada y 13 |
 
 Las dos últimas quedaron fuera porque el guion de las secciones no las contemplaba.
 Si se quieren incorporar, el lugar natural de `12-ayuda-sms-fraudulentos.jpg` es la
@@ -124,6 +125,13 @@ solo aparecen severidades 3 y 4; el verde queda definido para completar la escal
 **Iconos.** Veinte iconos de línea en SVG embebido (secciones 01, 08, 09, 11 y 12), sin
 archivos externos. Heredan el color del bloque con `currentColor` y están marcados
 `aria-hidden` porque acompañan a un título que ya dice lo mismo.
+
+**Foto de portada.** `13-persona-usando-app.png` es la única imagen que no viene del
+flujo evaluado. Lleva el fondo recortado con canal alfa, así que se apoya directamente
+sobre el azul en la portada y en el cierre. El recorte se hizo ajustando un plano al
+degradado del fondo original y difundiendo desde el marco, para que el celular blanco
+que sostiene, de gris casi idéntico al fondo, no se borrara. Va con `alt=""` porque es
+decorativa: no aporta información que el texto no diga ya.
 
 **Capturas.** Van sin marco de dispositivo y sin recuadro: la caja del `img` se ajusta
 a la imagen en vez de ocupar la columna entera. Se midieron los bordes de las 12
