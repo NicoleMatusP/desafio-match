@@ -46,7 +46,7 @@ Si se quieren incorporar, el lugar natural de `12-ayuda-sms-fraudulentos.jpg` es
 sección 06b, que cita justamente ese artículo, y el de `10-club-beneficios.jpg` es la
 columna "Actual" de la sección 10b.
 
-Si falta una captura, la página no muestra un ícono roto: dibuja un recuadro amarillo
+Si falta una captura, la página no muestra un ícono roto: dibuja un recuadro naranja
 con el texto "Captura pendiente" y el nombre del archivo que falta.
 
 ---
@@ -159,12 +159,11 @@ marca la sección activa. Bajo 760 px de ancho se colapsa en el botón "Índice"
 
 ## Pendientes por completar
 
-Todo lo que falta está marcado en la página con un recuadro amarillo `[  ]`
+Todo lo que falta está marcado en la página con un recuadro naranja `[  ]`
 (`<span class="pendiente">`). Ningún dato de negocio fue inventado.
 
 **Contenido**
 
-- [ ] **01 · Método:** modelo de equipo, versión de iOS y versión de la app.
 - [ ] **07b · Impacto en el negocio:** los cuatro KPIs (autoatención digital, costo por
       contacto, uso de beneficios del Club y riesgo de fraude), con la data interna de
       la compañía.
