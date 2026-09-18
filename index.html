@@ -20,8 +20,11 @@
   --naranja:#F57917;
   --naranja-palido:#FDE7D5;
   --alerta:#C2410C;
-  --exito:#15803D;
-  --peligro:#B91C1C;
+  --exito:#166534;
+  --exito-palido:#DCF0E3;
+  --aviso:#9A3412;
+  --peligro:#991B1B;
+  --peligro-palido:#FEE2E2;
   --blanco:#FFFFFF;
 
   --nav-h:54px;
@@ -274,14 +277,12 @@ h2 + .texto,h2 + .cita,h2 + .cita--caja,h2 + h3,h2 + .tira,h2 + .cols,h2 + .tabl
 .sev{
   display:inline-block;font-size:var(--f-mini);font-weight:600;
   text-transform:uppercase;letter-spacing:.07em;border-radius:var(--radio-xs);
-  padding:4px 10px;margin-right:var(--s2);
+  padding:3px 10px;margin-right:var(--s2);border:1px solid transparent;
 }
-/* Escala de severidad 0 a 4 con colores de estado */
-.sev-0,.sev-1,.sev-2{background:var(--exito);color:var(--blanco)}
-.sev-3{background:var(--naranja);color:var(--negro)}
-.sev-4{background:var(--peligro);color:var(--blanco)}
-/* Sobre fondo oscuro el rojo se funde: un filete lo delimita */
-.s-negro .sev,.s-azul .sev{box-shadow:0 0 0 1px rgba(255,255,255,.35)}
+/* Escala de severidad 0 a 4: relleno pastel y el color de estado en el texto */
+.sev-0,.sev-1,.sev-2{background:var(--exito-palido);color:var(--exito);border-color:var(--exito)}
+.sev-3{background:var(--naranja-palido);color:var(--aviso);border-color:var(--aviso)}
+.sev-4{background:var(--peligro-palido);color:var(--peligro);border-color:var(--peligro)}
 .tabla .sev{margin:0}
 .heur{
   font-size:var(--f-mini);color:var(--gris-texto);

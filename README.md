@@ -67,8 +67,9 @@ Para cambiar uno, se edita solo ahí.
 | `--naranja` | `#F57917` | Reglas, insignias, chips de pendiente |
 | `--naranja-palido` | `#FDE7D5` | Fondo de la sección de tensión |
 | `--alerta` | `#C2410C` | Filete de la cita antifraude |
-| `--exito` | `#15803D` | Severidad 0 a 2 |
-| `--peligro` | `#B91C1C` | Severidad 4 |
+| `--exito` / `--exito-palido` | `#166534` / `#DCF0E3` | Severidad 0 a 2 |
+| `--aviso` | `#9A3412` | Texto de la severidad 3 |
+| `--peligro` / `--peligro-palido` | `#991B1B` / `#FEE2E2` | Severidad 4 |
 
 **Sobre el naranja.** El sitio actual de Entel ya no usa naranja: su identidad vigente
 es azul (`#002EFF`). El naranja corresponde a la identidad anterior y el valor `#F57917`
@@ -101,9 +102,9 @@ filete discontinuo cuando ocupan el lugar de una cifra grande. Antes eran naranj
 sólido y pesaban como botones.
 
 **Severidad.** Las insignias usan colores de estado según el número, tanto en los
-hallazgos como en la columna de la tabla de síntesis: verde para 0 a 2, el naranja de
-marca para 3 y rojo para 4. Sobre el fondo negro el rojo se funde con la sección, así
-que ahí la insignia lleva un filete blanco al 35 % que la delimita. En la evaluación
+hallazgos como en la columna de la tabla de síntesis: verde para 0 a 2, naranja para 3
+y rojo para 4. El relleno es pastel y el color de estado va en el texto y el filete, lo
+que da entre 6,1 y 6,8 de contraste sin el peso de un bloque saturado. En la evaluación
 solo aparecen severidades 3 y 4; el verde queda definido para completar la escala.
 
 **Iconos.** Veinte iconos de línea en SVG embebido (secciones 01, 08, 09, 11 y 12), sin
