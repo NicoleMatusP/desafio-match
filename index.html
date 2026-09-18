@@ -340,7 +340,8 @@ figcaption{
 .tira--grande .captura{max-height:52vh}
 .tira--media .captura{max-height:42vh}
 .remate .sev{display:inline-block;margin:0 0 var(--s3)}
-.evidencia .meta{margin-top:0;border-top:0;padding-top:0}
+.evidencia .meta,.meta--sin-linea{margin-top:var(--s3);border-top:0;padding-top:0}
+.evidencia .meta{margin-top:0}
 .destacado{
   font-size:clamp(16px,1.45vw,21px);line-height:1.35;
   letter-spacing:-0.015em;font-weight:500;margin:0;
@@ -804,7 +805,10 @@ figcaption{
           <figcaption>Anuncio a pantalla completa al abrir</figcaption>
         </figure>
       </div>
-      <p class="destacado marca-corta">La saturación comercial también tiene un costo comercial: cuando todo compite por atención, el usuario deja de mirar. Y eso afecta justamente a las ofertas que la home intenta empujar.</p>
+      <div class="remate">
+        <span class="sev sev-3">Severidad 3</span>
+        <p class="destacado">La saturación comercial también tiene un costo comercial: cuando todo compite por atención, el usuario deja de mirar. Y eso afecta justamente a las ofertas que la home intenta empujar.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -869,6 +873,7 @@ figcaption{
           <p>El orden responde a cómo la empresa organiza su facturación, no a lo que la gente consulta.</p>
         </div>
         <div class="meta">
+          <span class="sev sev-4">Severidad 4</span>
           <span class="heur">Heurísticas: #2 correspondencia con el mundo real · #7 flexibilidad y eficiencia de uso.</span>
         </div>
       </div>
@@ -917,7 +922,10 @@ figcaption{
       <div>
         <blockquote class="cita--caja">“Desde el 1 de mayo de 2025, el programa de Puntos Entel no está disponible.”</blockquote>
         <p>Y a continuación el mismo artículo explica cómo canjear los puntos y cómo revisar los acumulados ingresando teléfono o RUT en el sitio web.</p>
-        <p class="heur">Heurísticas: #1 visibilidad del estado del sistema · #2 lenguaje del usuario · #4 consistencia y estándares · #10 ayuda y documentación.</p>
+        <div class="meta meta--sin-linea">
+          <span class="sev sev-4">Severidad 4</span>
+          <span class="heur">Heurísticas: #1 visibilidad del estado del sistema · #2 lenguaje del usuario · #4 consistencia y estándares · #10 ayuda y documentación.</span>
+        </div>
       </div>
       <div>
         <blockquote class="cita--caja cita--alerta">“Mensajes SMS fraudulentos: actualmente no contamos con un programa de acumulación de puntos…”</blockquote>
