@@ -189,7 +189,7 @@ strong{font-weight:600}
   display:flex;align-items:center;
   margin:var(--gutter);
   border-radius:var(--radio);
-  padding:clamp(22px,2.6vw,34px) clamp(20px,3vw,42px);
+  padding:clamp(16px,2.4vh,32px) clamp(20px,3vw,42px);
 }
 @supports (min-height:100svh){.slide{min-height:calc(100svh - var(--tope) - var(--gutter))}}
 .slide:first-of-type{padding-top:calc(var(--nav-h) + 26px)}
@@ -221,7 +221,7 @@ strong{font-weight:600}
 .s-naranja .sub,.s-azulpalido .sub{color:var(--negro)}
 
 .texto{max-width:66ch}
-h2 + .texto,h2 + .cita,h2 + .cita--caja,h2 + h3,h2 + .tira,h2 + .cols,h2 + .tabla,h2 + .timeline,h2 + .marcos,h2 + .proto{margin-top:var(--s4)}
+h2 + .texto,h2 + .cita,h2 + .cita--caja,h2 + h3,h2 + .tira,h2 + .cols,h2 + .tabla,h2 + .timeline,h2 + .marcos,h2 + .proto,h2 + .evidencia{margin-top:var(--s4)}
 .texto p:last-child{margin-bottom:0}
 
 .nota{
@@ -337,7 +337,10 @@ figcaption{
   display:grid;grid-template-columns:1fr 0.34fr;
   gap:clamp(24px,3vw,52px);align-items:start;
 }
-.tira--grande .captura{max-height:60vh}
+.tira--grande .captura{max-height:52vh}
+.tira--media .captura{max-height:42vh}
+.remate .sev{display:inline-block;margin:0 0 var(--s3)}
+.evidencia .meta{margin-top:0;border-top:0;padding-top:0}
 .destacado{
   font-size:clamp(16px,1.45vw,21px);line-height:1.35;
   letter-spacing:-0.015em;font-weight:500;margin:0;
@@ -882,23 +885,25 @@ figcaption{
     <p class="etiqueta"><b>06a</b> · Hallazgo 04</p>
     <h2>Dos minutos y veintitrés segundos buscando algo que ya no existe</h2>
     <p class="sub">Segunda tarea: revisar los puntos acumulados. El recorrido pasa por el menú rápido, el Club, Beneficios, Eventos y Mis cupones, y en ninguna parte de la interfaz aparecen los puntos ni una explicación.</p>
-    <div class="tira">
-      <figure>
-        <img class="captura" src="img/08-menu-que-hacemos-hoy.jpg" alt="Menú rápido “¿Qué hacemos hoy?” con once accesos, ninguno de ellos a los puntos acumulados.">
-        <figcaption>1:03 · menú con 11 accesos</figcaption>
-      </figure>
-      <figure>
-        <img class="captura" src="img/09-club-mis-cupones-vacio.jpg" alt="Pantalla Mis cupones del Club, sin cupones ni referencia alguna a los puntos acumulados.">
-        <figcaption>1:37 · Mis cupones vacío</figcaption>
-      </figure>
-      <figure>
-        <img class="captura" src="img/11-ayuda-puntos-no-disponible.jpg" alt="Artículo del centro de ayuda que informa que el programa de Puntos no está disponible.">
-        <figcaption>2:23 · la respuesta en el centro de ayuda</figcaption>
-      </figure>
-    </div>
-    <div class="meta">
-      <span class="sev sev-4">Severidad 4</span>
-      <span class="heur">Afecta la confianza en la marca.</span>
+    <div class="evidencia">
+      <div class="tira tira--media">
+        <figure>
+          <img class="captura" src="img/08-menu-que-hacemos-hoy.jpg" alt="Menú rápido “¿Qué hacemos hoy?” con once accesos, ninguno de ellos a los puntos acumulados.">
+          <figcaption>1:03 · menú con 11 accesos</figcaption>
+        </figure>
+        <figure>
+          <img class="captura" src="img/09-club-mis-cupones-vacio.jpg" alt="Pantalla Mis cupones del Club, sin cupones ni referencia alguna a los puntos acumulados.">
+          <figcaption>1:37 · Mis cupones vacío</figcaption>
+        </figure>
+        <figure>
+          <img class="captura" src="img/11-ayuda-puntos-no-disponible.jpg" alt="Artículo del centro de ayuda que informa que el programa de Puntos no está disponible.">
+          <figcaption>2:23 · la respuesta en el centro de ayuda</figcaption>
+        </figure>
+      </div>
+      <div class="remate">
+        <span class="sev sev-4">Severidad 4</span>
+        <p class="destacado">Afecta la confianza en la marca.</p>
+      </div>
     </div>
   </div>
 </section>
