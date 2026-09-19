@@ -14,6 +14,7 @@ Nicole Matus · nicole.matusp@gmail.com · Septiembre 2026
 desafio-match/
 ├── index.html      Presentación completa: HTML, CSS y JS embebidos. Sin dependencias.
 ├── README.md       Este archivo.
+├── prototipo.html   Prototipo navegable de las dos pantallas propuestas.
 └── img/            Capturas del flujo evaluado y la imagen de portada (13 archivos).
 ```
 
@@ -90,8 +91,9 @@ espacio que reserva la barra de índice.
 **Proceso con IA (11a, 11b, 11c).** El contenido no cabía en una lámina: 11a es el
 método y la herramienta, 11b embebe el prototipo en un iframe y 11c reúne los prompts
 literales y la conclusión. Las tres comparten `data-grupo="Proceso con IA"`, así que el
-índice sigue mostrando una sola entrada. En impresión el iframe se oculta y queda la URL
-completa del prototipo en el bloque `.print-only`.
+índice sigue mostrando una sola entrada. El iframe apunta a `./prototipo.html#t1`, el ancla de la primera
+pantalla, para que abra en los mockups y no en la introducción del prototipo. En
+impresión se oculta y queda la URL completa en el bloque `.print-only`.
 
 **Índice.** Barra fija a ras del borde superior, a todo el ancho, con los nombres sin
 numerar, igual que en la presentación de la Ley 21.719. No lista las 19 secciones sino
@@ -210,15 +212,12 @@ Todo lo que falta está marcado en la página con un recuadro naranja `[  ]`
 **Contenido**
 
 - [ ] **10a y 10b:** reemplazar los dos marcos punteados por la salida del prototipo.
-- [ ] **Crear `prototipo.html`** en la raíz del repo. La sección 11b lo embebe en un
-      iframe y el botón apunta a él; mientras no exista, el iframe muestra un 404.
 
 **Prototipo**
 
-- [ ] Reemplazar el `href="#"` de los dos botones `data-prototipo` que quedan (portada y
-      13) por `./prototipo.html`. El de la sección 11b ya apunta ahí. Mientras el `href`
-      sea `#`, el botón se muestra como "Prototipo: URL pendiente" y no navega.
-- [ ] Escribir la URL en las dos líneas `.print-only` restantes; la de 11b ya la tiene.
+Los tres enlaces al prototipo (portada, 11b y cierre) apuntan a `./prototipo.html`, y
+las tres líneas `.print-only` llevan la URL completa para el PDF. Ya no queda ningún
+marcador de pendiente en la página.
 
 ---
 

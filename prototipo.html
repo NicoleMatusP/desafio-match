@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototipo · Propuesta de mejora app Entel</title>
+<meta name="description" content="Prototipo navegable de dos pantallas: consumo visible y estado del programa de beneficios.">
+<style>
+:root{
+  --negro:#101114;
+  --texto:#1A1C21;
+  --gris-texto:#63676F;
+  --gris-linea:#E3E4E8;
+  --gris-app:#ECECEE;      /* fondo del contenido, como en la app */
+  --gris-suave:#F3F4F6;
+  --blanco:#FFFFFF;
+  --azul:#1226E8;          /* azul de acción */
+  --azul-claro:#E8ECFF;
+  --naranjo:#F2681C;       /* barra de periodo, como en la app */
+  --verde:#0F7B4F;
+  --ambar-bg:#FFF4D6;
+  --ambar-tx:#6B4400;
+  --alerta-bg:#FDE7DC;
+  --alerta-tx:#7C2D12;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:#F6F7F9;color:var(--texto);
+  font-family:"Helvetica Neue",Helvetica,Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  line-height:1.5;-webkit-font-smoothing:antialiased;
+}
+:focus-visible{outline:3px solid var(--azul);outline-offset:2px}
+[hidden]{display:none !important}
+
+/* ---------- página contenedora ---------- */
+.wrap{max-width:1120px;margin:0 auto;padding:clamp(24px,5vw,56px) clamp(20px,5vw,40px) 72px}
+.intro{max-width:70ch;margin-bottom:38px}
+.kicker{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gris-texto);margin:0 0 12px}
+h1{font-size:clamp(26px,3.6vw,38px);line-height:1.12;letter-spacing:-.02em;font-weight:600;margin:0 0 14px}
+.intro p{color:var(--gris-texto);margin:0 0 10px}
+.pantallas{display:grid;gap:clamp(28px,5vw,56px);grid-template-columns:repeat(auto-fit,minmax(340px,1fr));align-items:start}
+.bloque h2{font-size:20px;margin:0 0 4px;letter-spacing:-.01em}
+.bloque .sub{font-size:14px;color:var(--gris-texto);margin:0 0 18px}
+
+/* ---------- teléfono ---------- */
+.telefono{
+  width:100%;max-width:340px;margin:0 auto;background:var(--blanco);border-radius:34px;
+  border:1px solid #DCDEE4;box-shadow:0 12px 34px rgba(16,17,20,.12);overflow:hidden;
+}
+.barra-estado{display:flex;justify-content:space-between;align-items:center;padding:11px 22px 5px;font-size:12.5px;font-weight:600}
+.barra-estado .iconos{display:flex;gap:5px;align-items:center}
+.senal{width:15px;height:10px;background:var(--negro);
+  clip-path:polygon(0 70%,22% 70%,22% 100%,0 100%,0 70%,30% 45%,52% 45%,52% 100%,30% 100%,30% 45%,60% 22%,82% 22%,82% 100%,60% 100%,60% 22%,90% 0,100% 0,100% 100%,90% 100%)}
+.bateria{width:21px;height:10.5px;border:1.5px solid var(--negro);border-radius:3px;position:relative}
+.bateria::after{content:"";position:absolute;inset:1.5px;background:var(--negro);border-radius:1px}
+
+/* cabecera de la app */
+.app-header{display:flex;align-items:center;gap:10px;padding:6px 18px 12px;background:var(--blanco)}
+.marca{width:30px;height:26px;border-radius:8px;background:var(--gris-suave);border:1px dashed #C6C9D0;flex:none;
+  display:flex;align-items:center;justify-content:center;font-size:8px;color:#9A9EA6;letter-spacing:.04em}
+.saludo{font-size:17px;flex:1}
+.iconos-header{display:flex;gap:16px;color:var(--negro);align-items:center}
+.ic{width:23px;height:23px;display:block}
+
+/* cabecera con título centrado, como las pantallas internas */
+.app-header--titulo{justify-content:center;position:relative;padding-bottom:14px}
+.app-header--titulo .volver{position:absolute;left:18px;font-size:20px;line-height:1;color:var(--negro)}
+.app-header--titulo .t{font-size:17px;font-weight:600}
+
+/* lienzo gris con tarjetas blancas */
+.lienzo{background:var(--gris-app);padding:14px 14px 18px;min-height:496px}
+
+.card{background:var(--blanco);border-radius:18px;padding:16px;margin-bottom:12px}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.card-head h3{font-size:18px;font-weight:700;margin:0;letter-spacing:-.01em}
+.pill-out{
+  font:inherit;font-size:12px;font-weight:500;color:var(--azul);background:none;
+  border:1.4px solid var(--azul);border-radius:99px;padding:5px 13px;cursor:pointer;white-space:nowrap;
+}
+
+/* periodo con barra naranja */
+.periodo-rot{font-size:12.5px;color:var(--gris-texto);margin:0 0 7px}
+.periodo{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--gris-texto)}
+.periodo .track{flex:1;height:7px;border-radius:99px;background:#D9DADE;overflow:hidden}
+.periodo .track i{display:block;height:100%;background:var(--naranjo);border-radius:99px}
+
+/* control segmentado */
+.segmento{display:flex;gap:4px;background:var(--gris-suave);border-radius:14px;padding:4px;margin:16px 0 4px}
+.segmento button{
+  flex:1;font:inherit;font-size:13.5px;font-weight:600;border:0;border-radius:11px;padding:10px 6px;
+  background:none;color:var(--gris-texto);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;
+}
+.segmento button[aria-pressed="true"]{background:var(--azul);color:#fff}
+.segmento .punto{width:17px;height:17px;flex:none;display:block}
+
+/* medidor circular */
+.medidor{position:relative;width:224px;height:158px;margin:18px auto 0}
+.medidor svg{position:absolute;inset:0}
+.medidor .centro{position:absolute;left:34px;right:34px;top:66px;text-align:center}
+.medidor .rot{font-size:12.5px;color:var(--gris-texto);display:block;margin-bottom:1px}
+.medidor .cifra{font-size:30px;font-weight:700;color:var(--azul);letter-spacing:-.02em;line-height:1.15;display:block}
+.medidor .de{font-size:13.5px;color:var(--gris-texto);display:block}
+.dias{font-size:12.5px;color:var(--gris-texto);text-align:center;margin:4px 0 0}
+
+/* filas con icono azul */
+.filas{list-style:none;margin:12px 0 0;padding:0}
+.filas li{display:flex;align-items:center;gap:10px;padding:10px 0;font-size:14px}
+.filas .ico{width:19px;height:19px;flex:none;color:var(--azul);display:block}
+.filas b{font-weight:700;color:var(--azul)}
+
+/* avisos */
+.aviso{border-radius:18px;padding:15px 16px;font-size:13.5px;line-height:1.5;margin-bottom:12px;display:flex;gap:11px;align-items:flex-start}
+.aviso--info{background:var(--azul-claro);color:#0D1A82}
+.aviso--ambar{background:var(--ambar-bg);color:var(--ambar-tx)}
+.aviso--alerta{background:var(--alerta-bg);color:var(--alerta-tx)}
+.aviso b{display:block;margin-bottom:3px;font-size:14px}
+.aviso .simbolo{font-weight:800;flex:none;width:18px;height:18px;border-radius:50%;background:currentColor;position:relative}
+.aviso .simbolo::after{content:attr(data-s);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:12px;line-height:1;color:#fff}
+
+.btn{display:block;width:100%;text-align:center;border:0;border-radius:99px;padding:14px 18px;
+  font:inherit;font-size:15px;font-weight:700;cursor:pointer;background:var(--azul);color:#fff}
+.btn--texto{background:none;color:inherit;border:0;padding:8px 0 0;font-weight:700;width:auto;text-decoration:underline;
+  text-underline-offset:3px;cursor:pointer;font-size:13.5px;font-family:inherit}
+
+/* navegación inferior */
+.nav-inferior{display:flex;background:var(--blanco);padding:6px 0 10px;border-top:1px solid var(--gris-linea)}
+.nav-inferior div{flex:1;text-align:center;font-size:10.5px;color:var(--gris-texto)}
+.nav-inferior .icono{display:flex;align-items:center;justify-content:center;width:30px;height:28px;margin:0 auto 3px;
+  border-radius:99px;color:var(--gris-texto)}
+.nav-inferior .icono svg{width:21px;height:21px;display:block}
+.nav-inferior div.on{color:var(--azul);font-weight:700}
+.nav-inferior div.on .icono{background:var(--azul-claro);color:var(--azul)}
+
+/* Club */
+.buscador{display:flex;align-items:center;gap:9px;background:var(--blanco);border-radius:99px;padding:11px 15px;margin-bottom:12px;
+  font-size:13.5px;color:var(--gris-texto)}
+.buscador .lupa{width:16px;height:16px;flex:none;color:var(--gris-texto);display:block}
+.buscador .pin{width:16px;height:16px;flex:none;color:var(--azul);display:block;margin-left:auto}
+.tabs{display:flex;background:var(--blanco);padding:0 6px;border-bottom:1px solid var(--gris-linea)}
+.tabs button{flex:1;font:inherit;font-size:13.5px;background:none;border:0;border-bottom:2.5px solid transparent;
+  padding:12px 6px;cursor:pointer;color:var(--gris-texto)}
+.tabs button[aria-selected="true"]{color:var(--azul);border-bottom-color:var(--azul);font-weight:700}
+
+.categorias{display:flex;gap:8px;margin-bottom:12px}
+.categorias button{
+  flex:1;font:inherit;font-size:11.5px;background:var(--blanco);border:0;border-radius:14px;padding:12px 4px 10px;
+  cursor:pointer;color:var(--texto);display:flex;flex-direction:column;align-items:center;gap:6px;
+}
+.categorias button[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--azul);color:var(--azul);font-weight:600}
+.categorias .fig{width:19px;height:19px;display:block}
+
+.seccion-head{display:flex;align-items:center;justify-content:space-between;margin:2px 0 10px}
+.seccion-head h4{font-size:15px;margin:0;font-weight:700;display:flex;align-items:center;gap:8px}
+.seccion-head .fig{width:7px;height:7px;background:var(--azul);border-radius:50%}
+
+.grilla{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.beneficio{background:var(--blanco);border-radius:16px;overflow:hidden}
+.beneficio .imagen{height:72px;background:linear-gradient(135deg,#DDE0E6,#EFF1F4);display:flex;align-items:center;justify-content:center;
+  font-size:10.5px;color:#8A8F98;letter-spacing:.04em}
+.beneficio .txt{padding:10px 11px 12px}
+.beneficio .t{font-size:13px;font-weight:700;display:block;margin-bottom:2px}
+.beneficio .d{font-size:11.5px;color:var(--gris-texto);display:block}
+.beneficio .estado{font-size:10.5px;color:var(--verde);font-weight:700;margin-top:6px;display:block}
+
+.vacio{background:var(--blanco);border-radius:18px;padding:26px 20px;text-align:center}
+.vacio .marca-v{width:64px;height:64px;border-radius:50%;background:var(--azul-claro);margin:0 auto 14px;
+  display:flex;align-items:center;justify-content:center;color:var(--azul)}
+.vacio .marca-v svg{width:28px;height:28px}
+.vacio b{display:block;font-size:14.5px;margin-bottom:6px}
+.vacio p{font-size:13px;color:var(--gris-texto);margin:0 0 16px}
+
+.detalle{margin-top:8px;font-size:13px;line-height:1.5}
+.detalle ul{margin:6px 0 0;padding-left:17px}
+.detalle li{margin-bottom:5px}
+
+/* controles del prototipo */
+.controles{margin-top:16px;border:1px dashed #CFD2D8;border-radius:16px;padding:15px;background:var(--blanco)}
+.controles .rot{margin:0 0 10px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gris-texto)}
+.controles .grupo{display:flex;gap:7px;flex-wrap:wrap}
+.controles .grupo button{font:inherit;font-size:13px;padding:8px 13px;border-radius:99px;border:1px solid var(--gris-linea);
+  background:var(--blanco);cursor:pointer}
+.controles .grupo button[aria-pressed="true"]{background:var(--azul);color:#fff;border-color:var(--azul)}
+.leyenda{font-size:12.5px;color:var(--gris-texto);margin:11px 0 0;line-height:1.5}
+
+.pie{margin-top:56px;border-top:1px solid var(--gris-linea);padding-top:20px;font-size:13px;color:var(--gris-texto);max-width:78ch}
+
+@media (prefers-reduced-motion:reduce){*{transition:none !important}}
+@media print{body{background:#fff}.controles{display:none}.pantallas{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <g id="g-base" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></g>
+  </defs>
+  <symbol id="ic-campana" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 9a6 6 0 0 1 12 0c0 3.2.6 4.7 1.5 5.8.4.5.1 1.2-.6 1.2H5.1c-.7 0-1-.7-.6-1.2C5.4 13.7 6 12.2 6 9Z"/>
+    <path d="M10 19a2 2 0 0 0 4 0"/>
+  </symbol>
+  <symbol id="ic-perfil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3.1"/>
+    <path d="M6.3 18.6a6.2 6.2 0 0 1 11.4 0"/>
+  </symbol>
+  <symbol id="ic-inicio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 10.5 12 4l8 6.5"/><path d="M6 10v9h12v-9"/><path d="M10 19v-4.5h4V19"/>
+  </symbol>
+  <symbol id="ic-plan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="7" y="3" width="10" height="18" rx="2.4"/><path d="M10.5 18h3"/>
+  </symbol>
+  <symbol id="ic-boleta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 3h12v18l-2-1.4-2 1.4-2-1.4-2 1.4-2-1.4L6 21Z"/><path d="M12 7.5v8"/>
+    <path d="M13.8 9.2a2 2 0 1 0-1.8 3 2 2 0 1 1-1.8 3"/>
+  </symbol>
+  <symbol id="ic-ayuda" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.3 2.4c-.6.2-.9.8-.9 1.4v.4"/><path d="M12 17h.01"/>
+  </symbol>
+  <symbol id="ic-ofertas" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3.5 4h2.2l2.1 10.2a1.6 1.6 0 0 0 1.6 1.3h7.5a1.6 1.6 0 0 0 1.6-1.2L20 7.5H6.4"/>
+    <circle cx="10" cy="19.2" r="1.3"/><circle cx="17" cy="19.2" r="1.3"/>
+  </symbol>
+  <symbol id="ic-telefono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5.2 4.6h3.1l1.4 3.6-1.9 1.4a11 11 0 0 0 5.6 5.6l1.4-1.9 3.6 1.4v3.1a1.5 1.5 0 0 1-1.7 1.5C9.4 18.6 5.4 14.6 3.7 6.3a1.5 1.5 0 0 1 1.5-1.7Z"/>
+  </symbol>
+  <symbol id="ic-sms" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 5.5h16v11H9.5L5 20v-3.5H4Z"/><path d="M8.5 11h7"/><path d="M8.5 8.2h4"/>
+  </symbol>
+  <symbol id="ic-lupa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="6.2"/><path d="m15.6 15.6 3.4 3.4"/>
+  </symbol>
+  <symbol id="ic-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 21s6.2-5.6 6.2-10A6.2 6.2 0 0 0 5.8 11c0 4.4 6.2 10 6.2 10Z"/><circle cx="12" cy="10.8" r="2.3"/>
+  </symbol>
+  <symbol id="ic-todos" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="4" y="4" width="7" height="7" rx="1.8"/><rect x="13" y="4" width="7" height="7" rx="1.8"/>
+    <rect x="4" y="13" width="7" height="7" rx="1.8"/><rect x="13" y="13" width="7" height="7" rx="1.8"/>
+  </symbol>
+  <symbol id="ic-comida" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7 3v8"/><path d="M4.6 3v4.2a2.4 2.4 0 0 0 4.8 0V3"/><path d="M7 11v10"/>
+    <path d="M17 3c-1.6 1.2-2.4 3-2.4 5.2 0 1.7.8 2.8 2.4 3.1V21"/>
+  </symbol>
+  <symbol id="ic-combustible" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3.5c2.8 3 4.5 5.4 4.5 8a4.5 4.5 0 0 1-9 0c0-2.6 1.7-5 4.5-8Z"/>
+  </symbol>
+  <symbol id="ic-viajes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 13.4 20.4 4.2a1 1 0 0 1 1.4 1.3l-4 7.4v4.6l-2.6-2.3-4.6 2.5.6-3.6Z"/>
+  </symbol>
+  <symbol id="ic-antena" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="9" r="2"/><path d="M7.8 4.8a6 6 0 0 0 0 8.4"/><path d="M16.2 4.8a6 6 0 0 1 0 8.4"/>
+    <path d="m12 11 1.8 9h-3.6Z"/>
+  </symbol>
+  <symbol id="ic-satelite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4.5 14.5 9.5 19a7 7 0 0 0 5-5L10 9Z"/><path d="M13.5 4.8a5.7 5.7 0 0 1 5.7 5.7"/>
+    <path d="M13.5 8.4a2.1 2.1 0 0 1 2.1 2.1"/>
+  </symbol>
+  <symbol id="ic-cupon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3.5 7.5h17v3a2 2 0 0 0 0 4v3h-17v-3a2 2 0 0 0 0-4Z"/><path d="M13 9v1.5"/><path d="M13 13.5V15"/>
+  </symbol>
+</svg>
+<div class="wrap">
+
+  <header class="intro">
+    <p class="kicker">Prototipo · Propuesta de mejora</p>
+    <h1>Dos pantallas que responden primero y venden después</h1>
+    <p>Prototipo navegable de la propuesta para la app Entel. La primera pantalla resuelve la consulta
+    de consumo en el primer contacto; la segunda comunica el estado real del programa de beneficios.</p>
+    <p>Se mantienen los componentes del producto actual —medidor circular, control segmentado,
+    barra de periodo, navegación de cinco ítems— y se cambia lo que comunican. Las pantallas son
+    interactivas y los datos son ficticios.</p>
+  </header>
+
+  <div class="pantallas">
+
+    <!-- ══════════ PANTALLA 1 ══════════ -->
+    <section class="bloque" aria-labelledby="t1">
+      <h2 id="t1">Pantalla 1 · Tu servicio primero</h2>
+      <p class="sub">Resuelve los hallazgos 01 y 03: el consumo aparece en el primer contacto y se
+      expresa como saldo disponible.</p>
+
+      <div class="telefono">
+        <div class="barra-estado"><span>9:41</span><span class="iconos"><i class="senal"></i><i class="bateria"></i></span></div>
+
+        <div class="app-header">
+          <span class="marca">LOGO</span>
+          <span class="saludo">¡Hola!</span>
+          <span class="iconos-header">
+            <svg class="ic" role="img" aria-label="Avisos"><use href="#ic-campana"></use></svg>
+            <svg class="ic" role="img" aria-label="Perfil"><use href="#ic-perfil"></use></svg>
+          </span>
+        </div>
+
+        <div class="lienzo">
+
+          <!-- tarjeta de consumo -->
+          <div class="card" id="cardConsumo">
+            <div class="card-head">
+              <h3>Tu plan</h3>
+              <button class="pill-out" type="button">Ir al detalle</button>
+            </div>
+
+            <p class="periodo-rot">Periodo corresponde al:</p>
+            <div class="periodo">
+              <span>1 sep</span>
+              <span class="track"><i style="width:60%"></i></span>
+              <span>30 sep</span>
+            </div>
+
+            <div class="segmento" role="group" aria-label="Tipo de cobertura">
+              <button type="button" aria-pressed="true"><svg class="punto" aria-hidden="true"><use href="#ic-antena"></use></svg>Local</button>
+              <button type="button" aria-pressed="false"><svg class="punto" aria-hidden="true"><use href="#ic-satelite"></use></svg>Satelital</button>
+            </div>
+
+            <div class="medidor">
+              <svg width="100%" height="100%" viewBox="0 0 182 128" role="img" aria-labelledby="medidorTxt">
+                <title id="medidorTxt">Te quedan 399 GB de 400 GB</title>
+                <path d="M16 116 A75 75 0 1 1 166 116" fill="none" stroke="#DEDFE4" stroke-width="11" stroke-linecap="round"/>
+                <path id="arco" d="M16 116 A75 75 0 1 1 166 116" fill="none" stroke="#1226E8" stroke-width="11"
+                      stroke-linecap="round" stroke-dasharray="353" stroke-dashoffset="4"/>
+              </svg>
+              <div class="centro">
+                <span class="rot">Te quedan</span>
+                <span class="cifra" id="gbSaldo">399 GB</span>
+                <span class="de">de 400 GB</span>
+              </div>
+            </div>
+            <p class="dias" id="diasCiclo">Quedan 12 días de tu ciclo</p>
+
+            <ul class="filas">
+              <li><svg class="ico" aria-hidden="true"><use href="#ic-telefono"></use></svg><span>Minutos</span> <b style="margin-left:auto">Ilimitados</b></li>
+              <li><svg class="ico" aria-hidden="true"><use href="#ic-sms"></use></svg><span>SMS</span> <b style="margin-left:auto">400 disponibles</b></li>
+            </ul>
+          </div>
+
+          <!-- oferta contextual -->
+          <div class="aviso aviso--ambar" id="ofertaContextual" hidden>
+            <span class="simbolo" data-s="!"></span>
+            <span>
+              <b>Tus datos podrían agotarse antes del 30</b>
+              Con tu ritmo de uso de los últimos días, te alcanzaría hasta el 24 de septiembre.
+              <button class="btn--texto" type="button">Ver bolsas desde $2.990</button>
+            </span>
+          </div>
+
+          <!-- error -->
+          <div class="aviso aviso--alerta" id="avisoError" hidden>
+            <span class="simbolo" data-s="×"></span>
+            <span>
+              <b>No pudimos cargar tu consumo</b>
+              El dato no está disponible en este momento. No se descontó nada de tu plan.
+              <button class="btn--texto" type="button">Reintentar</button>
+            </span>
+          </div>
+        </div>
+
+        <nav class="nav-inferior" aria-label="Navegación de la app">
+          <div class="on"><span class="icono"><svg aria-hidden="true"><use href="#ic-inicio"></use></svg></span>Inicio</div>
+          <div><span class="icono"><svg aria-hidden="true"><use href="#ic-plan"></use></svg></span>Mi plan</div>
+          <div><span class="icono"><svg aria-hidden="true"><use href="#ic-boleta"></use></svg></span>Boleta</div>
+          <div><span class="icono"><svg aria-hidden="true"><use href="#ic-ayuda"></use></svg></span>Ayuda</div>
+          <div><span class="icono"><svg aria-hidden="true"><use href="#ic-ofertas"></use></svg></span>Ofertas</div>
+        </nav>
+      </div>
+
+      <div class="controles">
+        <p class="rot">Estados de la pantalla</p>
+        <div class="grupo" role="group" aria-label="Estados de la pantalla 1">
+          <button type="button" data-estado="normal" aria-pressed="true">Saldo normal</button>
+          <button type="button" data-estado="bajo" aria-pressed="false">Saldo bajo</button>
+          <button type="button" data-estado="error" aria-pressed="false">Dato no disponible</button>
+        </div>
+        <p class="leyenda">Se conservan el medidor, el control segmentado y la barra de periodo del
+        producto actual. Cambia lo que comunican: saldo disponible en vez de consumo acumulado, días
+        restantes de ciclo, y la oferta comercial solo cuando el saldo baja.</p>
+      </div>
+    </section>
+
+    <!-- ══════════ PANTALLA 2 ══════════ -->
+    <section class="bloque" aria-labelledby="t2">
+      <h2 id="t2">Pantalla 2 · Un Club sin fantasmas</h2>
+      <p class="sub">Resuelve el hallazgo 04: el estado del programa de puntos se comunica en la
+      interfaz, no en el centro de ayuda.</p>
+
+      <div class="telefono">
+        <div class="barra-estado"><span>9:41</span><span class="iconos"><i class="senal"></i><i class="bateria"></i></span></div>
+
+        <div class="app-header app-header--titulo">
+          <span class="volver">←</span>
+          <span class="t">Club Entel</span>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="Secciones del Club">
+          <button role="tab" aria-selected="true" aria-controls="panelBeneficios" id="tabBeneficios">Beneficios</button>
+          <button role="tab" aria-selected="false" aria-controls="panelEventos" id="tabEventos">Eventos</button>
+          <button role="tab" aria-selected="false" aria-controls="panelCupones" id="tabCupones">Mis cupones</button>
+        </div>
+
+        <div class="lienzo">
+
+          <!-- BENEFICIOS -->
+          <div id="panelBeneficios" role="tabpanel" aria-labelledby="tabBeneficios">
+
+            <div class="buscador">
+              <svg class="lupa" aria-hidden="true"><use href="#ic-lupa"></use></svg>
+              <span>¿Qué descuento buscas hoy?</span>
+              <svg class="pin" aria-hidden="true"><use href="#ic-pin"></use></svg>
+            </div>
+
+            <div class="aviso aviso--info">
+              <span class="simbolo" data-s="i"></span>
+              <span>
+                <b>El programa de Puntos Entel finalizó el 1 de mayo de 2025</b>
+                Hoy tus beneficios son descuentos directos: no necesitas acumular ni canjear.
+                <button class="btn--texto" type="button" id="verQue" aria-expanded="false" aria-controls="detalleQue">Qué significa para mí</button>
+                <span class="detalle" id="detalleQue" hidden>
+                  <ul>
+                    <li>Los descuentos se aplican al mostrar tu cupón, sin puntos de por medio.</li>
+                    <li>Si acumulaste puntos con la tarjeta Entel Visa, mantienen 24 meses de vigencia.</li>
+                    <li>Ese saldo se revisa en el sitio web con tu RUT.</li>
+                  </ul>
+                </span>
+              </span>
+            </div>
+
+            <div class="aviso aviso--alerta">
+              <span class="simbolo" data-s="!"></span>
+              <span>
+                <b>Cuidado con los SMS sobre puntos</b>
+                Entel no envía mensajes diciendo que tus puntos están por caducar. Si recibes uno, es
+                una estafa.
+                <button class="btn--texto" type="button">Reportar un mensaje</button>
+              </span>
+            </div>
+
+            <div class="categorias" role="group" aria-label="Filtrar beneficios">
+              <button type="button" aria-pressed="true"><svg class="fig" aria-hidden="true"><use href="#ic-todos"></use></svg>Todos</button>
+              <button type="button" aria-pressed="false"><svg class="fig" aria-hidden="true"><use href="#ic-comida"></use></svg>Comida</button>
+              <button type="button" aria-pressed="false"><svg class="fig" aria-hidden="true"><use href="#ic-combustible"></use></svg>Combustible</button>
+              <button type="button" aria-pressed="false"><svg class="fig" aria-hidden="true"><use href="#ic-viajes"></use></svg>Viajes</button>
+            </div>
+
+            <div class="seccion-head">
+              <h4><span class="fig"></span> Vigentes hoy</h4>
+              <button class="pill-out" type="button">Mostrar más</button>
+            </div>
+
+            <div class="grilla">
+              <div class="beneficio">
+                <div class="imagen">MARCA</div>
+                <div class="txt">
+                  <span class="t">Combustible</span>
+                  <span class="d">$100 de dcto. por litro</span>
+                  <span class="estado">Vigente hasta el 31 oct</span>
+                </div>
+              </div>
+              <div class="beneficio">
+                <div class="imagen">MARCA</div>
+                <div class="txt">
+                  <span class="t">Comida</span>
+                  <span class="d">25% de dcto. en tu compra</span>
+                  <span class="estado">Vigente todo el mes</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- EVENTOS -->
+          <div id="panelEventos" role="tabpanel" aria-labelledby="tabEventos" hidden>
+            <div class="seccion-head"><h4><span class="fig"></span> Preventas del Club</h4></div>
+            <div class="grilla">
+              <div class="beneficio">
+                <div class="imagen">EVENTO</div>
+                <div class="txt"><span class="t">Estadio Bicentenario</span><span class="d">14 de noviembre</span>
+                <span class="estado">Preventa disponible</span></div>
+              </div>
+              <div class="beneficio">
+                <div class="imagen">EVENTO</div>
+                <div class="txt"><span class="t">Festival de verano</span><span class="d">28 de febrero</span>
+                <span class="estado">Preventa disponible</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MIS CUPONES -->
+          <div id="panelCupones" role="tabpanel" aria-labelledby="tabCupones" hidden>
+            <div class="vacio">
+              <span class="marca-v"><svg aria-hidden="true"><use href="#ic-cupon"></use></svg></span>
+              <b>Todavía no tienes cupones activos</b>
+              <p>Los cupones que actives desde Beneficios aparecerán acá, con su fecha de vencimiento.</p>
+              <button class="btn" type="button">Ver beneficios vigentes</button>
+            </div>
+          </div>
+        </div>
+
+        <nav class="nav-inferior" aria-label="Navegación de la app">
+          <div class="on"><span class="icono"><svg aria-hidden="true"><use href="#ic-inicio"></use></svg></span>Inicio</div>
+          <div><span class="icono"><svg aria-hidden="true"><use href="#ic-plan"></use></svg></span>Mi plan</div>
+          <div><span class="icono"><svg aria-hidden="true"><use href="#ic-boleta"></use></svg></span>Boleta</div>
+          <div><span class="icono"><svg aria-hidden="true"><use href="#ic-ayuda"></use></svg></span>Ayuda</div>
+          <div><span class="icono"><svg aria-hidden="true"><use href="#ic-ofertas"></use></svg></span>Ofertas</div>
+        </nav>
+      </div>
+
+      <div class="controles">
+        <p class="rot">Interacciones disponibles</p>
+        <p class="leyenda" style="margin-top:0">Se conservan las pestañas, el buscador y la grilla de
+        beneficios del producto actual. Se agregan el estado del programa, el aviso antifraude, la
+        vigencia visible en cada beneficio y un estado vacío que explica cómo llenarse.</p>
+      </div>
+    </section>
+  </div>
+
+  <footer class="pie">
+    Prototipo construido con asistencia de IA a partir de los hallazgos de la evaluación heurística
+    realizada el 18 de septiembre de 2026. Reproduce los patrones de interfaz del producto actual con
+    fines de evaluación. Los datos son ficticios y las marcas de los beneficios fueron reemplazadas por
+    bloques genéricos. No está afiliado a Entel ni representa un producto oficial de la compañía.
+  </footer>
+</div>
+
+<script>
+(function(){
+  var gb = document.getElementById('gbSaldo');
+  var dias = document.getElementById('diasCiclo');
+  var arco = document.getElementById('arco');
+  var card = document.getElementById('cardConsumo');
+  var oferta = document.getElementById('ofertaContextual');
+  var error = document.getElementById('avisoError');
+  var LARGO = 353;
+
+  function arcoPorcentaje(p){ /* p = porcentaje disponible */
+    arco.setAttribute('stroke-dashoffset', String(Math.round(LARGO - (LARGO * p / 100))));
+  }
+
+  var estados = {
+    normal: function(){
+      gb.textContent = '399 GB';
+      dias.textContent = 'Quedan 12 días de tu ciclo';
+      arco.setAttribute('stroke', '#1226E8'); arcoPorcentaje(99);
+      card.hidden = false; oferta.hidden = true; error.hidden = true;
+    },
+    bajo: function(){
+      gb.textContent = '1,2 GB';
+      dias.textContent = 'Quedan 12 días de tu ciclo';
+      arco.setAttribute('stroke', '#F2681C'); arcoPorcentaje(8);
+      card.hidden = false; oferta.hidden = false; error.hidden = true;
+    },
+    error: function(){
+      card.hidden = true; oferta.hidden = true; error.hidden = false;
+    }
+  };
+  estados.normal();
+
+  var botones = document.querySelectorAll('[data-estado]');
+  Array.prototype.forEach.call(botones, function(b){
+    b.addEventListener('click', function(){
+      Array.prototype.forEach.call(botones, function(o){ o.setAttribute('aria-pressed','false'); });
+      b.setAttribute('aria-pressed','true');
+      estados[b.dataset.estado]();
+    });
+  });
+
+  /* segmentado Local / Satelital */
+  var seg = document.querySelectorAll('.segmento button');
+  Array.prototype.forEach.call(seg, function(s){
+    s.addEventListener('click', function(){
+      Array.prototype.forEach.call(seg, function(o){ o.setAttribute('aria-pressed','false'); });
+      s.setAttribute('aria-pressed','true');
+    });
+  });
+
+  /* pestañas del Club */
+  var tabs = document.querySelectorAll('[role="tab"]');
+  Array.prototype.forEach.call(tabs, function(t){
+    t.addEventListener('click', function(){
+      Array.prototype.forEach.call(tabs, function(o){
+        o.setAttribute('aria-selected','false');
+        document.getElementById(o.getAttribute('aria-controls')).hidden = true;
+      });
+      t.setAttribute('aria-selected','true');
+      document.getElementById(t.getAttribute('aria-controls')).hidden = false;
+    });
+    t.addEventListener('keydown', function(e){
+      var lista = Array.prototype.slice.call(tabs), i = lista.indexOf(t);
+      if (e.key === 'ArrowRight' && lista[i+1]) lista[i+1].focus();
+      if (e.key === 'ArrowLeft'  && lista[i-1]) lista[i-1].focus();
+    });
+  });
+
+  /* detalle desplegable */
+  var verQue = document.getElementById('verQue');
+  var detalleQue = document.getElementById('detalleQue');
+  verQue.addEventListener('click', function(){
+    var abierto = verQue.getAttribute('aria-expanded') === 'true';
+    verQue.setAttribute('aria-expanded', String(!abierto));
+    detalleQue.hidden = abierto;
+    verQue.textContent = abierto ? 'Qué significa para mí' : 'Ocultar';
+  });
+
+  /* categorías */
+  var cats = document.querySelectorAll('.categorias button');
+  Array.prototype.forEach.call(cats, function(c){
+    c.addEventListener('click', function(){
+      Array.prototype.forEach.call(cats, function(o){ o.setAttribute('aria-pressed','false'); });
+      c.setAttribute('aria-pressed','true');
+    });
+  });
+})();
+</script>
+</body>
+</html>
