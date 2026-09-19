@@ -536,6 +536,8 @@ figcaption{
   margin:0 0 calc(-1 * var(--pad));
 }
 .portada__panel .etiqueta{color:var(--azul-palido);border-bottom-color:rgba(255,255,255,.3)}
+.portada__panel .etiqueta b{color:var(--blanco)}
+.portada__panel .sub{color:var(--azul-palido);margin:var(--s3) 0 0;max-width:52ch}
 .portada__panel h1{max-width:16ch;margin-top:var(--s4)}
 .portada__pie{
   display:grid;grid-template-columns:0.62fr 1fr;
@@ -546,9 +548,8 @@ figcaption{
 }
 .portada__pie .sub{margin:0 0 var(--s3);font-size:var(--f-body);color:var(--gris-texto)}
 
-/* Cierre: la misma persona, al costado del texto */
-.cierre{display:grid;grid-template-columns:1fr auto;gap:clamp(24px,3.4vw,56px);align-items:end}
-.cierre__arte{display:block;width:auto;align-self:end;height:clamp(200px,44vh,440px)}
+/* El cierre usa la misma estructura de la portada; solo cambia el reparto del pie */
+.portada__pie--cierre{grid-template-columns:0.9fr 1fr}
 
 /* ============================================================
    RESPONSIVE
@@ -564,8 +565,7 @@ figcaption{
   .portada .wrap{gap:24px}
   .portada__panel{grid-template-columns:1fr;gap:26px}
   .portada__arte{height:auto;width:100%;max-width:340px;margin-bottom:0}
-  .cierre{grid-template-columns:1fr;gap:28px}
-  .cierre__arte{height:auto;width:100%;max-width:320px;justify-self:start}
+  .portada__pie--cierre{grid-template-columns:1fr}
   .nav__lista,.nav__contador{display:none}
   .nav__boton{display:inline-block;margin-left:auto}
   .cols-2,.cols-3,.cols-4,.split,.split--izq,.tira,.timeline,.marcos,.evidencia{grid-template-columns:1fr;display:grid}
@@ -637,8 +637,7 @@ figcaption{
   .portada .wrap{display:block}
   .portada__panel{--pad:var(--s3);padding:var(--s3) var(--s4);border-radius:8px;margin-bottom:var(--s3)}
   .portada__arte{height:52mm;margin-bottom:calc(-1 * var(--s3))}
-  .cierre{display:grid;grid-template-columns:1fr auto;gap:8mm}
-  .cierre__arte{height:48mm}
+  .portada__pie--cierre{grid-template-columns:0.9fr 1fr}
   .portada__panel h1{margin-top:var(--s3)}
   .portada__pie{display:grid;grid-template-columns:0.62fr 1fr;gap:var(--s4)}
   .slide:first-of-type{padding-top:0}
@@ -1247,24 +1246,33 @@ figcaption{
 </section>
 
 <!-- ============================ 13 CIERRE ============================ -->
-<section class="slide s-azul" id="s13" data-num="13" data-titulo="Cierre">
-  <div class="wrap cierre">
-    <div>
-    <p class="etiqueta"><b>13</b> · Cierre</p>
-    <h2>Una app que responde primero, vende mejor después</h2>
-    <p class="sub">Gracias por la lectura. Quedo disponible para revisar en detalle las decisiones de investigación y de diseño detrás de cada sección.</p>
-    <div class="proto">
-      <a class="btn-proto" href="#" target="_blank" rel="noopener" data-prototipo>Abrir prototipo en una pestaña nueva</a>
+<section class="slide s-blanco portada" id="s13" data-num="13" data-titulo="Cierre">
+  <div class="wrap">
+    <div class="portada__panel">
+      <div class="portada__texto">
+        <p class="etiqueta"><b>13</b> · Cierre</p>
+        <h2>Una app que responde primero, vende mejor después</h2>
+        <p class="sub">Gracias por la lectura. Quedo disponible para revisar en detalle las decisiones de investigación y de diseño detrás de cada sección.</p>
+      </div>
+      <img class="portada__arte" src="img/portada.png" alt="">
     </div>
-    <p class="print-only">URL del prototipo: ____________________________________________</p>
-    <p class="portada__autoria">
-      Nicole Matus · Product Designer, Chile<br>
-      <a href="mailto:nicole.matusp@gmail.com">nicole.matusp@gmail.com</a><br>
-      Desafío UX Research &amp; Strategy · MATCH · Septiembre 2026
-    </p>
-    <p class="nota">Nota metodológica: evidencia levantada el 18 de septiembre de 2026 sobre la versión entonces disponible de la aplicación. Los hallazgos describen ese estado del producto.</p>
+    <div class="portada__pie portada__pie--cierre">
+      <div>
+        <p class="portada__marca">Nicole Matus</p>
+        <p class="portada__autoria">
+          Product Designer, Chile<br>
+          <a href="mailto:nicole.matusp@gmail.com">nicole.matusp@gmail.com</a><br>
+          Desafío UX Research &amp; Strategy · MATCH · Septiembre 2026
+        </p>
+      </div>
+      <div>
+        <div class="proto">
+          <a class="btn-proto" href="#" target="_blank" rel="noopener" data-prototipo>Abrir prototipo en una pestaña nueva</a>
+        </div>
+        <p class="print-only">URL del prototipo: ____________________________________________</p>
+        <p class="nota">Nota metodológica: evidencia levantada el 18 de septiembre de 2026 sobre la versión entonces disponible de la aplicación. Los hallazgos describen ese estado del producto.</p>
+      </div>
     </div>
-    <img class="cierre__arte" src="img/portada.png" alt="">
   </div>
 </section>
 
