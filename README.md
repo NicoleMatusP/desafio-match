@@ -215,9 +215,10 @@ Todo lo que falta está marcado en la página con un recuadro naranja `[  ]`
 
 **Prototipo**
 
-Los tres enlaces al prototipo (portada, 11b y cierre) apuntan a `./prototipo.html`, y
-las tres líneas `.print-only` llevan la URL completa para el PDF. Ya no queda ningún
-marcador de pendiente en la página.
+El botón para abrir el prototipo vive solo en la sección 11b, junto al iframe. En la
+portada y el cierre la URL sigue existiendo como `.print-only`: no se ve en pantalla,
+pero se imprime, así que el PDF se entrega con el enlace al prototipo en su portada. Ya
+no queda ningún marcador de pendiente en la página.
 
 ---
 
