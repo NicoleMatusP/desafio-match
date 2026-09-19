@@ -87,6 +87,12 @@ el texto es corto, en negrita y en mayúsculas.
 gris. Los tokens `--gutter` y `--tope` controlan la separación entre tarjetas y el
 espacio que reserva la barra de índice.
 
+**Proceso con IA (11a, 11b, 11c).** El contenido no cabía en una lámina: 11a es el
+método y la herramienta, 11b embebe el prototipo en un iframe y 11c reúne los prompts
+literales y la conclusión. Las tres comparten `data-grupo="Proceso con IA"`, así que el
+índice sigue mostrando una sola entrada. En impresión el iframe se oculta y queda la URL
+completa del prototipo en el bloque `.print-only`.
+
 **Índice.** Barra fija a ras del borde superior, a todo el ancho, con los nombres sin
 numerar, igual que en la presentación de la Ley 21.719. No lista las 19 secciones sino
 11 grupos: una entrada puede cubrir varias secciones y el enlace lleva a la primera.
@@ -204,18 +210,15 @@ Todo lo que falta está marcado en la página con un recuadro naranja `[  ]`
 **Contenido**
 
 - [ ] **10a y 10b:** reemplazar los dos marcos punteados por la salida del prototipo.
-- [ ] **11 · Proceso con IA:** pegar el prompt de contexto, el de generación y el de
-      refinamiento, anotando qué cambió en cada iteración; indicar la herramienta
-      utilizada y el número de iteraciones.
+- [ ] **Crear `prototipo.html`** en la raíz del repo. La sección 11b lo embebe en un
+      iframe y el botón apunta a él; mientras no exista, el iframe muestra un 404.
 
 **Prototipo**
 
-- [ ] Reemplazar el `href="#"` de los tres botones `data-prototipo` (portada, 11 y 13)
-      por la URL real. Mientras el `href` sea `#`, el botón se muestra como
-      "Prototipo: URL pendiente" y no navega.
-- [ ] Escribir la URL en las tres líneas `.print-only` para que aparezca en el PDF.
-- [ ] Opcional: descomentar el `<iframe>` de la sección 11 y pegar la URL para embeber
-      el prototipo en la página.
+- [ ] Reemplazar el `href="#"` de los dos botones `data-prototipo` que quedan (portada y
+      13) por `./prototipo.html`. El de la sección 11b ya apunta ahí. Mientras el `href`
+      sea `#`, el botón se muestra como "Prototipo: URL pendiente" y no navega.
+- [ ] Escribir la URL en las dos líneas `.print-only` restantes; la de 11b ya la tiene.
 
 ---
 
