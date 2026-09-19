@@ -15,7 +15,7 @@ desafio-match/
 ├── index.html      Presentación completa: HTML, CSS y JS embebidos. Sin dependencias.
 ├── README.md       Este archivo.
 ├── prototipo.html   Prototipo navegable de las dos pantallas propuestas.
-└── img/            Capturas del flujo evaluado y la imagen de portada (13 archivos).
+└── img/            Capturas del flujo, la imagen de portada y las dos propuestas (15 archivos).
 ```
 
 `index.html` funciona abriendo el archivo directamente (doble clic) y servido desde
@@ -42,6 +42,8 @@ en la carpeta; la presentación usa 10:
 | `img/10-club-beneficios.jpg` | sin usar |
 | `img/12-ayuda-sms-fraudulentos.jpg` | sin usar |
 | `img/portada.png` | Portada y 13 |
+| `img/14-propuesta-consumo.jpg` | 10a, columna Propuesta |
+| `img/15-propuesta-club.jpg` | 10b, columna Propuesta |
 
 Las dos últimas quedaron fuera porque el guion de las secciones no las contemplaba.
 Si se quieren incorporar, el lugar natural de `12-ayuda-sms-fraudulentos.jpg` es la
@@ -87,6 +89,11 @@ el texto es corto, en negrita y en mayúsculas.
 **Geometría.** Cada sección es una tarjeta redondeada (`--radio: 24px`) sobre un lienzo
 gris. Los tokens `--gutter` y `--tope` controlan la separación entre tarjetas y el
 espacio que reserva la barra de índice.
+
+**Propuesta (10a y 10b).** La columna "Propuesta" muestra capturas del prototipo, no
+maquetas aparte: se generaron renderizando `prototipo.html` a doble escala y recortando
+cada teléfono, así que si el prototipo cambia hay que regenerarlas para que no se
+desincronicen.
 
 **Proceso con IA (11a, 11b, 11c).** El contenido no cabía en una lámina: 11a es el
 método y la herramienta, 11b embebe el prototipo en un iframe y 11c reúne los prompts
@@ -211,7 +218,6 @@ Todo lo que falta está marcado en la página con un recuadro naranja `[  ]`
 
 **Contenido**
 
-- [ ] **10a y 10b:** reemplazar los dos marcos punteados por la salida del prototipo.
 
 **Prototipo**
 

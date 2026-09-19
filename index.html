@@ -476,13 +476,6 @@ figcaption{
 .marcos{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(20px,2.6vw,44px);align-items:start;max-width:520px}
 .marcos figure{max-width:180px}
 .marcos .captura{width:100%;max-height:none}
-.placeholder{
-  display:flex;align-items:center;justify-content:center;text-align:center;
-  aspect-ratio:700 / 1522;padding:var(--s3);
-  border:1px dashed var(--naranja);border-radius:var(--radio-sm);
-  background:var(--blanco);font-size:var(--f-mini);color:var(--negro);line-height:1.4;
-}
-.s-blanco .placeholder{background:var(--gris-fondo)}
 .marco-rotulo{
   font-size:var(--f-etiqueta);text-transform:uppercase;letter-spacing:.11em;
   color:var(--gris-texto);margin:0 0 var(--s2);
@@ -668,7 +661,7 @@ figcaption{
   .wrap{max-width:none}
   h2{max-width:42ch}
   .sub{margin:var(--s2) 0 var(--s3);max-width:80ch}
-  .tarjeta,figure,.kpi,.hito,.paso,.placeholder,.col,.tabla,.tabla tr,.cita,.cita--caja{
+  .tarjeta,figure,.kpi,.hito,.paso,.col,.tabla,.tabla tr,.cita,.cita--caja{
     page-break-inside:avoid;break-inside:avoid;
   }
   .tabla{font-size:8pt}
@@ -677,7 +670,6 @@ figcaption{
   .tira .captura{max-height:46mm}
   .marcos{max-width:none;gap:6mm}
   .marcos figure{max-width:24mm}
-  .placeholder{aspect-ratio:auto;height:50mm;padding:2mm;font-size:6.5pt}
   .falta{min-height:28mm}
   .print-only{display:block;font-size:8pt;margin-top:var(--s2)}
   .proto__marco{display:none}
@@ -1146,7 +1138,7 @@ figcaption{
           </figure>
           <figure>
             <p class="marco-rotulo">Propuesta</p>
-            <div class="placeholder">Pendiente: salida del prototipo generado con IA</div>
+            <img class="captura" src="img/14-propuesta-consumo.jpg" alt="Propuesta de la pantalla de consumo: “Te quedan 399 GB de 400 GB”, los días restantes del ciclo, los minutos ilimitados y los SMS disponibles, sobre la barra de navegación del producto actual.">
           </figure>
         </div>
       </div>
@@ -1178,7 +1170,7 @@ figcaption{
           </figure>
           <figure>
             <p class="marco-rotulo">Propuesta</p>
-            <div class="placeholder">Pendiente: salida del prototipo generado con IA</div>
+            <img class="captura" src="img/15-propuesta-club.jpg" alt="Propuesta de la pantalla del Club: el estado del programa de puntos, el aviso sobre los SMS fraudulentos y los beneficios vigentes, filtrables por categoría.">
           </figure>
         </div>
       </div>
