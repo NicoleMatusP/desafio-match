@@ -489,12 +489,21 @@ figcaption{
 .btn-proto:hover{background:var(--azul);color:var(--blanco);border-color:var(--azul)}
 .proto__nota{font-size:var(--f-mini);color:var(--gris-texto);margin:0}
 .s-azul .proto__nota{color:var(--azul-palido)}
+/* Lámina de método: los pasos a un lado, el prototipo al otro */
+.metodo{
+  display:grid;grid-template-columns:0.78fr 1fr;
+  gap:clamp(24px,3vw,52px);align-items:start;margin-top:var(--s4);
+}
+.timeline--vertical{grid-template-columns:1fr;gap:var(--s3)}
+.metodo .nota{margin-top:var(--s3)}
+.metodo .proto__marco{margin-top:0}
+
 /* Contenedor del prototipo embebido */
 .proto__marco{
   border-radius:var(--radio-sm);overflow:hidden;
   background:var(--blanco);margin-top:var(--s3);
 }
-.proto__marco iframe{display:block;width:100%;height:min(36vh,380px);border:0;background:var(--blanco)}
+.proto__marco iframe{display:block;width:100%;height:min(59vh,640px);border:0;background:var(--blanco)}
 
 /* Respaldo impreso: el iframe no existe en papel, van las dos pantallas */
 .proto__impreso{display:none}
@@ -573,7 +582,7 @@ figcaption{
   .portada__pie--cierre{grid-template-columns:1fr}
   .nav__lista,.nav__contador{display:none}
   .nav__boton{display:inline-block;margin-left:auto}
-  .cols-2,.cols-3,.cols-4,.split,.split--izq,.tira,.timeline,.marcos,.evidencia{grid-template-columns:1fr;display:grid}
+  .cols-2,.cols-3,.cols-4,.split,.split--izq,.tira,.timeline,.marcos,.evidencia,.metodo{grid-template-columns:1fr;display:grid}
   .split--izq .split__texto,.split--izq .split__media{order:initial}
   h2{max-width:none}
   .captura--alta,.tira .captura,.marco img{max-height:none}
@@ -668,6 +677,8 @@ figcaption{
   .falta{min-height:28mm}
   .print-only{display:block;font-size:8pt;margin-top:var(--s2)}
   .proto__marco{display:none}
+  .metodo{display:grid;grid-template-columns:1fr;gap:var(--s3)}
+  .timeline--vertical{grid-template-columns:repeat(4,1fr);gap:4mm}
   .proto__impreso{display:grid;grid-template-columns:1fr 1fr;gap:8mm;margin-top:var(--s3);justify-items:center}
   .proto__impreso img{height:76mm;width:auto}
   .marcos--tres{grid-template-columns:repeat(3,1fr);gap:4mm}
@@ -1187,23 +1198,29 @@ figcaption{
   <div class="wrap">
     <p class="etiqueta"><b>11a</b> · Proceso con IA</p>
     <h2>Cómo trabajé con la IA</h2>
-    <div class="timeline">
-      <div class="paso"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.8h8l4.2 4.2v14.2H6z"/><path d="M14 2.8V7h4.2"/><path d="M9 12.5h6M9 16.5h6"/></svg></span><h3><span class="n">01</span> Brief</h3><p>Usuario, tarea, hallazgos priorizados y principios de diseño.</p></div>
-      <div class="paso"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15.5V3.4"/><path d="M8 7.4l4-4 4 4"/><path d="M3.6 14.5v4.4a1.8 1.8 0 0 0 1.8 1.8h13.2a1.8 1.8 0 0 0 1.8-1.8v-4.4"/></svg></span><h3><span class="n">02</span> Inputs</h3><p>Las tres grabaciones de pantalla del flujo real, los cuatro hallazgos priorizados con su severidad, y las capturas del estado actual de ambas pantallas.</p></div>
-      <div class="paso"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.4 12a8.4 8.4 0 1 1-2.5-6"/><path d="M20.8 2.6v4.2h-4.2"/></svg></span><h3><span class="n">03</span> Iteración</h3><p>Jerarquía, microcopy, estados de error y accesibilidad.</p></div>
-      <div class="paso"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.4v6.2M5 14v6.6M12 3.4v3.2M12 11v9.6M19 3.4v9.2M19 17.6v3"/><circle cx="5" cy="11.8" r="2.2"/><circle cx="12" cy="8.8" r="2.2"/><circle cx="19" cy="15.4" r="2.2"/></svg></span><h3><span class="n">04</span> Ajuste</h3><p>Revisión manual de contraste, espaciado y consistencia.</p></div>
-    </div>
-    <p class="nota">Herramienta: Claude (Cowork). Elegida porque permite generar el prototipo como HTML funcional e integrarlo en esta misma presentación, sin depender de un servicio externo que pueda bloquear el embed o quedar fuera de línea el día de la presentación. Proceso: 2 prompts de construcción y 3 rondas de refinamiento.</p>
-    <div class="proto__marco">
-      <iframe src="./prototipo.html" title="Prototipo navegable de la propuesta" loading="lazy"></iframe>
-    </div>
-    <div class="proto">
-      <a class="btn-proto" href="./prototipo.html" target="_blank" rel="noopener">Abrir el prototipo en una pestaña nueva</a>
-    </div>
-    <p class="print-only">URL del prototipo: https://nicolematusp.github.io/desafio-match/prototipo.html</p>
-    <div class="proto__impreso">
-      <img src="img/proto-p1-normal.png" alt="Pantalla de consumo propuesta: el medidor indica que te quedan 399 GB de 400 GB y los días restantes del ciclo.">
-      <img src="img/proto-p2-club.png" alt="Pantalla del Club propuesta: el estado del programa de puntos y el aviso sobre SMS fraudulentos.">
+    <div class="metodo">
+      <div>
+        <div class="timeline timeline--vertical">
+          <div class="paso"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.8h8l4.2 4.2v14.2H6z"/><path d="M14 2.8V7h4.2"/><path d="M9 12.5h6M9 16.5h6"/></svg></span><h3><span class="n">01</span> Brief</h3><p>Usuario, tarea, hallazgos priorizados y principios de diseño.</p></div>
+          <div class="paso"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15.5V3.4"/><path d="M8 7.4l4-4 4 4"/><path d="M3.6 14.5v4.4a1.8 1.8 0 0 0 1.8 1.8h13.2a1.8 1.8 0 0 0 1.8-1.8v-4.4"/></svg></span><h3><span class="n">02</span> Inputs</h3><p>Las tres grabaciones de pantalla del flujo real, los cuatro hallazgos priorizados con su severidad, y las capturas del estado actual de ambas pantallas.</p></div>
+          <div class="paso"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.4 12a8.4 8.4 0 1 1-2.5-6"/><path d="M20.8 2.6v4.2h-4.2"/></svg></span><h3><span class="n">03</span> Iteración</h3><p>Jerarquía, microcopy, estados de error y accesibilidad.</p></div>
+          <div class="paso"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.4v6.2M5 14v6.6M12 3.4v3.2M12 11v9.6M19 3.4v9.2M19 17.6v3"/><circle cx="5" cy="11.8" r="2.2"/><circle cx="12" cy="8.8" r="2.2"/><circle cx="19" cy="15.4" r="2.2"/></svg></span><h3><span class="n">04</span> Ajuste</h3><p>Revisión manual de contraste, espaciado y consistencia.</p></div>
+        </div>
+        <p class="nota">Herramienta: Claude (Cowork). Elegida porque permite generar el prototipo como HTML funcional e integrarlo en esta misma presentación, sin depender de un servicio externo que pueda bloquear el embed o quedar fuera de línea el día de la presentación. Proceso: 2 prompts de construcción y 3 rondas de refinamiento.</p>
+      </div>
+      <div>
+        <div class="proto__marco">
+          <iframe src="./prototipo.html#t1" title="Prototipo navegable de la propuesta" loading="lazy"></iframe>
+        </div>
+        <div class="proto">
+          <a class="btn-proto" href="./prototipo.html" target="_blank" rel="noopener">Abrir el prototipo en una pestaña nueva</a>
+        </div>
+        <p class="print-only">URL del prototipo: https://nicolematusp.github.io/desafio-match/prototipo.html</p>
+        <div class="proto__impreso">
+          <img src="img/proto-p1-normal.png" alt="Pantalla de consumo propuesta: el medidor indica que te quedan 399 GB de 400 GB y los días restantes del ciclo.">
+          <img src="img/proto-p2-club.png" alt="Pantalla del Club propuesta: el estado del programa de puntos y el aviso sobre SMS fraudulentos.">
+        </div>
+      </div>
     </div>
   </div>
 </section>
