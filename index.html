@@ -233,12 +233,6 @@ h2 + .texto,h2 + .cita,h2 + .cita--caja,h2 + h3,h2 + .tira,h2 + .cols,h2 + .tabl
 .s-negro .nota,.s-azul .nota{color:var(--gris-linea);border-top-color:rgba(255,255,255,.28)}
 .s-naranja .nota,.s-azulpalido .nota{color:var(--negro);border-top-color:rgba(16,17,20,.25)}
 
-.pendiente{
-  background:var(--naranja-palido);color:var(--negro);
-  padding:1px 10px;font-weight:600;border-radius:var(--radio-xs);
-  font-variant-numeric:tabular-nums;white-space:nowrap;
-  border:1px solid var(--naranja);
-}
 
 /* ============================================================
    COMPONENTES
@@ -474,6 +468,8 @@ figcaption{
 
 /* Comparación actual / propuesta, sin marco de dispositivo */
 .marcos{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(20px,2.6vw,44px);align-items:start;max-width:520px}
+.marcos--tres{grid-template-columns:repeat(3,1fr);gap:clamp(12px,1.6vw,24px);max-width:none}
+.marcos--tres figure{max-width:150px}
 .marcos figure{max-width:180px}
 .marcos .captura{width:100%;max-height:none}
 .marco-rotulo{
@@ -491,18 +487,17 @@ figcaption{
 }
 .s-azul .btn-proto{background:var(--blanco);color:var(--azul);border-color:var(--blanco)}
 .btn-proto:hover{background:var(--azul);color:var(--blanco);border-color:var(--azul)}
-.btn-proto.is-pendiente{
-  background:var(--naranja-palido);color:var(--negro);
-  border:1px dashed var(--naranja);cursor:not-allowed;
-}
 .proto__nota{font-size:var(--f-mini);color:var(--gris-texto);margin:0}
 .s-azul .proto__nota{color:var(--azul-palido)}
 /* Contenedor del prototipo embebido */
 .proto__marco{
-  border:1px solid var(--gris-linea);border-radius:var(--radio-sm);
-  overflow:hidden;background:var(--gris-fondo);margin-top:var(--s3);
+  border-radius:var(--radio-sm);overflow:hidden;
+  background:var(--blanco);margin-top:var(--s3);
 }
-.proto__marco iframe{display:block;width:100%;height:min(54vh,560px);border:0}
+.proto__marco iframe{display:block;width:100%;height:min(70vh,700px);border:0;background:var(--blanco)}
+
+/* Respaldo impreso: el iframe no existe en papel, van las dos pantallas */
+.proto__impreso{display:none}
 
 /* Prompts: el texto literal y la lectura que dejó */
 .prompt{
@@ -673,6 +668,10 @@ figcaption{
   .falta{min-height:28mm}
   .print-only{display:block;font-size:8pt;margin-top:var(--s2)}
   .proto__marco{display:none}
+  .proto__impreso{display:grid;grid-template-columns:1fr 1fr;gap:8mm;margin-top:var(--s3);justify-items:center}
+  .proto__impreso img{height:76mm;width:auto}
+  .marcos--tres{grid-template-columns:repeat(3,1fr);gap:4mm}
+  .marcos--tres figure{max-width:22mm}
   .btn-proto{border:1px solid var(--negro);padding:5px 9px}
   a[href^="http"]::after{content:""}
 }
@@ -1131,14 +1130,19 @@ figcaption{
         </ul>
       </div>
       <div class="split__media">
-        <div class="marcos">
+        <div class="marcos marcos--tres">
           <figure>
             <p class="marco-rotulo">Actual</p>
             <img class="captura" src="img/06-consumo-tarjeta.jpg" alt="Estado actual: tarjeta de consumo que muestra lo consumido del plan y un valor negativo en minutos.">
           </figure>
           <figure>
             <p class="marco-rotulo">Propuesta</p>
-            <img class="captura" src="img/14-propuesta-consumo.jpg" alt="Propuesta de la pantalla de consumo: “Te quedan 399 GB de 400 GB”, los días restantes del ciclo, los minutos ilimitados y los SMS disponibles, sobre la barra de navegación del producto actual.">
+            <img class="captura" src="img/proto-p1-normal.png" alt="Propuesta de la pantalla de consumo: el medidor indica “Te quedan 399 GB de 400 GB”, los días restantes del ciclo, los minutos ilimitados y los SMS disponibles, sobre la barra de navegación del producto actual.">
+          </figure>
+          <figure>
+            <p class="marco-rotulo">Saldo bajo</p>
+            <img class="captura" src="img/proto-p1-saldo-bajo.png" alt="La misma pantalla con 1,2 GB disponibles: el medidor se pone naranja y aparece una tarjeta que avisa que los datos podrían agotarse antes de fin de ciclo, con el enlace a comprar bolsas.">
+            <figcaption>Estado con saldo bajo: la oferta aparece solo cuando es útil</figcaption>
           </figure>
         </div>
       </div>
@@ -1170,7 +1174,7 @@ figcaption{
           </figure>
           <figure>
             <p class="marco-rotulo">Propuesta</p>
-            <img class="captura" src="img/15-propuesta-club.jpg" alt="Propuesta de la pantalla del Club: el estado del programa de puntos, el aviso sobre los SMS fraudulentos y los beneficios vigentes, filtrables por categoría.">
+            <img class="captura" src="img/proto-p2-club.png" alt="Propuesta de la pantalla del Club: el estado del programa de puntos declarado en la interfaz, el aviso sobre los SMS fraudulentos y los beneficios vigentes, filtrables por categoría.">
           </figure>
         </div>
       </div>
@@ -1183,36 +1187,31 @@ figcaption{
   <div class="wrap">
     <p class="etiqueta"><b>11a</b> · Proceso con IA</p>
     <h2>Cómo trabajé con la IA</h2>
-    <p class="sub">El prototipo no salió de un prompt afortunado, sino de un brief construido a partir de los hallazgos y de iteraciones dirigidas.</p>
     <div class="timeline">
       <div class="paso"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.8h8l4.2 4.2v14.2H6z"/><path d="M14 2.8V7h4.2"/><path d="M9 12.5h6M9 16.5h6"/></svg></span><h3><span class="n">01</span> Brief</h3><p>Usuario, tarea, hallazgos priorizados y principios de diseño.</p></div>
       <div class="paso"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15.5V3.4"/><path d="M8 7.4l4-4 4 4"/><path d="M3.6 14.5v4.4a1.8 1.8 0 0 0 1.8 1.8h13.2a1.8 1.8 0 0 0 1.8-1.8v-4.4"/></svg></span><h3><span class="n">02</span> Inputs</h3><p>Las tres grabaciones de pantalla del flujo real, los cuatro hallazgos priorizados con su severidad, y las capturas del estado actual de ambas pantallas.</p></div>
       <div class="paso"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.4 12a8.4 8.4 0 1 1-2.5-6"/><path d="M20.8 2.6v4.2h-4.2"/></svg></span><h3><span class="n">03</span> Iteración</h3><p>Jerarquía, microcopy, estados de error y accesibilidad.</p></div>
       <div class="paso"><span class="icono icono--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.4v6.2M5 14v6.6M12 3.4v3.2M12 11v9.6M19 3.4v9.2M19 17.6v3"/><circle cx="5" cy="11.8" r="2.2"/><circle cx="12" cy="8.8" r="2.2"/><circle cx="19" cy="15.4" r="2.2"/></svg></span><h3><span class="n">04</span> Ajuste</h3><p>Revisión manual de contraste, espaciado y consistencia.</p></div>
     </div>
-    <p class="nota">Herramienta: Claude (Cowork). Elegida porque permite generar el prototipo como HTML funcional e integrarlo en esta misma presentación, sin depender de un servicio externo que pueda bloquear el embed o quedar fuera de línea el día de la presentación. Total: 2 prompts de construcción y 3 rondas de refinamiento.</p>
-  </div>
-</section>
-
-<!-- ============================ 11b EL PROTOTIPO ============================ -->
-<section class="slide s-blanco" id="s11b" data-num="11b" data-grupo="Proceso con IA" data-titulo="El prototipo">
-  <div class="wrap">
-    <p class="etiqueta"><b>11b</b> · Proceso con IA, el prototipo</p>
-    <h2>El prototipo corre en esta misma página</h2>
+    <p class="nota">Herramienta: Claude (Cowork). Elegida porque permite generar el prototipo como HTML funcional e integrarlo en esta misma presentación, sin depender de un servicio externo que pueda bloquear el embed o quedar fuera de línea el día de la presentación. Proceso: 2 prompts de construcción y 3 rondas de refinamiento.</p>
     <div class="proto__marco">
-      <iframe src="./prototipo.html#t1" title="Prototipo de la propuesta: pantalla de consumo y pantalla del Club" loading="lazy"></iframe>
+      <iframe src="./prototipo.html" title="Prototipo navegable de la propuesta" loading="lazy"></iframe>
     </div>
     <div class="proto">
       <a class="btn-proto" href="./prototipo.html" target="_blank" rel="noopener">Abrir el prototipo en una pestaña nueva</a>
     </div>
     <p class="print-only">URL del prototipo: https://nicolematusp.github.io/desafio-match/prototipo.html</p>
+    <div class="proto__impreso">
+      <img src="img/proto-p1-normal.png" alt="Pantalla de consumo propuesta: el medidor indica que te quedan 399 GB de 400 GB y los días restantes del ciclo.">
+      <img src="img/proto-p2-club.png" alt="Pantalla del Club propuesta: el estado del programa de puntos y el aviso sobre SMS fraudulentos.">
+    </div>
   </div>
 </section>
 
-<!-- ============================ 11c LOS PROMPTS ============================ -->
-<section class="slide s-blanco" id="s11c" data-num="11c" data-grupo="Proceso con IA" data-titulo="Los prompts">
+<!-- ============================ 11b ESTRATEGIA DE PROMPTS ============================ -->
+<section class="slide s-blanco" id="s11b" data-num="11b" data-grupo="Proceso con IA" data-titulo="Estrategia de prompts">
   <div class="wrap">
-    <p class="etiqueta"><b>11c</b> · Proceso con IA, los prompts</p>
+    <p class="etiqueta"><b>11b</b> · Estrategia de prompts</p>
     <h2 class="h2-ancho">Dos prompts y tres rondas de corrección</h2>
     <div class="cols cols-3">
       <div class="tarjeta tarjeta--prompt">
@@ -1228,7 +1227,7 @@ figcaption{
       <div class="tarjeta tarjeta--prompt">
         <span class="tarjeta__marca">Prompts de refinamiento</span>
         <p class="prompt">1. Corrige los errores que detecté al revisar la salida: los tres estados se muestran simultáneamente por un conflicto de CSS y la cifra principal se corta en dos líneas.<br>2. El prototipo se ve como una web limpia, no como la app. Replica los patrones reales: fondo gris con tarjetas blancas de esquinas muy redondeadas, el medidor circular de datos, el control segmentado Local/Satelital, la barra naranja del periodo y el pill “Ir al detalle”.<br>3. Dibuja el set de iconos de línea de la app y replica la barra superior y la inferior.</p>
-        <p class="prompt-nota">La salida de una herramienta de IA no se entrega sin revisar. Las tres rondas nacieron de comparar el prototipo contra las capturas reales, no de pedirle a la herramienta que mejorara por su cuenta.</p>
+        <p class="prompt-nota">Las tres rondas nacieron de comparar el prototipo contra las capturas reales, no de pedirle a la herramienta que mejorara por su cuenta. La salida de una IA no se entrega sin revisar.</p>
       </div>
     </div>
     <p class="conclusion">La IA aceleró la ejecución, no el criterio. Los hallazgos, la priorización, el microcopy y la decisión de reutilizar los componentes existentes en vez de rediseñar el sistema visual son decisiones de diseño, y son las que sostienen la propuesta.</p>
@@ -1289,7 +1288,7 @@ figcaption{
       </div>
       <div>
         <p class="print-only">URL del prototipo: https://nicolematusp.github.io/desafio-match/prototipo.html</p>
-        <p class="nota">Nota metodológica: evidencia levantada el 18 de septiembre de 2026 sobre la versión entonces disponible de la aplicación. Los hallazgos describen ese estado del producto.</p>
+        <p class="nota">Nota metodológica: evidencia levantada el 18 de septiembre de 2026 sobre la versión 4.16 de la aplicación, en un iPhone 16 Pro con iOS 26.62. Los hallazgos describen ese estado del producto.</p>
       </div>
     </div>
   </div>
@@ -1523,18 +1522,6 @@ figcaption{
     });
   });
   window.addEventListener("scroll", ocultarTip, { passive:true });
-
-  /* ---- Enlace al prototipo: estado pendiente mientras no haya URL ---- */
-  Array.prototype.forEach.call(document.querySelectorAll("[data-prototipo]"), function(a){
-    var href = a.getAttribute("href");
-    if(!href || href === "#" || href.indexOf("URL_DEL_PROTOTIPO") > -1){
-      a.classList.add("is-pendiente");
-      a.setAttribute("aria-disabled","true");
-      a.removeAttribute("target");
-      a.textContent = "Prototipo: URL pendiente";
-      a.addEventListener("click", function(ev){ ev.preventDefault(); });
-    }
-  });
 
   /* ---- Capturas faltantes: estado explícito en vez de ícono roto ---- */
   function faltante(img){

@@ -15,7 +15,7 @@ desafio-match/
 ├── index.html      Presentación completa: HTML, CSS y JS embebidos. Sin dependencias.
 ├── README.md       Este archivo.
 ├── prototipo.html   Prototipo navegable de las dos pantallas propuestas.
-└── img/            Capturas del flujo, la imagen de portada y las dos propuestas (15 archivos).
+└── img/            Capturas del flujo, la imagen de portada y las tres del prototipo (16 archivos).
 ```
 
 `index.html` funciona abriendo el archivo directamente (doble clic) y servido desde
@@ -42,8 +42,9 @@ en la carpeta; la presentación usa 10:
 | `img/10-club-beneficios.jpg` | sin usar |
 | `img/12-ayuda-sms-fraudulentos.jpg` | sin usar |
 | `img/portada.png` | Portada y 13 |
-| `img/14-propuesta-consumo.jpg` | 10a, columna Propuesta |
-| `img/15-propuesta-club.jpg` | 10b, columna Propuesta |
+| `img/proto-p1-normal.png` | 10a, columna Propuesta, y respaldo impreso de 11a |
+| `img/proto-p1-saldo-bajo.png` | 10a, tercera columna |
+| `img/proto-p2-club.png` | 10b, columna Propuesta, y respaldo impreso de 11a |
 
 Las dos últimas quedaron fuera porque el guion de las secciones no las contemplaba.
 Si se quieren incorporar, el lugar natural de `12-ayuda-sms-fraudulentos.jpg` es la
